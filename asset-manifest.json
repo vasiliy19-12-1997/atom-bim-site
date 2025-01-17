@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/atom-bim-site/static/css/main.f855e6bc.css",
+    "main.js": "/atom-bim-site/static/js/main.4cfb679e.js",
+    "index.html": "/atom-bim-site/index.html",
+    "main.f855e6bc.css.map": "/atom-bim-site/static/css/main.f855e6bc.css.map",
+    "main.4cfb679e.js.map": "/atom-bim-site/static/js/main.4cfb679e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.4cfb679e.js"
+  ]
+}
