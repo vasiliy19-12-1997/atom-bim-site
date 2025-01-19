@@ -1,0 +1,16 @@
+.AtomButton {
+  height: 40px;
+  min-width: 80px;
+  padding: 8px 24px;
+  border: none;
+  border-radius: 20px;
+  background: var(--Green, #008066);
+  color: #fff;
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px; /* 133.333% */
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}

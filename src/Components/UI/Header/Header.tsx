@@ -1,7 +1,9 @@
+import { AtomButton } from "../AtomButton/AtomButton";
+import { AtomInput } from "../AtomInput/AtomInput";
 import s from "./Header.module.css";
 export const Header = () => {
   return (
-    <header className={s.Navbar}>
+    <header className={s.Header}>
       <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -19,17 +21,21 @@ export const Header = () => {
           />
         </svg>
       </div>
-      <div className="">
+      <div className={s.Links}>
         <a>EIR</a>
         <a>Инструкции</a>
         <a>Библиотека</a>
         <a>Видео</a>
         <a>Faq</a>
-        <input type="text" />
+        <AtomInput
+          type="text"
+          value={""}
+          onChange={() => console.log("ionput")}
+          placeholder="Поиск"
+        />
       </div>
-      <div>
-        <button>Войти</button>
-      </div>
+
+      <AtomButton onClick={() => console.log("Open")}>Войти</AtomButton>
     </header>
   );
 };
