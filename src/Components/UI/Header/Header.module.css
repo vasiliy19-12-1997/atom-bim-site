@@ -1,12 +1,13 @@
 .Header {
   position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: space-around;
   align-items: center;
-  text-align: center;
+  width: 100%;
+  max-width: 1400px;
   z-index: 1000;
   padding: 20px;
   border-bottom: 1px solid var(--Gray-200, #e8e9e9);
@@ -15,19 +16,20 @@
 }
 .Links {
   display: flex;
-  gap: 24px;
+
   a {
     color: var(--Gray-900, #1a1a1a);
-    text-align: center;
     font-family: Mikro;
     font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
     align-content: center;
     letter-spacing: 0.5px;
-    text-transform: uppercase;
+    text-transform: uppercase7;
     cursor: pointer;
+    margin-right: 24px;
   }
 }
-@media (max-width: 920px) {
+@media (max-width: 1919px) {
+  .Header {
+    width: 90%;
+  }
 }
