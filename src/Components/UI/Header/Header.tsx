@@ -17,7 +17,6 @@ export const Header = () => {
           value={""}
           onChange={() => console.log("ionput")}
           placeholder="Поиск"
-          className="Input"
         />
       </div>
       <AtomButton onClick={() => console.log("Open")}>Войти</AtomButton>

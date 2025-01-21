@@ -1,4 +1,5 @@
 import s from "./Footer.module.css";
+import { atom } from "../../Assets/Icons/icons";
 export const Footer = () => {
   return (
     <footer className={s.Footer}>
@@ -22,10 +23,13 @@ export const Footer = () => {
         </ul>
       </div>
       <div className={s.FooterInfo}>
-        <p>© АО «Корпорация «АТОМСТРОЙКОМПЛЕКС», 2024</p>
-        <p>logo</p>
-        <p>Екатеринбург, ул. Белинского, 39</p>
+        <div className={s.FooterInfoText}>
+          <p>© АО «Корпорация «АТОМСТРОЙКОМПЛЕКС», 2024</p>
+          <p>Екатеринбург, ул. Белинского, 39</p>
+        </div>
+        <span>{atom}</span>
       </div>
+
       <div className={s.FooterBottom}>
         <p>
           Любые материалы, файлы и сервисы, содержащиеся на сайте, не могут быть

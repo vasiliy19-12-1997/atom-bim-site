@@ -6,14 +6,12 @@ interface IAtomInput {
   onChange: () => void;
   placeholder: string;
   type: string;
-  className?: string;
 }
 export const AtomInput: React.FC<IAtomInput> = ({
   value,
   onChange,
   placeholder,
   type,
-  className,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -32,7 +30,6 @@ export const AtomInput: React.FC<IAtomInput> = ({
         onChange={onChange}
         placeholder={placeholder}
         type={type}
-        className={className}
         onClick={() => setIsModalOpen(true)}
       />
       {isModalOpen && (
