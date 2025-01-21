@@ -5,21 +5,36 @@ import s from "./Header.module.css";
 export const Header = () => {
   return (
     <header className={s.Header}>
-      <div>{atom}</div>
-      <div className={s.Links}>
-        <a href="/"> EIR</a>
-        <a href="/">Инструкции</a>
-        <a href="/">Библиотека</a>
-        <a href="/">Видео</a>
-        <a href="/">Faq</a>
-        <AtomInput
-          type="text"
-          value={""}
-          onChange={() => console.log("ionput")}
-          placeholder="Поиск"
-        />
+      <div className={s.HeaderContent}>
+        <span>{atom}</span>
+        <div className={s.HeaderContentLinks}>
+          <ul>
+            <li>
+              <a href="/"> EIR</a>
+            </li>
+            <li>
+              <a href="/">Инструкции</a>
+            </li>
+            <li>
+              <a href="/">Библиотека</a>
+            </li>
+            <li>
+              <a href="/">Видео</a>
+            </li>
+            <li>
+              <a href="/">Faq</a>
+            </li>
+          </ul>
+          <AtomInput
+            type="text"
+            value={""}
+            onChange={() => console.log("ionput")}
+            placeholder="Поиск"
+          />
+        </div>
+
+        <AtomButton onClick={() => console.log("Open")}>Войти</AtomButton>
       </div>
-      <AtomButton onClick={() => console.log("Open")}>Войти</AtomButton>
     </header>
   );
 };

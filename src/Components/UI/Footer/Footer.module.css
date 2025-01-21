@@ -46,6 +46,7 @@
     position: absolute;
     display: flex;
     justify-content: center;
+    top: 8px;
     left: 43%;
   }
 }
