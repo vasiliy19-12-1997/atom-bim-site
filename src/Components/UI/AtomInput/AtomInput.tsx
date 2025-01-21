@@ -19,14 +19,21 @@ export const AtomInput: React.FC<IAtomInput> = ({
 
   return (
     <div className={s.AtomInput}>
-      {search && <span className={s.AtomInputSearch}>{search}</span>}
+      {search && (
+        <span
+          onClick={() => setIsModalOpen(true)}
+          className={s.AtomInputSearch}
+        >
+          {search}
+        </span>
+      )}
       <input
         value={value}
         onChange={onChange}
         placeholder={placeholder}
         type={type}
-        onClick={() => setIsModalOpen(true)}
         className={className}
+        onClick={() => setIsModalOpen(true)}
       />
       {isModalOpen && (
         <div className={s.modalBackdrop} onClick={() => setIsModalOpen(false)}>

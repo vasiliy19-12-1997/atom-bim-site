@@ -45,18 +45,6 @@ body {
   z-index: 1;
 }
 
-/* Футер */
-.footer {
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 10px 0;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
 /* Стрелочки для показа/скрытия aside */
 .toggle-aside {
   display: none;
