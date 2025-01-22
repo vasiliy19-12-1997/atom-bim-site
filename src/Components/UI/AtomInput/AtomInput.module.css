@@ -1,23 +1,22 @@
 .AtomInput {
-  display: flex;
-  align-items: center;
   > input {
     background: #f6f6f6;
     padding: 4px 12px;
     border-radius: 20px;
     height: 32px;
     width: 20vw;
+    max-width: 580px;
+    border: none;
   }
 }
 .AtomInputSearch {
   display: none;
   padding: 6px;
   align-items: flex-start;
-  gap: 8px;
   border-radius: 20px;
   background: #008066;
 }
-.AtomInput svg {
+.AtomInput > svg {
   display: none;
 }
 .modalBackdrop {

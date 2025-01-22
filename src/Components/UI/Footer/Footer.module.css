@@ -61,7 +61,7 @@
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: 20px;
+    line-height: 20px; /* 142.857% */
     letter-spacing: -0.28px;
   }
 }
@@ -96,12 +96,11 @@
   }
   > ul {
     display: flex;
-    flex-direction: row;
-    gap: 30px;
-
     padding: 0;
     > li {
       list-style-type: none;
+      display: flex;
+      gap: 16px;
       > a {
         text-decoration: none;
         color: #008066;
