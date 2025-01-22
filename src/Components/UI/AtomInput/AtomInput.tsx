@@ -1,27 +1,25 @@
-import { useState } from "react";
-import s from "./AtomInput.module.css";
+import React from "react";
 import { search } from "../../Assets/Icons/icons";
+import s from "./AtomInput.module.css";
 interface IAtomInput {
   value: string;
   onChange: () => void;
   placeholder: string;
   type: string;
+  className?: string;
+  onClick: () => void;
 }
 export const AtomInput: React.FC<IAtomInput> = ({
   value,
   onChange,
   placeholder,
   type,
+  onClick,
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
     <div className={s.AtomInput}>
       {search && (
-        <span
-          onClick={() => setIsModalOpen(true)}
-          className={s.AtomInputSearch}
-        >
+        <span onClick={onClick} className={s.AtomInputSearch}>
           {search}
         </span>
       )}
@@ -30,22 +28,8 @@ export const AtomInput: React.FC<IAtomInput> = ({
         onChange={onChange}
         placeholder={placeholder}
         type={type}
-        onClick={() => setIsModalOpen(true)}
+        onClick={onClick}
       />
-      {isModalOpen && (
-        <div className={s.modalBackdrop} onClick={() => setIsModalOpen(false)}>
-          <div className={s.modalContent} onClick={(e) => e.stopPropagation()}>
-            <input
-              value={value}
-              onChange={onChange}
-              placeholder={placeholder}
-              type={type}
-              className={s.modalInput}
-            />
-            <p>Начните ввод, чтобы увидеть резульаты поиска</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

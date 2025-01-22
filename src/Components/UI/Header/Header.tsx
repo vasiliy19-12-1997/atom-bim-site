@@ -2,7 +2,12 @@ import { AtomButton } from "../AtomButton/AtomButton";
 import { AtomInput } from "../AtomInput/AtomInput";
 import { atom } from "../../Assets/Icons/icons.js";
 import s from "./Header.module.css";
-export const Header = () => {
+import { useState } from "react";
+interface IHeaderProps {
+  openModal: () => void;
+}
+export const Header: React.FC<IHeaderProps> = ({ openModal }) => {
+  const [value, setValue] = useState(false);
   return (
     <header className={s.Header}>
       <span>{atom}</span>
@@ -24,13 +29,15 @@ export const Header = () => {
             <a href="/">Faq</a>
           </li>
         </ul>
+        <AtomInput
+          type="text"
+          value={""}
+          onChange={() => console.log("ionput")}
+          placeholder="Поиск"
+          onClick={openModal}
+        />
       </div>
-      <AtomInput
-        type="text"
-        value={""}
-        onChange={() => console.log("ionput")}
-        placeholder="Поиск"
-      />
+
       <AtomButton onClick={() => console.log("Open")}>Войти</AtomButton>
     </header>
   );
