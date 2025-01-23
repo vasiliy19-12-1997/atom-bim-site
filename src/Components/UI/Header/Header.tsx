@@ -3,10 +3,8 @@ import { AtomInput } from "../AtomInput/AtomInput";
 import { atom } from "../../Assets/Icons/icons.js";
 import s from "./Header.module.css";
 import { useState } from "react";
-interface IHeaderProps {
-  openModal: () => void;
-}
-export const Header: React.FC<IHeaderProps> = ({ openModal }) => {
+
+export const Header = () => {
   const [value, setValue] = useState(false);
   return (
     <header className={s.Header}>
@@ -34,7 +32,6 @@ export const Header: React.FC<IHeaderProps> = ({ openModal }) => {
           value={""}
           onChange={() => console.log("ionput")}
           placeholder="Поиск"
-          onClick={openModal}
         />
       </div>
 

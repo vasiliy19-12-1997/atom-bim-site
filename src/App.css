@@ -65,64 +65,26 @@ body {
 .toggle-aside.right {
   right: 0;
 }
-
-/* Модальное затемнение */
-.modal-backdrop {
+.modal {
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  left: 0;
 }
-.modalBackdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+.modalContent {
+  padding: 25px;
+  min-width: 250px;
+  min-height: 100vh;
+}
+.modal.active {
+  display: block;
   display: flex;
   justify-content: center;
-  align-items: start;
-  height: 100vh;
-  z-index: 1000;
-}
-
-.modalContent {
-  padding: 20px;
-  margin-top: 100px;
-  background: white;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  border-radius: 24px;
-  width: 100%;
-  width: 680px;
-  height: 100%;
-  max-height: 344px;
-  padding: 24px 0px;
-  p {
-    color: var(--Gray-800, #808080);
-    text-align: center;
-    font-family: Inter;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 24px; /* 133.333% */
-  }
 }
-.modalInput {
-  height: 40px;
-  padding: 4px 12px;
-  align-items: center;
-  width: 100%;
-  max-width: 608px;
-  border-radius: 20px;
-  background: #f6f6f6;
-}
-
 /* Медиазапросы для адаптивности */
 @media (max-width: 1200px) {
   .aside {

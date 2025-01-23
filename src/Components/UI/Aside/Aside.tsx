@@ -1,10 +1,5 @@
 import React from "react";
-
-interface AsideProps {
-  position: "left" | "right";
-  show: boolean;
-  toggleShow: () => void;
-}
+import { AsideProps } from "../../Types/types";
 
 export const Aside: React.FC<AsideProps> = ({ position, show, toggleShow }) => {
   return (
