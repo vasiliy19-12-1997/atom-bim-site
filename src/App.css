@@ -159,8 +159,17 @@ body {
   .footer {
     position: static;
   }
+  .modalContent {
+    max-width: 380px;
+    height: 240px;
+    > p {
+      font-size: 16px;
+    }
+  }
+  .modalInput {
+    max-width: 300px;
+  }
 }
-
 @media (max-width: 760px) {
   .aside.left {
     transform: translateX(-100%);
@@ -179,17 +188,5 @@ body {
   }
   .aside.right.show {
     transform: translateX(0);
-  }
-}
-@media (max-width: 768px) {
-  .modalContent {
-    max-width: 380px;
-    height: 240px;
-    > p {
-      font-size: 16px;
-    }
-  }
-  .modalInput {
-    max-width: 300px;
   }
 }

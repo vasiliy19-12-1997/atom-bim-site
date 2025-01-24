@@ -13,7 +13,9 @@
 }
 .FooterLinks {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
   > ul {
     display: flex;
     flex-direction: row;
@@ -32,6 +34,26 @@
         letter-spacing: -0.3px;
       }
     }
+  }
+}
+.FooterLinksSite {
+  display: flex;
+  align-items: center;
+  > a {
+    text-decoration: none;
+    color: #008066;
+    font-family: Rubik;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 133.333% */
+    letter-spacing: -0.3px;
+    margin-right: 5px;
+  }
+  > span {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
   }
 }
 .FooterInfo {
@@ -112,5 +134,45 @@
         letter-spacing: -0.24px;
       }
     }
+  }
+}
+@media (max-width: 992px) {
+  .Footer {
+    max-width: 740px;
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .Footer {
+    max-width: 550px;
+    width: 100%;
+  }
+  .FooterInfo {
+    > span {
+      display: none;
+    }
+  }
+  .FooterInfoText {
+    display: flex;
+    flex-direction: column;
+  }
+  .FooterInfoText::before,
+  .FooterInfoText::after {
+    display: none;
+  }
+  .FooterLinks {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+}
+@media (max-width: 576px) {
+  .Footer {
+    max-width: 350px;
+    width: 100%;
+  }
+  .FooterLinks {
+    display: flex;
+    flex-direction: column;
   }
 }

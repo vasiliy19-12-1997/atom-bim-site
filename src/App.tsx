@@ -21,7 +21,7 @@ function App() {
   return (
     <div className="App">
       <Header openModal={openModal} />
-      <button onClick={openModal}>Open Modal</button>
+
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <h2>Modal Title</h2>
         <p>This is the content of the modal.</p>

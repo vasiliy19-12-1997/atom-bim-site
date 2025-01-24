@@ -1,5 +1,6 @@
 import s from "./Footer.module.css";
 import { atom } from "../../Assets/Icons/icons";
+import { link } from "../../Assets/Icons/icons";
 export const Footer = () => {
   return (
     <footer className={s.Footer}>
@@ -21,6 +22,10 @@ export const Footer = () => {
             <a href="/">Тесты</a>
           </li>
         </ul>
+        <div className={s.FooterLinksSite}>
+          <a href="/">Сайт компании</a>
+          <span>{link}</span>
+        </div>
       </div>
       <div className={s.FooterInfo}>
         <div className={s.FooterInfoText}>
