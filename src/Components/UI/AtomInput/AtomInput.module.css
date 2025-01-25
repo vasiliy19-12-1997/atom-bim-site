@@ -1,4 +1,6 @@
 .AtomInput {
+  display: flex;
+  align-items: center;
   > input {
     background: #f6f6f6;
     padding: 4px 12px;
@@ -16,16 +18,24 @@
   border-radius: 20px;
   background: #008066;
 }
+.AtomInputLightSearch {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 .AtomInput > svg {
   display: none;
 }
-
 @media (max-width: 960px) {
   .AtomInputSearch {
     display: inline-flex;
   }
-  .AtomInput svg {
+  .AtomInput > svg {
     display: block;
+  }
+  .AtomInputLightSearch {
+    display: none;
   }
   .AtomInput > input {
     display: none;

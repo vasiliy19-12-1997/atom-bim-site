@@ -1,33 +1,38 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { useState } from "react";
 import { Header } from "./Components/UI/Header/Header";
 import { InstructionPage } from "./Components/Pages/InstructionPage";
 import { Footer } from "./Components/UI/Footer/Footer";
-import { useState } from "react";
 import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
 import Modal from "./Components/UI/Modal/Modal";
+import "./App.css";
+
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const openModal = () => {
     setIsModalOpen(true);
   };
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
-  console.log(isModalOpen);
 
   return (
     <div className="App">
       <Header openModal={openModal} />
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <h2>Modal Title</h2>
-        <p>This is the content of the modal.</p>
+        <AtomInput
+          value=""
+          onChange={() => console.log("Input changed")}
+          placeholder="Поиск"
+          type="text"
+          onClick={() => console.log("ModalInput")}
+          module="m"
+        />
+        <p>Начните ввод, чтобы увидеть результат</p>
       </Modal>
       {/* <InstructionPage /> */}
-
       <Footer />
     </div>
   );

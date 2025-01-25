@@ -5,8 +5,6 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
-/* .App {
-} */
 /* Контейнер для основного содержимого */
 .container {
   display: flex;
@@ -14,28 +12,6 @@ body {
   padding: 20px;
   position: relative;
 }
-
-/* Фиксированные aside */
-.aside {
-  position: fixed;
-  top: 60px; /* Высота header */
-  width: 20%;
-  padding: 20px;
-  background-color: #f4f4f4;
-  transition: transform 0.3s ease;
-  z-index: 1001;
-}
-
-.aside.left {
-  left: 0;
-  transform: translateX(-100%);
-}
-
-.aside.right {
-  right: 0;
-  transform: translateX(100%);
-}
-
 /* Основной контент */
 .content {
   margin: 0 auto; /* Центрирование контента */
@@ -43,150 +19,4 @@ body {
   background-color: #fff;
   flex-grow: 1;
   z-index: 1;
-}
-
-/* Стрелочки для показа/скрытия aside */
-.toggle-aside {
-  display: none;
-  position: fixed;
-  top: 70px;
-  padding: 10px;
-  background-color: #333;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  z-index: 1002;
-}
-
-.toggle-aside.left {
-  left: 0;
-}
-
-.toggle-aside.right {
-  right: 0;
-}
-
-/* Модальное затемнение */
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
-.modalBackdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  height: 100vh;
-  z-index: 1000;
-}
-
-.modalContent {
-  padding: 20px;
-  margin-top: 100px;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 24px;
-  width: 100%;
-  width: 680px;
-  height: 100%;
-  max-height: 344px;
-  padding: 24px 0px;
-  p {
-    color: var(--Gray-800, #808080);
-    text-align: center;
-    font-family: Inter;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 24px; /* 133.333% */
-  }
-}
-.modalInput {
-  height: 40px;
-  padding: 4px 12px;
-  align-items: center;
-  width: 100%;
-  max-width: 608px;
-  border-radius: 20px;
-  background: #f6f6f6;
-}
-
-/* Медиазапросы для адаптивности */
-@media (max-width: 1200px) {
-  .aside {
-    width: 25%;
-  }
-  .content {
-    margin: 0 28%;
-  }
-}
-
-@media (max-width: 992px) {
-  .aside {
-    width: 30%;
-  }
-  .content {
-    margin: 0 33%;
-  }
-}
-
-@media (max-width: 768px) {
-  .aside {
-    position: static;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  .container {
-    flex-direction: column;
-    align-items: center;
-  }
-  .content {
-    margin: 0;
-    width: 100%;
-  }
-  .footer {
-    position: static;
-  }
-  .modalContent {
-    max-width: 380px;
-    height: 240px;
-    > p {
-      font-size: 16px;
-    }
-  }
-  .modalInput {
-    max-width: 300px;
-  }
-}
-@media (max-width: 760px) {
-  .aside.left {
-    transform: translateX(-100%);
-  }
-  .aside.right {
-    transform: translateX(100%);
-  }
-  .content {
-    margin: 0;
-  }
-  .toggle-aside {
-    display: block;
-  }
-  .aside.left.show {
-    transform: translateX(0);
-  }
-  .aside.right.show {
-    transform: translateX(0);
-  }
 }
