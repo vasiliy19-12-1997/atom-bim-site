@@ -2,14 +2,7 @@ import React from "react";
 import { lightSearch, search } from "../../Assets/Icons/icons";
 import s from "./AtomInput.module.css";
 import m from "./AtomInputModal.module.css";
-interface IAtomInputProps {
-  value: string;
-  onChange?: () => void;
-  placeholder: string;
-  type: string;
-  onClick: () => void;
-  module?: "s" | "m";
-}
+import { IAtomInputProps } from "../../Types/types";
 export const AtomInput: React.FC<IAtomInputProps> = ({
   value,
   onChange,

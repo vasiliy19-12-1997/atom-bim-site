@@ -1,12 +1,11 @@
 import React from "react";
+import { IAsideProps } from "../../Types/types";
 
-interface AsideProps {
-  position: "left" | "right";
-  show: boolean;
-  toggleShow: () => void;
-}
-
-export const Aside: React.FC<AsideProps> = ({ position, show, toggleShow }) => {
+export const Aside: React.FC<IAsideProps> = ({
+  position,
+  show,
+  toggleShow,
+}) => {
   return (
     <>
       <button className={`toggle-aside ${position}`} onClick={toggleShow}>
