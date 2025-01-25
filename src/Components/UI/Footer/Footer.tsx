@@ -30,9 +30,9 @@ export const Footer = () => {
       <div className={s.FooterInfo}>
         <div className={s.FooterInfoText}>
           <p>© АО «Корпорация «АТОМСТРОЙКОМПЛЕКС», 2024</p>
+          <span>{atom}</span>
           <p>Екатеринбург, ул. Белинского, 39</p>
         </div>
-        <span>{atom}</span>
       </div>
 
       <div className={s.FooterBottom}>

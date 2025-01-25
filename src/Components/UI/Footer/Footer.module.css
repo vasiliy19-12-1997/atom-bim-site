@@ -61,16 +61,6 @@
   flex-direction: column;
   position: relative;
   justify-content: center;
-
-  > span {
-    width: 160px;
-    background: #fafafa;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    top: 8px;
-    left: 43%;
-  }
 }
 .FooterInfoText {
   display: flex;
@@ -85,6 +75,15 @@
     font-weight: 400;
     line-height: 20px; /* 142.857% */
     letter-spacing: -0.28px;
+  }
+  > span {
+    width: 160px;
+    background: #fafafa;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    top: 8px;
+    left: 43%;
   }
 }
 .FooterInfoText::before,
@@ -141,6 +140,11 @@
     max-width: 740px;
     width: 100%;
   }
+  .FooterInfoText {
+    > span {
+      display: none;
+    }
+  }
 }
 @media (max-width: 768px) {
   .Footer {
@@ -168,7 +172,7 @@
 }
 @media (max-width: 576px) {
   .Footer {
-    max-width: 350px;
+    max-width: 340px;
     width: 100%;
   }
   .FooterLinks {
