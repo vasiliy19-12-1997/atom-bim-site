@@ -1,0 +1,10 @@
+.InstructionPage {
+  display: flex;
+}
+.InstructionPageContent {
+  margin: 0 auto; /* Центрирование контента */
+  padding: 20px;
+  background-color: #fff;
+  flex-grow: 1;
+  z-index: 1;
+}

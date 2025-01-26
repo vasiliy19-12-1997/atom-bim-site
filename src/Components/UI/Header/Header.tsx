@@ -13,9 +13,7 @@ export const Header: React.FC<IHeaderProps> = ({ openModal }) => {
   const toggleBurger = () => {
     setIsBurgerOpen(!isBurgerOpen);
   };
-  const addActive = () => {
-    setIsActive(!isActive);
-  };
+
   return (
     <header className={s.Header}>
       <div className={s.BurgerMenu} onClick={toggleBurger}>

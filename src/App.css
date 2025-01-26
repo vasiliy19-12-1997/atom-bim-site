@@ -1,22 +1,18 @@
-/* styles.css */
-
 /* Общие стили */
+.App {
+  display: flex;
+  flex-direction: column;
+}
 body {
   margin: 0;
+  padding: 0;
   font-family: Arial, sans-serif;
 }
 /* Контейнер для основного содержимого */
 .container {
   display: flex;
-  margin-top: 60px; /* Высота header */
+  justify-content: center;
+  align-items: center;
+  margin-top: 120px;
   padding: 20px;
-  position: relative;
-}
-/* Основной контент */
-.content {
-  margin: 0 auto; /* Центрирование контента */
-  padding: 20px;
-  background-color: #fff;
-  flex-grow: 1;
-  z-index: 1;
 }

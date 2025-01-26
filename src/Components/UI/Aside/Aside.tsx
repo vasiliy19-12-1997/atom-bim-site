@@ -1,6 +1,6 @@
 import React from "react";
 import { IAsideProps } from "../../Types/types";
-
+import s from "./Aside.module.css";
 export const Aside: React.FC<IAsideProps> = ({
   position,
   show,

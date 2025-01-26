@@ -5,10 +5,10 @@ export interface IAsideProps {
 }
 export interface IAtomInputProps {
   value: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   type: string;
-  onClick: () => void;
+  onClick?: () => void;
   module?: "s" | "m";
 }
 export interface IModalProps {

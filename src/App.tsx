@@ -1,13 +1,14 @@
-import { useState } from "react";
-import "./App.css";
-import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
-import { Footer } from "./Components/UI/Footer/Footer";
+import React, { useRef, useState } from "react";
 import { Header } from "./Components/UI/Header/Header";
+import { InstructionPage } from "./Components/Pages/InstructionPage";
+import { Footer } from "./Components/UI/Footer/Footer";
+import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
 import Modal from "./Components/UI/Modal/Modal";
+import "./App.css";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [value, setValue] = useState("");
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -19,19 +20,19 @@ function App() {
   return (
     <div className="App">
       <Header openModal={openModal} />
-
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <AtomInput
-          value=""
-          onChange={() => console.log("Input changed")}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
           placeholder="Поиск"
           type="text"
-          onClick={() => console.log("ModalInput")}
           module="m"
         />
         <p>Начните ввод, чтобы увидеть результат</p>
       </Modal>
-      {/* <InstructionPage /> */}
+      <main className="container">
+        <InstructionPage />
+      </main>
       <Footer />
     </div>
   );

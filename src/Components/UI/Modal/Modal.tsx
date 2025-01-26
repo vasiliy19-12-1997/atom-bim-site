@@ -1,7 +1,7 @@
 // Modal.tsx
 import React from "react";
-import styles from "./Modal.module.css";
 import { IModalProps } from "../../Types/types";
+import styles from "./Modal.module.css";
 
 const Modal: React.FC<IModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;

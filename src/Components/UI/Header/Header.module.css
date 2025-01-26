@@ -4,13 +4,13 @@
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   width: 100%;
-  max-width: 1400px;
   z-index: 1000;
   padding: 24px;
   border-bottom: 1px solid var(--Gray-200, #e8e9e9);
+  background-color: white;
   box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.1);
 }
 .HeaderContent {
@@ -20,9 +20,9 @@
 }
 .HeaderLinks {
   display: flex;
-  padding: 0;
   gap: 24px;
   list-style-type: none;
+  padding: 0;
 
   > li {
     list-style-type: none;
@@ -48,7 +48,7 @@
   opacity: 0;
 }
 .HeaderActive {
-  animation: fade-in 1s ease-in-out forwards;
+  animation: fade-in 0.65s ease-in-out forwards;
 }
 @keyframes fade-in {
   from {
@@ -60,29 +60,29 @@
 }
 @media (max-width: 1460px) {
   .Header {
-    max-width: 1140px;
+    width: 100%;
   }
 }
 @media (max-width: 1250px) {
   .Header {
-    max-width: 1000px;
+    width: 100%;
   }
 }
 @media (max-width: 1070px) {
   .Header {
-    max-width: 880px;
+    width: 100%;
     gap: 16px;
   }
 }
 @media (max-width: 960px) {
   .Header {
-    max-width: 700px;
+    width: 100%;
     gap: 16px;
   }
 }
 @media (max-width: 768px) {
   .Header {
-    max-width: 480px;
+    width: 100%;
     gap: 16px;
   }
   .HeaderLinks {
@@ -93,9 +93,10 @@
     display: block;
   }
   .HeaderLinksOpen {
+    padding: 10px 0 10px 50px;
     display: flex;
     flex-direction: column;
-    top: 100px;
+    top: 103px;
     position: absolute;
     left: 0;
     right: 0;
@@ -106,7 +107,6 @@
 }
 @media (max-width: 520px) {
   .Header {
-    max-width: 320px;
     width: 100%;
   }
 }
