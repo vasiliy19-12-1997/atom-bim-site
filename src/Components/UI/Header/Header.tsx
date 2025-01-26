@@ -1,18 +1,33 @@
 import { AtomButton } from "../AtomButton/AtomButton";
 import { AtomInput } from "../AtomInput/AtomInput";
-import { atom } from "../../Assets/Icons/icons.js";
+import { atom, burger } from "../../Assets/Icons/icons.js";
 import s from "./Header.module.css";
 import { useState } from "react";
 interface IHeaderProps {
   openModal: () => void;
 }
 export const Header: React.FC<IHeaderProps> = ({ openModal }) => {
-  const [value, setValue] = useState(false);
+  const [value, setValue] = useState("");
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const toggleBurger = () => {
+    setIsBurgerOpen(!isBurgerOpen);
+  };
+  const addActive = () => {
+    setIsActive(!isActive);
+  };
   return (
     <header className={s.Header}>
+      <div className={s.BurgerMenu} onClick={toggleBurger}>
+        {burger}
+      </div>
       <span>{atom}</span>
       <div className={s.HeaderContent}>
-        <ul>
+        <ul
+          className={`${s.HeaderLinks} ${
+            isBurgerOpen ? s.HeaderLinksOpen : ""
+          }`}
+        >
           <li>
             <a href="/"> EIR</a>
           </li>
@@ -31,8 +46,8 @@ export const Header: React.FC<IHeaderProps> = ({ openModal }) => {
         </ul>
         <AtomInput
           type="text"
-          value={""}
-          onChange={() => console.log("ionput")}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
           placeholder="Поиск"
           onClick={openModal}
         />

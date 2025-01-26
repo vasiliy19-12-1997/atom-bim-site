@@ -5,7 +5,7 @@ export interface IAsideProps {
 }
 export interface IAtomInputProps {
   value: string;
-  onChange?: () => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   type: string;
   onClick: () => void;
