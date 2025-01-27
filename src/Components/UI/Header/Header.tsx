@@ -9,7 +9,6 @@ interface IHeaderProps {
 export const Header: React.FC<IHeaderProps> = ({ openModal }) => {
   const [value, setValue] = useState("");
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
-  const [isActive, setIsActive] = useState(false);
   const toggleBurger = () => {
     setIsBurgerOpen(!isBurgerOpen);
   };

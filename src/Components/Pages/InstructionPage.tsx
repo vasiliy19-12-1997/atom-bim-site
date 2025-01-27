@@ -10,7 +10,7 @@ export const InstructionPage = () => {
   return (
     <section className={s.InstructionPage}>
       <div className="InstructionPageContent">
-        {/* <Aside position={"left"} show={asideLeft} toggleShow={toggleLeft} /> */}
+        <Aside />
         {/* <h2>InstructionPage</h2> */}
         <p>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates

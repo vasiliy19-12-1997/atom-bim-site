@@ -1,7 +1,5 @@
 /* Общие стили */
 .App {
-  display: flex;
-  flex-direction: column;
 }
 body {
   margin: 0;
@@ -11,8 +9,8 @@ body {
 /* Контейнер для основного содержимого */
 .container {
   display: flex;
-  justify-content: center;
-  align-items: center;
   margin-top: 120px;
   padding: 20px;
+  justify-content: center;
+  align-items: center;
 }

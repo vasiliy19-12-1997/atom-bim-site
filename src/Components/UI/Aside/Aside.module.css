@@ -1,2 +1,29 @@
-.toggle-aside {
+.Aside {
+  background-color: lightgrey;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 300px;
+  height: 300px;
+  padding: 20px;
+  transition: left 1s ease-in-out;
+  &.active {
+    background-color: aquamarine;
+    left: 0;
+  }
+  > ul {
+    list-style-type: none;
+    > li {
+      > a {
+        text-decoration: none;
+        color: var(--Gray-800, #808080);
+        font-family: Inter;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px; /* 133.333% */
+      }
+    }
+  }
 }
