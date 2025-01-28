@@ -10,7 +10,6 @@ export const InstructionPage = () => {
   return (
     <section className={s.InstructionPage}>
       <div className="InstructionPageContent">
-        <Aside />
         {/* <h2>InstructionPage</h2> */}
         <p>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates

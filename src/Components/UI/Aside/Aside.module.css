@@ -1,29 +1,48 @@
 .Aside {
-  background-color: lightgrey;
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: -100%;
-  width: 300px;
-  height: 300px;
+  width: 280px;
+  background-color: #f4f4f4;
   padding: 20px;
-  transition: left 1s ease-in-out;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  transform: translateX(-110%);
+  gap: 24px;
+
   &.active {
-    background-color: aquamarine;
-    left: 0;
+    transform: translateX(0);
   }
-  > ul {
-    list-style-type: none;
-    > li {
-      > a {
-        text-decoration: none;
-        color: var(--Gray-800, #808080);
-        font-family: Inter;
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: 24px; /* 133.333% */
+  > nav {
+    > ul {
+      list-style-type: none;
+      > li {
+        > a {
+          text-decoration: none;
+          color: var(--Gray-800, #808080);
+          font-family: Inter;
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 24px; /* 133.333% */
+        }
       }
+    }
+  }
+}
+.AsideButton {
+  display: none;
+  position: absolute;
+  left: 10px;
+  top: 120px;
+  z-index: 10;
+}
+@media (max-width: 1200px) {
+  .AsideButton {
+    display: block;
+  }
+  .Aside {
+    display: none;
+
+    &.active {
+      display: block;
     }
   }
 }

@@ -6,7 +6,9 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+
   width: 100%;
+  max-width: 1440px;
   z-index: 1000;
   padding: 24px;
   border-bottom: 1px solid var(--Gray-200, #e8e9e9);
@@ -48,7 +50,7 @@
   opacity: 0;
 }
 .HeaderActive {
-  animation: fade-in 0.65s ease-in-out forwards;
+  animation: fade-in 1s ease-in-out forwards;
 }
 @keyframes fade-in {
   from {
@@ -58,30 +60,36 @@
     opacity: 1;
   }
 }
-@media (max-width: 1460px) {
+@media (max-width: 1520px) {
   .Header {
+    max-width: 1140px;
     width: 100%;
   }
 }
+
 @media (max-width: 1250px) {
   .Header {
+    max-width: 1000px;
     width: 100%;
   }
 }
 @media (max-width: 1070px) {
   .Header {
+    max-width: 800px;
     width: 100%;
     gap: 16px;
   }
 }
-@media (max-width: 960px) {
+@media (max-width: 865px) {
   .Header {
+    max-width: 700px;
     width: 100%;
     gap: 16px;
   }
 }
 @media (max-width: 768px) {
   .Header {
+    max-width: 600px;
     width: 100%;
     gap: 16px;
   }
@@ -105,8 +113,15 @@
     animation: fade-in 1s ease-in-out forwards;
   }
 }
+@media (max-width: 680px) {
+  .Header {
+    max-width: 420px;
+    width: 100%;
+  }
+}
 @media (max-width: 520px) {
   .Header {
+    max-width: 320px;
     width: 100%;
   }
 }

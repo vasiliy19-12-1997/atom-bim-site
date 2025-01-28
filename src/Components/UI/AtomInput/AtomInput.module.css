@@ -27,7 +27,7 @@
 .AtomInput > svg {
   display: none;
 }
-@media (max-width: 960px) {
+@media (max-width: 1070px) {
   .AtomInputSearch {
     display: inline-flex;
   }

@@ -5,6 +5,7 @@ import { Footer } from "./Components/UI/Footer/Footer";
 import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
 import Modal from "./Components/UI/Modal/Modal";
 import "./App.css";
+import { Aside } from "./Components/UI/Aside/Aside";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,7 +32,9 @@ function App() {
         <p>Начните ввод, чтобы увидеть результат</p>
       </Modal>
       <main className="container">
+        <Aside />
         <InstructionPage />
+        <Aside />
       </main>
       <Footer />
     </div>
