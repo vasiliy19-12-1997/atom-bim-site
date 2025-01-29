@@ -13,37 +13,34 @@
   border-bottom: 1px solid $gray-200;
   background-color: $white;
   box-shadow: $box-shadow;
-}
-
-.HeaderContent {
-  display: flex;
-  gap: $padding-large;
-  align-items: center;
-}
-
-.HeaderLinks {
-  display: flex;
-  gap: $padding-large;
-  list-style-type: none;
-  padding: 0;
-
-  > li {
+  &Content {
+    display: flex;
+    gap: $padding-large;
+    align-items: center;
+  }
+  &Links {
+    display: flex;
+    gap: $padding-large;
     list-style-type: none;
-    > a {
-      text-decoration: none;
-      color: $gray-900;
-      text-align: center;
-      font-family: $font-mikro;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 24px; /* 150% */
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
+    padding: 0;
+
+    > li {
+      list-style-type: none;
+      > a {
+        text-decoration: none;
+        color: $gray-900;
+        text-align: center;
+        font-family: $font-mikro;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 24px; /* 150% */
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
     }
   }
 }
-
 .BurgerMenu {
   display: none;
   cursor: pointer;
@@ -101,25 +98,25 @@
     max-width: 600px;
     width: 100%;
     gap: $padding-medium;
-  }
-  .HeaderLinks {
-    display: none;
-    opacity: 0;
+    &Links {
+      display: none;
+      opacity: 0;
+    }
+    &LinksOpen {
+      padding: 10px 0 10px 50px;
+      display: flex;
+      flex-direction: column;
+      top: 103px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      background-color: $white;
+      animation: fade-in $animation-duration $animation-easing forwards;
+    }
   }
   .BurgerMenu {
     display: block;
-  }
-  .HeaderLinksOpen {
-    padding: 10px 0 10px 50px;
-    display: flex;
-    flex-direction: column;
-    top: 103px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    z-index: 999;
-    background-color: $white;
-    animation: fade-in $animation-duration $animation-easing forwards;
   }
 }
 

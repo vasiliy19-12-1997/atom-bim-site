@@ -27,6 +27,7 @@ export const AtomInput: React.FC<IAtomInputProps> = ({
         type={type}
         onClick={onClick}
         autoFocus={true}
+        className={styles.AtomInputInput}
       />
     </div>
   );

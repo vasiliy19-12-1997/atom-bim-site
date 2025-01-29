@@ -1,0 +1,49 @@
+@import "../../Styles/variables.scss";
+
+.Modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: $z-index-modal;
+  &Content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 680px;
+    min-height: 292px;
+    padding: $padding-large 0px;
+    border-radius: $border-radius;
+    background-color: $white;
+    > p {
+      margin-top: 104px;
+      color: $light-gray;
+      text-align: center;
+      font-family: $font-inter;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24px; /* 133.333% */
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .modalContent {
+    width: 100%;
+    max-width: 540px;
+  }
+}
+
+@media (max-width: 576px) {
+  .modalContent {
+    width: 100%;
+    max-width: 320px;
+  }
+}

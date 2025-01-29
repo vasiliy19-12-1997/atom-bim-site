@@ -1,11 +1,10 @@
 import { useState } from "react";
 import "./App.css";
-import { InstructionPage } from "./Components/Pages/InstructionPage";
+import { Test } from "./Components/Test/Test";
 import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
 import { Footer } from "./Components/UI/Footer/Footer";
 import { Header } from "./Components/UI/Header/Header";
 import Modal from "./Components/UI/Modal/Modal";
-import { Test } from "./Components/Test/Test";
 
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);

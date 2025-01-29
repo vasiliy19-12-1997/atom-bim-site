@@ -2,7 +2,7 @@
 .AtomInput {
   display: flex;
   align-items: center;
-  > input {
+  &Input {
     background: $gray-100;
     padding: $padding-small $padding-medium;
     border-radius: $border-radius;
@@ -11,54 +11,42 @@
     max-width: 300px;
     border: none;
   }
+  &Search {
+    display: none;
+    padding: $padding-small;
+    align-items: flex-start;
+    border-radius: $border-radius;
+    background: $green;
+  }
+  &LightSearch {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
 }
-
-.AtomInputSearch {
-  display: none;
-  padding: $padding-small;
-  align-items: flex-start;
-  border-radius: $border-radius;
-  background: $green;
-}
-
-.AtomInputLightSearch {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-}
-
 .AtomInput > svg {
   display: none;
 }
 
 @media (max-width: 1070px) {
-  .AtomInputSearch {
-    display: inline-flex;
+  .AtomInput {
+    &Search {
+      display: inline-flex;
+    }
+    &LightSearch {
+      display: none;
+    }
+    &Input {
+      display: none;
+    }
   }
   .AtomInput > svg {
     display: block;
   }
-  .AtomInputLightSearch {
-    display: none;
-  }
-  .AtomInput > input {
-    display: none;
-  }
 }
-
-.AtomInputSearch {
-  display: none;
-}
-
-.AtomInputLightSearch {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-}
-
 @media (max-width: 576px) {
   .AtomInput {
-    > input {
+    &Input {
       max-width: 250px;
       width: 60vw;
     }
