@@ -1,27 +1,29 @@
+@import "../../Styles/variables.scss";
+
 .Header {
   position: fixed;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   justify-content: space-around;
   align-items: center;
   width: 100%;
   max-width: calc(1440px - 48px);
   z-index: 1000;
-  padding: 24px;
-  border-bottom: 1px solid var(--Gray-200, #e8e9e9);
-  background-color: white;
-  box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.1);
+  padding: $padding-large;
+  border-bottom: 1px solid $gray-200;
+  background-color: $white;
+  box-shadow: $box-shadow;
 }
+
 .HeaderContent {
   display: flex;
-  gap: 24px;
+  gap: $padding-large;
   align-items: center;
 }
+
 .HeaderLinks {
   display: flex;
-  gap: 24px;
+  gap: $padding-large;
   list-style-type: none;
   padding: 0;
 
@@ -29,9 +31,9 @@
     list-style-type: none;
     > a {
       text-decoration: none;
-      color: var(--Gray-900, #1a1a1a);
+      color: $gray-900;
       text-align: center;
-      font-family: Mikro;
+      font-family: $font-mikro;
       font-size: 16px;
       font-style: normal;
       font-weight: 700;
@@ -41,16 +43,20 @@
     }
   }
 }
+
 .BurgerMenu {
   display: none;
   cursor: pointer;
 }
+
 .HeaderBox {
   opacity: 0;
 }
+
 .HeaderActive {
-  animation: fade-in 1s ease-in-out forwards;
+  animation: fade-in $animation-duration $animation-easing forwards;
 }
+
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -59,38 +65,42 @@
     opacity: 1;
   }
 }
+
 @media (max-width: 1520px) {
   .Header {
-    max-width: 1140px;
+    max-width: 1260px;
     width: 100%;
   }
 }
 
-@media (max-width: 1250px) {
+@media (max-width: 1350px) {
   .Header {
-    max-width: 1000px;
+    max-width: 1060px;
     width: 100%;
   }
 }
-@media (max-width: 1070px) {
+
+@media (max-width: 1160px) {
   .Header {
-    max-width: 800px;
+    max-width: 990px;
     width: 100%;
-    gap: 16px;
+    gap: $padding-medium;
   }
 }
+
 @media (max-width: 865px) {
   .Header {
     max-width: 700px;
     width: 100%;
-    gap: 16px;
+    gap: $padding-medium;
   }
 }
+
 @media (max-width: 768px) {
   .Header {
     max-width: 600px;
     width: 100%;
-    gap: 16px;
+    gap: $padding-medium;
   }
   .HeaderLinks {
     display: none;
@@ -108,16 +118,18 @@
     left: 0;
     right: 0;
     z-index: 999;
-    background-color: white;
-    animation: fade-in 1s ease-in-out forwards;
+    background-color: $white;
+    animation: fade-in $animation-duration $animation-easing forwards;
   }
 }
+
 @media (max-width: 680px) {
   .Header {
     max-width: 420px;
     width: 100%;
   }
 }
+
 @media (max-width: 520px) {
   .Header {
     max-width: 320px;

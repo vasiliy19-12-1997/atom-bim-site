@@ -17,6 +17,7 @@ export const InstructionPage = () => {
           <p>{lorem}</p>
         </div>
       </section>
+      <Aside />
     </>
   );
 };

@@ -1,12 +1,14 @@
+@import "../../Styles/variables.scss";
 .Footer {
-  color: #fff;
+  color: $white;
   text-align: center;
   padding: 10px;
   max-width: 920px;
   width: 100%;
   margin: 0 auto;
-  border-top: 1px solid var(--Gray-200, #e8e9e9);
+  border-top: 1px solid $gray-200;
 }
+
 .FooterLinks {
   display: flex;
   justify-content: space-between;
@@ -15,14 +17,14 @@
   > ul {
     display: flex;
     flex-direction: row;
-    gap: 16px;
+    gap: $padding-medium;
     padding: 0;
     > li {
       list-style-type: none;
       > a {
         text-decoration: none;
-        color: #808080;
-        font-family: Rubik;
+        color: $light-gray;
+        font-family: $font-rubik;
         font-size: 15px;
         font-style: normal;
         font-weight: 400;
@@ -32,13 +34,14 @@
     }
   }
 }
+
 .FooterLinksSite {
   display: flex;
   align-items: center;
   > a {
     text-decoration: none;
-    color: #008066;
-    font-family: Rubik;
+    color: $green;
+    font-family: $font-rubik;
     font-size: 15px;
     font-style: normal;
     font-weight: 400;
@@ -52,20 +55,22 @@
     flex-shrink: 0;
   }
 }
+
 .FooterInfo {
   display: flex;
   flex-direction: column;
   position: relative;
   justify-content: center;
 }
+
 .FooterInfoText {
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   > p {
-    color: #808080;
-    font-family: Rubik;
+    color: $light-gray;
+    font-family: $font-rubik;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -74,7 +79,7 @@
   }
   > span {
     width: 160px;
-    background: #fafafa;
+    background: $dark-gray;
     position: absolute;
     display: flex;
     justify-content: center;
@@ -82,6 +87,7 @@
     left: 43%;
   }
 }
+
 .FooterInfoText::before,
 .FooterInfoText::after {
   content: "";
@@ -89,7 +95,7 @@
   top: 70%;
   width: calc(920px / 2 - 100px);
   height: 1px;
-  background: #808080;
+  background: $light-gray;
   transform: translateY(-50%);
 }
 
@@ -100,11 +106,12 @@
 .FooterInfoText::after {
   right: 0;
 }
+
 .FooterBottom {
   > p {
-    color: #808080;
+    color: $light-gray;
     text-align: justify;
-    font-family: Rubik;
+    font-family: $font-rubik;
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
@@ -117,11 +124,11 @@
     > li {
       list-style-type: none;
       display: flex;
-      gap: 16px;
+      gap: $padding-medium;
       > a {
         text-decoration: none;
-        color: #008066;
-        font-family: Rubik;
+        color: $green;
+        font-family: $font-rubik;
         font-size: 12px;
         font-style: normal;
         font-weight: 400;
@@ -131,6 +138,7 @@
     }
   }
 }
+
 @media (max-width: 992px) {
   .Footer {
     max-width: 740px;
@@ -142,6 +150,7 @@
     }
   }
 }
+
 @media (max-width: 768px) {
   .Footer {
     max-width: 550px;
@@ -166,6 +175,7 @@
     justify-content: space-between;
   }
 }
+
 @media (max-width: 576px) {
   .Footer {
     max-width: 340px;

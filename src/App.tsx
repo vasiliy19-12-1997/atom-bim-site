@@ -1,13 +1,13 @@
-import React, { useRef, useState } from "react";
-import { Header } from "./Components/UI/Header/Header";
-import { InstructionPage } from "./Components/Pages/InstructionPage";
-import { Footer } from "./Components/UI/Footer/Footer";
-import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
-import Modal from "./Components/UI/Modal/Modal";
+import { useState } from "react";
 import "./App.css";
-import { Aside } from "./Components/UI/Aside/Aside";
+import { InstructionPage } from "./Components/Pages/InstructionPage";
+import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
+import { Footer } from "./Components/UI/Footer/Footer";
+import { Header } from "./Components/UI/Header/Header";
+import Modal from "./Components/UI/Modal/Modal";
+import { Test } from "./Components/Test/Test";
 
-function App() {
+export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [value, setValue] = useState("");
   const openModal = () => {
@@ -32,11 +32,10 @@ function App() {
         <p>Начните ввод, чтобы увидеть результат</p>
       </Modal>
       <main className="container">
-        <InstructionPage />
+        {/* <InstructionPage /> */}
+        <Test />
       </main>
       <Footer />
     </div>
   );
 }
-
-export default App;

@@ -1,4 +1,4 @@
-import s from "./Footer.module.css";
+import s from "./Footer.module.scss";
 import { atom } from "../../Assets/Icons/icons";
 import { link } from "../../Assets/Icons/icons";
 export const Footer = () => {

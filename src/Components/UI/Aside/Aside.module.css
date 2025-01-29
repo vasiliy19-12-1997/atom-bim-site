@@ -2,16 +2,11 @@
   width: 280px;
   padding: 20px;
   transition: transform 0.3s ease;
-  transform: translateX(-110%);
+  /* transform: translateX(-110%); */
   gap: 24px;
-  position: fixed;
-  top: 105px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 2;
+  z-index: 10;
   &.active {
-    transform: translateX(0);
+    /* transform: translateX(0); */
   }
   > nav {
     > ul {

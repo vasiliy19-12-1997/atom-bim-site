@@ -1,5 +1,9 @@
 /* Общие стили */
 .App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 body {
   margin: 0;
@@ -10,7 +14,7 @@ body {
 .container {
   display: flex;
   margin-top: 120px;
-  padding: 20px;
   justify-content: center;
-  align-items: center;
+  max-width: 1920px;
+  width: 100%;
 }

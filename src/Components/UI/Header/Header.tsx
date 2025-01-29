@@ -1,7 +1,7 @@
 import { AtomButton } from "../AtomButton/AtomButton";
 import { AtomInput } from "../AtomInput/AtomInput";
 import { atom, burger } from "../../Assets/Icons/icons.js";
-import s from "./Header.module.css";
+import s from "./Header.module.scss";
 import { useState } from "react";
 interface IHeaderProps {
   openModal: () => void;

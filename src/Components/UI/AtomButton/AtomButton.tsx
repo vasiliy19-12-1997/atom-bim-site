@@ -1,4 +1,4 @@
-import s from "./AtomButton.module.css";
+import s from "./AtomButton.module.scss";
 interface IAtomButton {
   children: React.ReactNode;
   onClick: () => void;
