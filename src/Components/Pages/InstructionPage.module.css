@@ -1,8 +1,7 @@
 .InstructionPage {
   display: flex;
-  max-width: 1440px; /* Максимальная ширина */
+  max-width: 917px; /* Максимальная ширина */
   width: 100%; /* Ширина контейнера */
-  background-color: lightgray;
   box-sizing: border-box;
 }
 .InstructionPageContent {

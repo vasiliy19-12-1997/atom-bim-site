@@ -1,12 +1,15 @@
 .Aside {
   width: 280px;
-  background-color: #f4f4f4;
   padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   transform: translateX(-110%);
   gap: 24px;
-
+  position: fixed;
+  top: 105px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
   &.active {
     transform: translateX(0);
   }

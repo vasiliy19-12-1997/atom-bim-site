@@ -32,9 +32,7 @@ function App() {
         <p>Начните ввод, чтобы увидеть результат</p>
       </Modal>
       <main className="container">
-        <Aside />
         <InstructionPage />
-        <Aside />
       </main>
       <Footer />
     </div>
