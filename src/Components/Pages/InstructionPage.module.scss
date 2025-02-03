@@ -1,0 +1,25 @@
+.InstructionPage {
+  max-width: 1440px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 120px 20px 0px 20px;
+  justify-content: center;
+}
+.InstructionPageSection {
+  max-width: 917px;
+  width: 100%;
+}
+.InstructionPageContent {
+  background-color: #d0d0d0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+@media (max-width: 1830px) {
+  .InstructionPageSection {
+    max-width: 768px;
+  }
+}
+@media (max-width: 1650px) {
+}

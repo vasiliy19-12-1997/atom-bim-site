@@ -1,20 +1,29 @@
-/* Общие стили */
 .App {
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
 }
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-}
-/* Контейнер для основного содержимого */
 .container {
-  display: flex;
-  margin-top: 120px;
-  justify-content: center;
-  max-width: 1920px;
-  width: 100%;
+  position: relative;
+}
+.right-block {
+  width: 300px;
+  height: 200px; /* Вы можете изменить высоту по вашему усмотрению */
+  background-color: #c0c0c0;
+  position: absolute;
+  right: 0px; /* Фиксированное значение для отступа от правого края */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Медиа-запрос для экранов шире 1920px */
+@media (min-width: 1920px) {
+  .right-block {
+    right: calc(50% - 917px);
+  }
+}
+@media (max-width: 1670px) {
+  .right-block {
+    display: none;
+  }
 }

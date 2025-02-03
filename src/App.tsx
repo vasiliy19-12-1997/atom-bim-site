@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import { Test } from "./Components/Test/Test";
+import { InstructionPage } from "./Components/Pages/InstructionPage";
+import { Aside } from "./Components/UI/Aside/Aside";
 import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
 import { Footer } from "./Components/UI/Footer/Footer";
 import { Header } from "./Components/UI/Header/Header";
@@ -31,9 +32,9 @@ export default function App() {
         <p>Начните ввод, чтобы увидеть результат</p>
       </Modal>
       <main className="container">
-        {/* <InstructionPage /> */}
-        <Test />
+        <InstructionPage />
       </main>
+      <div className="right-block">Right Block</div>
       <Footer />
     </div>
   );
