@@ -1,32 +1,61 @@
+@import "../Styles/variables.scss";
 .InstructionPage {
-  max-width: 1440px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-top: 120px;
-  justify-content: center;
-}
-.InstructionPageSection {
-  max-width: 917px;
-  width: 100%;
-}
-.InstructionPageContent {
-  background-color: #d0d0d0;
-  padding: 20px;
-  box-sizing: border-box;
+  margin: 0px 20px 0px 20px;
+  display: flex;
+  position: relative;
+  &RightBlock {
+    width: 200px;
+    height: 200px; /* Вы можете изменить высоту по вашему усмотрению */
+    position: absolute;
+    top: 200px;
+    right: -220px;
+    > ol {
+      padding: 0;
+      list-style-type: none;
+      > li {
+        > a {
+          color: $light-gray;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  &Div {
+    max-width: 1400px;
+    padding: 20px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 120px;
+    justify-content: center;
+    &Section {
+      max-width: 917px;
+      width: 100%;
+      &Content {
+        padding: 20px;
+        box-sizing: border-box;
+      }
+    }
+  }
 }
 @media (max-width: 1830px) {
-  .InstructionPageSection {
+  .InstructionPageDivSection {
     max-width: 768px;
   }
 }
 @media (max-width: 1050px) {
-  .InstructionPage {
+  .InstructionPageDiv {
     grid-template-columns: 180px 1fr;
   }
-  .InstructionPageSection {
+  .InstructionPageDivSection {
     max-width: 740px;
     width: 100%;
+  }
+}
+
+@media (max-width: 1650px) {
+  .InstructionPageRightBlock {
+    display: none;
   }
 }

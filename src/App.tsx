@@ -30,34 +30,9 @@ export default function App() {
         />
         <p>Начните ввод, чтобы увидеть результат</p>
       </Modal>
-      <main className="pages">
+      <main>
         <div className="container">
           <InstructionPage />
-        </div>
-        <div className="rightBlock">
-          <ol>
-            <li>
-              <a href="/">Описание семейства</a>
-            </li>
-            <li>
-              <a href="/">Общие требования</a>
-            </li>
-            <li>
-              <a href="/">Правила наименования</a>
-            </li>
-            <li>
-              <a href="/">Правила маркировки</a>
-            </li>
-            <li>
-              <a href="/">Параметры типоразмера</a>
-            </li>
-            <li>
-              <a href="/">Структура слоев</a>
-            </li>
-            <li>
-              <a href="/">Параметры экземпляра</a>
-            </li>
-          </ol>
         </div>
       </main>
       <Footer />

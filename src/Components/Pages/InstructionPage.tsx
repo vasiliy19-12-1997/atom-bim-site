@@ -8,16 +8,41 @@ export const InstructionPage = () => {
   const toggleLeft = () => setToggleAsideLeft(!asideLeft);
   const toggleRight = () => setToggleAsideRight(!asideRight);
   return (
-    <>
-      <div className={s.InstructionPage}>
+    <div className={s.InstructionPage}>
+      <div className={s.InstructionPageDiv}>
         <Aside />
-        <section className={s.InstructionPageSection}>
-          <div className="InstructionPageContent">
+        <section className={s.InstructionPageDivSection}>
+          <div className={s.InstructionPageDivSectionContent}>
             <h2>InstructionPage</h2>
             <p>{lorem}</p>
           </div>
         </section>
       </div>
-    </>
+      <div className={s.InstructionPageRightBlock}>
+        <ol>
+          <li>
+            <a href="/">Описание семейства</a>
+          </li>
+          <li>
+            <a href="/">Общие требования</a>
+          </li>
+          <li>
+            <a href="/">Правила наименования</a>
+          </li>
+          <li>
+            <a href="/">Правила маркировки</a>
+          </li>
+          <li>
+            <a href="/">Параметры типоразмера</a>
+          </li>
+          <li>
+            <a href="/">Структура слоев</a>
+          </li>
+          <li>
+            <a href="/">Параметры экземпляра</a>
+          </li>
+        </ol>
+      </div>
+    </div>
   );
 };
