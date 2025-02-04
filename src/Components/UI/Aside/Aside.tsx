@@ -1,5 +1,5 @@
 import { useState } from "react";
-import s from "./Aside.module.css";
+import s from "./Aside.module.scss";
 export const Aside = () => {
   const [isAside, setIsAside] = useState(true);
   const toggleAside = () => {

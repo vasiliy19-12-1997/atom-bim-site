@@ -1,5 +1,4 @@
 @import "../../Styles/variables.scss";
-
 .Header {
   position: fixed;
   top: 0;
@@ -71,7 +70,7 @@
 
 @media (max-width: 1350px) {
   .Header {
-    max-width: 1060px;
+    max-width: 1040px;
     width: 100%;
   }
 }

@@ -2,9 +2,9 @@
   max-width: 1440px;
   width: 100%;
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 240px 1fr;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 120px 20px 0px 20px;
+  margin-top: 120px;
   justify-content: center;
 }
 .InstructionPageSection {
@@ -21,5 +21,12 @@
     max-width: 768px;
   }
 }
-@media (max-width: 1650px) {
+@media (max-width: 1050px) {
+  .InstructionPage {
+    grid-template-columns: 180px 1fr;
+  }
+  .InstructionPageSection {
+    max-width: 740px;
+    width: 100%;
+  }
 }

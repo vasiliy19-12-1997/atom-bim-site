@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./App.css";
+import "./App.scss";
 import { InstructionPage } from "./Components/Pages/InstructionPage";
 import { Aside } from "./Components/UI/Aside/Aside";
 import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
@@ -13,7 +13,6 @@ export default function App() {
   const openModal = () => {
     setIsModalOpen(true);
   };
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -31,10 +30,36 @@ export default function App() {
         />
         <p>Начните ввод, чтобы увидеть результат</p>
       </Modal>
-      <main className="container">
-        <InstructionPage />
+      <main className="pages">
+        <div className="container">
+          <InstructionPage />
+        </div>
+        <div className="rightBlock">
+          <ol>
+            <li>
+              <a href="/">Описание семейства</a>
+            </li>
+            <li>
+              <a href="/">Общие требования</a>
+            </li>
+            <li>
+              <a href="/">Правила наименования</a>
+            </li>
+            <li>
+              <a href="/">Правила маркировки</a>
+            </li>
+            <li>
+              <a href="/">Параметры типоразмера</a>
+            </li>
+            <li>
+              <a href="/">Структура слоев</a>
+            </li>
+            <li>
+              <a href="/">Параметры экземпляра</a>
+            </li>
+          </ol>
+        </div>
       </main>
-      <div className="right-block">Right Block</div>
       <Footer />
     </div>
   );

@@ -1,16 +1,17 @@
 .Aside {
-  width: 280px;
   padding: 20px;
   transition: transform 0.3s ease;
-  /* transform: translateX(-110%); */
+  transform: translateX(-110%);
   gap: 24px;
   z-index: 10;
+
   &.active {
-    /* transform: translateX(0); */
+    transform: translateX(0);
   }
   > nav {
     > ul {
       list-style-type: none;
+      padding: 0;
       > li {
         > a {
           text-decoration: none;
@@ -32,7 +33,7 @@
   top: 120px;
   z-index: 10;
 }
-@media (max-width: 1200px) {
+@media (max-width: 1024px) {
   .AsideButton {
     display: block;
   }

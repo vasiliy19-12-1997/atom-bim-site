@@ -1,3 +1,4 @@
+@import "./Components//Styles/variables.scss";
 .App {
   display: flex;
   flex-direction: column;
@@ -5,15 +6,24 @@
 }
 .container {
   position: relative;
+  margin: 0px 20px 0px 20px;
 }
-.right-block {
+.rightBlock {
   width: 300px;
   height: 200px; /* Вы можете изменить высоту по вашему усмотрению */
-  background-color: #c0c0c0;
   position: absolute;
   right: 0px; /* Фиксированное значение для отступа от правого края */
-  top: 50%;
   transform: translateY(-50%);
+  top: 50%;
+  > ol {
+    list-style-type: none;
+    > li {
+      > a {
+        color: $light-gray;
+        text-decoration: none;
+      }
+    }
+  }
 }
 
 /* Медиа-запрос для экранов шире 1920px */
@@ -22,8 +32,8 @@
     right: calc(50% - 917px);
   }
 }
-@media (max-width: 1670px) {
-  .right-block {
+@media (max-width: 1600px) {
+  .rightBlock {
     display: none;
   }
 }
