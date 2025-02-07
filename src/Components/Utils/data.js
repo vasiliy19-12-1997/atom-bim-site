@@ -90,4 +90,6 @@ export const lorem = `Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
     aperiam, temporibus voluptate quo delectus corrupti dignissimos neque
     deleniti illum, recusandae accusantium voluptatum voluptas dicta reiciendis
     sunt. Magnam quasi, fuga ratione minus itaque mollitia nisi dolore
-    praesentium hic amet, facilis illo accusamus. Earum, veniam!`;
+    praesentium hic amet, facilis illo accusamus. Earum, veniam!
+    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequatur animi quidem porro adipisci rem est eveniet. Nulla expedita explicabo eligendi eum assumenda, incidunt dolor repellendus magnam commodi aperiam culpa mollitia!
+    `;

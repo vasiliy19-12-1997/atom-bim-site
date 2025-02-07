@@ -2,6 +2,7 @@ export interface IAsideProps {
   position: "left" | "right";
   show: boolean;
   toggleShow: () => void;
+  children: React.ReactNode;
 }
 export interface IAtomInputProps {
   value: string;

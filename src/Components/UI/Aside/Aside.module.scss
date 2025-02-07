@@ -2,15 +2,19 @@
   padding: 20px;
   transition: transform 0.3s ease;
   transform: translateX(-110%);
-  gap: 24px;
   z-index: 10;
-
+  position: fixed;
+  box-sizing: border-box;
   &.active {
     transform: translateX(0);
   }
   > nav {
     > ul {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
       list-style-type: none;
+      margin: 0;
       padding: 0;
       > li {
         > a {

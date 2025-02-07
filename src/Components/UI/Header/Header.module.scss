@@ -6,12 +6,13 @@
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  max-width: calc(1440px - 48px);
+  max-width: 1440px;
   z-index: 1000;
   padding: $padding-large;
   border-bottom: 1px solid $gray-200;
   background-color: $white;
   box-shadow: $box-shadow;
+  box-sizing: border-box;
   &Content {
     display: flex;
     gap: $padding-large;

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./App.scss";
 import { InstructionPage } from "./Components/Pages/InstructionPage";
-import { Aside } from "./Components/UI/Aside/Aside";
 import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
 import { Footer } from "./Components/UI/Footer/Footer";
 import { Header } from "./Components/UI/Header/Header";
