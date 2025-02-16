@@ -2,14 +2,13 @@
 .InstructionPage {
   margin: 105px 20px 0px 20px;
   display: flex;
-  position: relative;
   justify-content: right;
   box-sizing: border-box;
   &RightBlock {
     width: 300px;
     height: 200px; /* Вы можете изменить высоту по вашему усмотрению */
     position: fixed;
-    right: -320px;
+    right: -360px;
     > ol {
       display: flex;
       flex-direction: column;
@@ -26,7 +25,7 @@
   }
   &Div {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 280px 124px 1fr;
     max-width: 1400px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -35,17 +34,23 @@
       max-width: 917px;
       width: 100%;
       &Content {
-        max-width: 917px;
         padding: 20px;
       }
     }
   }
 }
-@media (max-width: 1830px) {
+@media (max-width: 1680px) {
   .InstructionPageDivSection {
     max-width: 768px;
   }
 }
+
+@media (max-width: 1520px) {
+  .InstructionPageRightBlock {
+    display: none;
+  }
+}
+
 @media (max-width: 1050px) {
   .InstructionPageDiv {
     grid-template-columns: 180px 1fr;
@@ -55,9 +60,12 @@
     width: 100%;
   }
 }
-
-@media (max-width: 1460px) {
-  .InstructionPageRightBlock {
-    display: none;
+@media (max-width: 768px) {
+  .InstructionPageDivSection {
+    max-width: 460px;
+    width: 100%;
+  }
+  .InstructionPageDiv {
+    grid-template-columns: 140px 1fr;
   }
 }

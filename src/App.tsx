@@ -1,14 +1,16 @@
 import { useState } from "react";
 import "./App.scss";
-import { InstructionPage } from "./Components/Pages/InstructionPage";
+import { AppRouter } from "./Components/Router/AppRouter";
 import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
 import { Footer } from "./Components/UI/Footer/Footer";
 import { Header } from "./Components/UI/Header/Header";
 import Modal from "./Components/UI/Modal/Modal";
+import { BrowserRouter } from "react-router-dom";
 
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [value, setValue] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -29,11 +31,15 @@ export default function App() {
         />
         <p>Начните ввод, чтобы увидеть результат</p>
       </Modal>
+
       <main>
         <div className="container">
-          <InstructionPage />
+          <BrowserRouter>
+            <AppRouter isAuthenticated={isAuthenticated} />
+          </BrowserRouter>
         </div>
       </main>
+
       <Footer />
     </div>
   );

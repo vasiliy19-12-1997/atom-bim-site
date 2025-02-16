@@ -6,7 +6,7 @@
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  max-width: 1440px;
+  // max-width: 1440px;
   z-index: 1000;
   padding: $padding-large;
   border-bottom: 1px solid $gray-200;
@@ -64,21 +64,21 @@
 
 @media (max-width: 1520px) {
   .Header {
-    max-width: 1260px;
+    // max-width: 1260px;
     width: 100%;
   }
 }
 
 @media (max-width: 1350px) {
   .Header {
-    max-width: 1040px;
+    // max-width: 1040px;
     width: 100%;
   }
 }
 
 @media (max-width: 1160px) {
   .Header {
-    max-width: 960px;
+    // max-width: 960px;
     width: 100%;
     gap: $padding-medium;
   }
@@ -86,7 +86,7 @@
 
 @media (max-width: 865px) {
   .Header {
-    max-width: 700px;
+    // max-width: 700px;
     width: 100%;
     gap: $padding-medium;
   }
@@ -94,7 +94,7 @@
 
 @media (max-width: 768px) {
   .Header {
-    max-width: 600px;
+    // max-width: 600px;
     width: 100%;
     gap: $padding-medium;
     &Links {
@@ -105,7 +105,7 @@
       padding: 10px 0 10px 50px;
       display: flex;
       flex-direction: column;
-      top: 103px;
+      top: 85px;
       position: absolute;
       left: 0;
       right: 0;
@@ -121,14 +121,14 @@
 
 @media (max-width: 680px) {
   .Header {
-    max-width: 420px;
+    // max-width: 420px;
     width: 100%;
   }
 }
 
 @media (max-width: 520px) {
   .Header {
-    max-width: 320px;
+    // max-width: 320px;
     width: 100%;
   }
 }

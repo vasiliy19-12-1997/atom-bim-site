@@ -3,12 +3,11 @@
   transition: transform 0.3s ease;
   transform: translateX(-110%);
   z-index: 10;
-  position: fixed;
-  box-sizing: border-box;
   &.active {
     transform: translateX(0);
   }
   > nav {
+    position: fixed;
     > ul {
       display: flex;
       flex-direction: column;
@@ -37,7 +36,7 @@
   top: 120px;
   z-index: 10;
 }
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .AsideButton {
     display: block;
   }

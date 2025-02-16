@@ -52,7 +52,7 @@ export const InstructionPage = () => {
         </article>
       </div>
 
-      <Aside position="right" show={asideLeft} toggleShow={toggleLeft}>
+      <Aside position="right" show={asideRight} toggleShow={toggleRight}>
         <div className={s.InstructionPageRightBlock}>
           <ol>
             <li>

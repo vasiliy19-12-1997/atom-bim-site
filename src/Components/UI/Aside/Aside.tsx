@@ -7,14 +7,10 @@ export const Aside: FC<IAsideProps> = ({
   show,
   toggleShow,
 }) => {
-  const [isAside, setIsAside] = useState(true);
-  const toggleAside = () => {
-    setIsAside(!isAside);
-  };
   return (
     <>
-      <div className={`${s.Aside} ${isAside ? s.active : ""}`}>{children}</div>
-      <button className={s.AsideButton} onClick={toggleAside}>
+      <div className={`${s.Aside} ${show ? s.active : ""}`}>{children}</div>
+      <button className={s.AsideButton} onClick={() => toggleShow()}>
         left
       </button>
     </>
