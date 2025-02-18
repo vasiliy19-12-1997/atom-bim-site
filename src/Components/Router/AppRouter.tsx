@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "./Router";
 
 interface AppRouterProps {
@@ -8,7 +8,6 @@ interface AppRouterProps {
 
 export const AppRouter: React.FC<AppRouterProps> = ({ isAuthenticated }) => {
   const routesToRender = isAuthenticated ? privateRoutes : publicRoutes;
-
   return (
     <Routes>
       {routesToRender.map((route) => (

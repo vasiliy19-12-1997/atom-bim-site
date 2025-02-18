@@ -1,16 +1,22 @@
-import { useState } from "react";
-import { lorem } from "./../Utils/data";
+import React, { useState } from "react";
 import s from "./InstructionPage.module.scss";
-import { Aside } from "../UI/Aside/Aside";
+import { lorem } from "../Utils/data";
+
 export const InstructionPage = () => {
-  const [asideLeft, setToggleAsideLeft] = useState(false);
-  const [asideRight, setToggleAsideRight] = useState(false);
-  const toggleLeft = () => setToggleAsideLeft(!asideLeft);
-  const toggleRight = () => setToggleAsideRight(!asideRight);
+  const [isLeftAsideOpen, setIsLeftAsideOpen] = useState(false);
+
+  const toggleLeftAside = () => {
+    setIsLeftAsideOpen(!isLeftAsideOpen);
+  };
+
   return (
     <section className={s.InstructionPage}>
-      <div className={s.InstructionPageDiv}>
-        <Aside position="left" show={asideLeft} toggleShow={toggleLeft}>
+      <div className={s.InstructionPageBlock}>
+        <div
+          className={`${s.InstructionPageBlockLeftAside} ${
+            isLeftAsideOpen ? s.open : ""
+          }`}
+        >
           <nav>
             <ul>
               <li>
@@ -42,43 +48,46 @@ export const InstructionPage = () => {
               </li>
             </ul>
           </nav>
-        </Aside>
+        </div>
+        <button
+          className={s.InstructionPageBlockLeftAsideButton}
+          onClick={toggleLeftAside}
+        >
+          Toggle Menu
+        </button>
         <div></div>
-        <article className={s.InstructionPageDivSection}>
-          <div className={s.InstructionPageDivSectionContent}>
+        <article className={s.InstructionPageBlockArticle}>
+          <div className={s.InstructionPageBlockArticleContent}>
             <h1>InstructionPage</h1>
             <p>{lorem}</p>
           </div>
         </article>
       </div>
-
-      <Aside position="right" show={asideRight} toggleShow={toggleRight}>
-        <div className={s.InstructionPageRightBlock}>
-          <ol>
-            <li>
-              <a href="/">Описание семейства</a>
-            </li>
-            <li>
-              <a href="/">Общие требования</a>
-            </li>
-            <li>
-              <a href="/">Правила наименования</a>
-            </li>
-            <li>
-              <a href="/">Правила маркировки</a>
-            </li>
-            <li>
-              <a href="/">Параметры типоразмера</a>
-            </li>
-            <li>
-              <a href="/">Структура слоев</a>
-            </li>
-            <li>
-              <a href="/">Параметры экземпляра</a>
-            </li>
-          </ol>
-        </div>
-      </Aside>
+      <div className={s.InstructionPageRightAside}>
+        <ol>
+          <li>
+            <a href="/">Описание семейства</a>
+          </li>
+          <li>
+            <a href="/">Общие требования</a>
+          </li>
+          <li>
+            <a href="/">Правила наименования</a>
+          </li>
+          <li>
+            <a href="/">Правила маркировки</a>
+          </li>
+          <li>
+            <a href="/">Параметры типоразмера</a>
+          </li>
+          <li>
+            <a href="/">Структура слоев</a>
+          </li>
+          <li>
+            <a href="/">Параметры экземпляра</a>
+          </li>
+        </ol>
+      </div>
     </section>
   );
 };

@@ -1,71 +1,90 @@
-@import "../Styles/variables.scss";
 .InstructionPage {
-  margin: 105px 20px 0px 20px;
   display: flex;
-  justify-content: right;
-  box-sizing: border-box;
-  &RightBlock {
-    width: 300px;
-    height: 200px; /* Вы можете изменить высоту по вашему усмотрению */
-    position: fixed;
-    right: -360px;
-    > ol {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      padding: 0;
-      list-style-type: none;
-      > li {
-        > a {
-          color: $light-gray;
-          text-decoration: none;
-        }
-      }
-    }
-  }
-  &Div {
-    display: grid;
-    grid-template-columns: 280px 124px 1fr;
-    max-width: 1400px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  gap: 0 124px;
+  width: 1440px;
+  margin: 0 auto;
+  position: relative;
 
-    &Section {
-      max-width: 917px;
-      width: 100%;
-      &Content {
-        padding: 20px;
-      }
-    }
+  @media (max-width: 1740px) {
+    width: calc(100% - 200px);
+  }
+
+  @media (max-width: 1440px) {
+    width: 100%;
+    grid-template-columns: 280px 1fr;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
   }
 }
-@media (max-width: 1680px) {
-  .InstructionPageDivSection {
-    max-width: 768px;
-  }
+.InstructionPageBlock {
+  display: grid;
+  grid-template-columns: 280px 1fr 300px;
+  grid-template-rows: auto;
 }
+.InstructionPageBlockLeftAside {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
 
-@media (max-width: 1520px) {
-  .InstructionPageRightBlock {
+  @media (max-width: 768px) {
     display: none;
   }
 }
 
-@media (max-width: 1050px) {
-  .InstructionPageDiv {
-    grid-template-columns: 180px 1fr;
+.InstructionPageBlockArticle {
+  width: 917px;
+
+  @media (max-width: 1440px) {
+    width: calc(100% - 280px - 124px);
   }
-  .InstructionPageDivSection {
-    max-width: 740px;
+
+  @media (max-width: 768px) {
     width: 100%;
   }
 }
-@media (max-width: 768px) {
-  .InstructionPageDivSection {
-    max-width: 460px;
-    width: 100%;
+
+.InstructionPageRightAside {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  margin-left: 200px;
+
+  @media (max-width: 1440px) {
+    display: none;
   }
-  .InstructionPageDiv {
-    grid-template-columns: 140px 1fr;
+}
+
+.InstructionPageRightAside::after {
+  content: "...";
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.InstructionPageBlockLeftAsideButton {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    position: fixed;
+    top: 250px;
+    left: 150px;
+    z-index: 1000;
   }
+}
+
+.InstructionPageBlockLeftAside.open {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 280px;
+  z-index: 999;
+  background-color: white;
+  overflow-y: auto;
 }

@@ -11,9 +11,11 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [value, setValue] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(true);
+
   const openModal = () => {
     setIsModalOpen(true);
   };
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -31,7 +33,6 @@ export default function App() {
         />
         <p>Начните ввод, чтобы увидеть результат</p>
       </Modal>
-
       <main>
         <div className="container">
           <BrowserRouter>
@@ -39,7 +40,6 @@ export default function App() {
           </BrowserRouter>
         </div>
       </main>
-
       <Footer />
     </div>
   );

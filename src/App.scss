@@ -1,12 +1,24 @@
-@import "./Components//Styles/variables.scss";
+@import "./Components/Styles/variables.scss";
+
 #root {
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
   box-sizing: border-box;
 }
+
 .App {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  height: 100%;
   width: 100%;
+  align-items: center;
+}
+
+main {
+  flex: 1;
+  margin-top: 120px;
+  box-sizing: border-box;
 }
