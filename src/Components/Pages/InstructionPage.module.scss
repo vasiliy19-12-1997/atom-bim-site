@@ -1,31 +1,16 @@
 .InstructionPage {
   display: flex;
-  gap: 0 124px;
-  width: 1440px;
-  margin: 0 auto;
-  position: relative;
-
-  @media (max-width: 1740px) {
-    width: calc(100% - 200px);
-  }
-
-  @media (max-width: 1440px) {
-    width: 100%;
-    grid-template-columns: 280px 1fr;
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
 }
 .InstructionPageBlock {
-  display: grid;
-  grid-template-columns: 280px 1fr 300px;
-  grid-template-rows: auto;
+  max-width: 1440px;
+  width: 100vw;
+  position: relative;
+  display: flex;
+  justify-content: center;
 }
 .InstructionPageBlockLeftAside {
   position: sticky;
-  top: 0;
+  top: 120px;
   height: 100vh;
   overflow-y: auto;
 
@@ -48,7 +33,7 @@
 
 .InstructionPageRightAside {
   position: sticky;
-  top: 0;
+  top: 120px;
   height: 100vh;
   overflow-y: auto;
   margin-left: 200px;

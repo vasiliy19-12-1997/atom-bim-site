@@ -55,7 +55,7 @@ export const InstructionPage = () => {
         >
           Toggle Menu
         </button>
-        <div></div>
+
         <article className={s.InstructionPageBlockArticle}>
           <div className={s.InstructionPageBlockArticleContent}>
             <h1>InstructionPage</h1>
