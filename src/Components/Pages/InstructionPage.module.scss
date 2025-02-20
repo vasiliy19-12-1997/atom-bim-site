@@ -1,75 +1,15 @@
 .InstructionPage {
   display: flex;
-}
-.InstructionPageBlock {
   max-width: 1440px;
   width: 100vw;
-  position: relative;
-  display: flex;
-  justify-content: center;
-}
-.InstructionPageBlockLeftAside {
-  position: sticky;
-  top: 120px;
-  height: 100vh;
-  overflow-y: auto;
-
-  @media (max-width: 768px) {
-    display: none;
+  gap: 124px;
+  box-sizing: border-box;
+  &LeftAside {
+    position: relative;
   }
-}
-
-.InstructionPageBlockArticle {
-  width: 917px;
-
-  @media (max-width: 1440px) {
-    width: calc(100% - 280px - 124px);
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-}
-
-.InstructionPageRightAside {
-  position: sticky;
-  top: 120px;
-  height: 100vh;
-  overflow-y: auto;
-  margin-left: 200px;
-
-  @media (max-width: 1440px) {
-    display: none;
-  }
-}
-
-.InstructionPageRightAside::after {
-  content: "...";
-  display: block;
-  text-align: center;
-  margin-top: 20px;
-}
-
-.InstructionPageBlockLeftAsideButton {
-  display: none;
-
-  @media (max-width: 768px) {
-    display: block;
+  &LeftButton {
     position: fixed;
-    top: 250px;
-    left: 150px;
-    z-index: 1000;
+    top: 500px;
+    left: 400px;
   }
-}
-
-.InstructionPageBlockLeftAside.open {
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 280px;
-  z-index: 999;
-  background-color: white;
-  overflow-y: auto;
 }

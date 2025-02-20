@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import s from "./InstructionPage.module.scss";
+import { useState } from "react";
 import { lorem } from "../Utils/data";
+import s from "./InstructionPage.module.scss";
 
 export const InstructionPage = () => {
   const [isLeftAsideOpen, setIsLeftAsideOpen] = useState(false);
@@ -10,13 +10,9 @@ export const InstructionPage = () => {
   };
 
   return (
-    <section className={s.InstructionPage}>
-      <div className={s.InstructionPageBlock}>
-        <div
-          className={`${s.InstructionPageBlockLeftAside} ${
-            isLeftAsideOpen ? s.open : ""
-          }`}
-        >
+    <>
+      <section className={s.InstructionPage}>
+        <aside className={s.InstructionPageLeftAside}>
           <nav>
             <ul>
               <li>
@@ -48,22 +44,14 @@ export const InstructionPage = () => {
               </li>
             </ul>
           </nav>
+        </aside>
+        <button className={s.InstructionPageLeftButton}>Показать/скрыть</button>
+        <div className={s.InstructionPageContent}>
+          <h2>content</h2>
+          <p>{lorem}</p>
         </div>
-        <button
-          className={s.InstructionPageBlockLeftAsideButton}
-          onClick={toggleLeftAside}
-        >
-          Toggle Menu
-        </button>
-
-        <article className={s.InstructionPageBlockArticle}>
-          <div className={s.InstructionPageBlockArticleContent}>
-            <h1>InstructionPage</h1>
-            <p>{lorem}</p>
-          </div>
-        </article>
-      </div>
-      <div className={s.InstructionPageRightAside}>
+      </section>
+      <aside className={s.RightAside}>
         <ol>
           <li>
             <a href="/">Описание семейства</a>
@@ -87,7 +75,7 @@ export const InstructionPage = () => {
             <a href="/">Параметры экземпляра</a>
           </li>
         </ol>
-      </div>
-    </section>
+      </aside>
+    </>
   );
 };
