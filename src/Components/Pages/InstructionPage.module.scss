@@ -1,54 +1,61 @@
 .InstructionPage {
   display: flex;
-  max-width: 1440px;
-  width: 100vw;
-  gap: 124px;
-  box-sizing: border-box;
-  &LeftAside {
+
+  &Block {
+    display: flex;
+    max-width: 1440px;
+    width: 100vw;
+    gap: 124px;
+    box-sizing: border-box;
     position: relative;
-    position: sticky;
-    height: 100vh;
-    top: 160px;
-    left: 100px;
-    > nav {
-      max-width: 280px;
-      width: 100vw;
-      > ul {
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        list-style-type: none;
-        > li {
-          margin-bottom: 24px;
-          > a {
-            text-decoration: none;
-            color: var(--Gray-800, #808080);
-            font-family: Inter;
-            font-size: 18px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: 24px; /* 133.333% */
+    &LeftAside {
+      position: relative;
+      position: sticky;
+      height: 100vh;
+      top: 160px;
+      left: 100px;
+      > nav {
+        max-width: 280px;
+        width: 100vw;
+        > ul {
+          padding: 0;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          list-style-type: none;
+          > li {
+            margin-bottom: 24px;
+            > a {
+              text-decoration: none;
+              color: var(--Gray-800, #808080);
+              font-family: Inter;
+              font-size: 18px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: 24px; /* 133.333% */
+            }
           }
         }
       }
     }
-  }
-  &LeftButton {
-    position: fixed;
-    top: 500px;
-    left: 400px;
-  }
-  &Content {
-    flex-grow: 1;
-    padding: 20px;
-    > p {
-      color: var(--Gray-900, #1a1a1a);
-      font-family: Inter;
-      font-size: 18px;
-      font-style: normal;
-      font-weight: 300;
-      line-height: 28px;
+    &LeftButton {
+      position: fixed;
+      top: 500px;
+      left: 400px;
+    }
+    &Content {
+      flex-grow: 1;
+      padding: 20px;
+      > p {
+        color: var(--Gray-900, #1a1a1a);
+        font-family: Inter;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 28px;
+      }
     }
   }
+}
+.RightAside {
 }
