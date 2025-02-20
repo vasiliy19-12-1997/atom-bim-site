@@ -47,7 +47,7 @@ export const InstructionPage = () => {
         </aside>
         <button className={s.InstructionPageLeftButton}>Показать/скрыть</button>
         <div className={s.InstructionPageContent}>
-          <h2>content</h2>
+          <h2>Content</h2>
           <p>{lorem}</p>
         </div>
       </section>
