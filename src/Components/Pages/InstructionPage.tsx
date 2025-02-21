@@ -12,49 +12,48 @@ export const InstructionPage = () => {
   return (
     <>
       <section className={s.InstructionPage}>
-        <div className={s.InstructionPageBlock}>
-          <aside className={s.InstructionPageLeftAside}>
-            <nav>
-              <ul>
-                <li>
-                  <a href="/">СОД</a>
-                </li>
-                <li>
-                  <a href="/">Revit Общие</a>
-                </li>
-                <li>
-                  <a href="/">Revit АР</a>
-                </li>
-                <li>
-                  <a href="/">Revit КЖ</a>
-                </li>
-                <li>
-                  <a href="/">Revit ОВ/ВК</a>
-                </li>
-                <li>
-                  <a href="/">Revit ЭЛ/СС</a>
-                </li>
-                <li>
-                  <a href="/">Civil 3D</a>
-                </li>
-                <li>
-                  <a href="/">AutoCad</a>
-                </li>
-                <li>
-                  <a href="/">Tangl Value</a>
-                </li>
-              </ul>
-            </nav>
-            <button className={s.InstructionPageLeftButton}>
-              Показать/скрыть
-            </button>
-          </aside>
-
-          <div className={s.InstructionPageContent}>
-            <h2>Content</h2>
-            <p>{lorem}</p>
-          </div>
+        <aside className={s.InstructionPageLeftAside}>
+          <nav>
+            <ul>
+              <li>
+                <a href="/">СОД</a>
+              </li>
+              <li>
+                <a href="/">Revit Общие</a>
+              </li>
+              <li>
+                <a href="/">Revit АР</a>
+              </li>
+              <li>
+                <a href="/">Revit КЖ</a>
+              </li>
+              <li>
+                <a href="/">Revit ОВ/ВК</a>
+              </li>
+              <li>
+                <a href="/">Revit ЭЛ/СС</a>
+              </li>
+              <li>
+                <a href="/">Civil 3D</a>
+              </li>
+              <li>
+                <a href="/">AutoCad</a>
+              </li>
+              <li>
+                <a href="/">Tangl Value</a>
+              </li>
+            </ul>
+          </nav>
+          <button className={s.InstructionPageLeftButton}>
+            Показать/скрыть
+          </button>
+        </aside>
+        <div></div>
+        <div className={s.InstructionPageContent}>
+          <h2>Content</h2>
+          <p>{lorem}</p>
         </div>
+        <div></div>
         <aside className={s.RightAside}>
           <ol>
             <li>
