@@ -8,11 +8,14 @@ export const InstructionPage = () => {
   const toggleLeftAside = () => {
     setIsLeftAsideOpen(!isLeftAsideOpen);
   };
-
   return (
     <>
       <section className={s.InstructionPage}>
-        <aside className={s.InstructionPageLeftAside}>
+        <aside
+          className={`${s.InstructionPageLeftAside} ${
+            isLeftAsideOpen ? s.open : s.close
+          }`}
+        >
           <nav>
             <ul>
               <li>
@@ -44,10 +47,13 @@ export const InstructionPage = () => {
               </li>
             </ul>
           </nav>
-          <button className={s.InstructionPageLeftButton}>
-            Показать/скрыть
-          </button>
         </aside>
+        <button
+          onClick={toggleLeftAside}
+          className={s.InstructionPageLeftButton}
+        >
+          Показать/скрыть
+        </button>
         <div></div>
         <div className={s.InstructionPageContent}>
           <h2>Content</h2>
