@@ -52,7 +52,7 @@ export const InstructionPage = () => {
           onClick={toggleLeftAside}
           className={s.InstructionPageLeftButton}
         >
-          Показать/скрыть
+          {isLeftAsideOpen ? "◀" : "▶"}
         </button>
         <div></div>
         <div className={s.InstructionPageContent}>

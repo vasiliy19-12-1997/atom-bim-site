@@ -1,11 +1,11 @@
 import { useState } from "react";
+import { BrowserRouter } from "react-router-dom";
 import "./App.scss";
 import { AppRouter } from "./Components/Router/AppRouter";
 import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
 import { Footer } from "./Components/UI/Footer/Footer";
 import { Header } from "./Components/UI/Header/Header";
 import Modal from "./Components/UI/Modal/Modal";
-import { BrowserRouter } from "react-router-dom";
 
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
