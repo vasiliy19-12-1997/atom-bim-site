@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, useLocation } from "react-router-dom";
 import "./App.scss";
 import { AppRouter } from "./Components/Router/AppRouter";
 import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
@@ -11,7 +11,8 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [value, setValue] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-
+  const location = useLocation();
+  const isAuthPage = location.pathname === "/atom-bim-site/login";
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -22,7 +23,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <Header openModal={openModal} />
+      {!isAuthPage && <Header openModal={openModal} />}
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <AtomInput
           value={value}
@@ -35,12 +36,10 @@ export default function App() {
       </Modal>
       <main>
         <div className="container">
-          <BrowserRouter>
-            <AppRouter isAuthenticated={isAuthenticated} />
-          </BrowserRouter>
+          <AppRouter isAuthenticated={isAuthenticated} />
         </div>
       </main>
-      <Footer />
+      {!isAuthPage && <Footer />}
     </div>
   );
 }

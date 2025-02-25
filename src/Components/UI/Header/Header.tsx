@@ -49,7 +49,9 @@ export const Header: React.FC<IHeaderProps> = ({ openModal }) => {
           onClick={openModal}
         />
       </div>
-      <AtomButton onClick={() => console.log("Open")}>Войти</AtomButton>
+      <AtomButton type="button" onClick={() => console.log("Open")}>
+        Войти
+      </AtomButton>
     </header>
   );
 };
