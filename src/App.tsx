@@ -30,7 +30,7 @@ export default function App() {
           onChange={(e) => setValue(e.target.value)}
           placeholder="Поиск"
           type="text"
-          module="m"
+          module="modal"
         />
         <p>Начните ввод, чтобы увидеть результат</p>
       </Modal>

@@ -1,17 +1,23 @@
 import React from "react";
 import { lightSearch, search } from "../../Assets/Icons/icons";
-import s from "./AtomInput.module.scss";
-import m from "./AtomInputModal.module.scss";
+import smallStyles from "./AtomInput.module.scss";
+import modalStyles from "./AtomInputModal.module.scss";
+import submitStyles from "./AtomInputSubmit.module.scss";
 import { IAtomInputProps } from "../../Types/types";
+const styleModule = {
+  small: smallStyles,
+  modal: modalStyles,
+  submit: submitStyles,
+};
 export const AtomInput: React.FC<IAtomInputProps> = ({
   value,
   onChange,
   placeholder,
   type,
   onClick,
-  module = "s",
+  module,
 }) => {
-  const styles = module === "s" ? s : m;
+  const styles = styleModule[module];
   return (
     <div className={styles.AtomInput}>
       {search && (

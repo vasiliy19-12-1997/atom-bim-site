@@ -11,10 +11,11 @@
     border: none;
     background: var(--Gray-100, #f6f6f6);
   }
+  > span {
+    display: none;
+  }
 }
-.AtomInputSearch {
-  display: none;
-}
+
 .AtomInputLightSearch {
   width: 20px;
   height: 20px;

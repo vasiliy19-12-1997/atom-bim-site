@@ -12,7 +12,7 @@ export const AtomButton: React.FC<IAtomButton> = ({
 }) => {
   return (
     <div>
-      <button className={s.AtomButton} onClick={onClick} type="button">
+      <button className={s.AtomButton} onClick={onClick} type={type}>
         {children}
       </button>
     </div>

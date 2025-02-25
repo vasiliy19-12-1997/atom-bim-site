@@ -4,13 +4,14 @@ export interface IAsideProps {
   toggleShow: () => void;
   children: React.ReactNode;
 }
+type inputModule = "small" | "modal" | "submit";
 export interface IAtomInputProps {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   type: string;
   onClick?: () => void;
-  module?: "s" | "m";
+  module: inputModule;
 }
 export interface IModalProps {
   isOpen: boolean;

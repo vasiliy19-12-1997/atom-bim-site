@@ -47,6 +47,7 @@ export const Header: React.FC<IHeaderProps> = ({ openModal }) => {
           onChange={(e) => setValue(e.target.value)}
           placeholder="Поиск"
           onClick={openModal}
+          module="small"
         />
       </div>
       <AtomButton type="button" onClick={() => console.log("Open")}>
