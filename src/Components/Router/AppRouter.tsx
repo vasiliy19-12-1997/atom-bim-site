@@ -11,10 +11,10 @@ export const AppRouter: React.FC<AppRouterProps> = ({ isAuthenticated }) => {
 
   const location = useLocation();
   if (!isAuthenticated && !location.pathname.includes("login")) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" />;
   }
-  if (isAuthenticated && location.pathname.includes("atom-bim-site")) {
-    return <Navigate to="/" replace />;
+  if (isAuthenticated && location.pathname.includes("login")) {
+    return <Navigate to="/" />;
   }
   return (
     <Routes location={location}>

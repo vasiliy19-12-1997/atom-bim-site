@@ -1,15 +1,36 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import s from "./AuthPage.module.scss";
 import { AtomButton } from "../UI/AtomButton/AtomButton";
+import { AtomInput } from "../UI/AtomInput/AtomInput";
 export const AuthPage: FC = () => {
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <div className={s.AuthPage}>
       <h2>Вход</h2>
       <form action="/login" method="POST" className={s.AuthPageForm}>
         <label htmlFor="username">Имя пользователя</label>
-        <input type="text" id="username" name="username" required />
-        <label htmlFor="password">Имя пользователя</label>
-        <input type="text" id="password" name="password" required />
+        <AtomInput
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder=""
+          module="submit"
+          type="text"
+          id="username"
+          name="username"
+          required
+        />
+        <label htmlFor="password">Пароль</label>
+        <AtomInput
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder=""
+          module="submit"
+          type="password"
+          id="password"
+          name="password"
+          required
+        />
         <AtomButton type="submit" onClick={() => console.log("")} key="">
           Войти
         </AtomButton>
