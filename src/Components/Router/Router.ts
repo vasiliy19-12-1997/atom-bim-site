@@ -8,8 +8,8 @@ interface Route {
 }
 
 export const privateRoutes: Route[] = [
-  { path: "/main", element: MainPage },
-  { path: "/", element: InstructionPage },
+  { path: "/", element: MainPage },
+  { path: "/instruction-page", element: InstructionPage },
 ];
 
 export const publicRoutes: Route[] = [{ path: "/login", element: AuthPage }];
