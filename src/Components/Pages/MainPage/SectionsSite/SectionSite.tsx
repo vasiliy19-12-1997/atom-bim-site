@@ -44,7 +44,7 @@ export const SectionSite = () => {
         </p>
         <div>
           <img src={infoImage} alt="info" />
-          <img src={Group11787Image} alt="eir" />
+          <img src={Group11767Image} alt="eir" />
         </div>
       </div>
       <div className={s.SectionSiteItem}>
@@ -55,7 +55,7 @@ export const SectionSite = () => {
         </p>
         <div>
           <img src={infoImage} alt="info" />
-          <img src={Group11787Image} alt="eir" />
+          <img src={Group655Image} alt="eir" />
         </div>
       </div>
       <div className={s.SectionSiteItem}>
@@ -66,7 +66,7 @@ export const SectionSite = () => {
         </p>
         <div>
           <img src={infoImage} alt="info" />
-          <img src={Group11787Image} alt="eir" />
+          <img src={pluginImage} alt="eir" />
         </div>
       </div>
       <div className={s.SectionSiteItem}>
@@ -77,7 +77,7 @@ export const SectionSite = () => {
         </p>
         <div>
           <img src={infoImage} alt="info" />
-          <img src={Group11787Image} alt="eir" />
+          <img src={testImage} alt="eir" />
         </div>
       </div>
     </section>

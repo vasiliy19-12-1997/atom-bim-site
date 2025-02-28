@@ -14,6 +14,14 @@ export const MainPage: FC = () => {
         </p>
       </section>
       <SectionSite />
+      <iframe
+        src="https://rutube.ru/play/embed/b191fbe1f8ad0f6e3733401faba62c1c"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        width={1268}
+        height={768}
+        title="Rutube Video"
+      ></iframe>
     </div>
   );
 };
