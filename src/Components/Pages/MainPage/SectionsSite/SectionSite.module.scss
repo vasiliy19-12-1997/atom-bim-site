@@ -1,0 +1,14 @@
+.SectionSite {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  &Item {
+    flex: 1 1 calc(33.33% - 10px);
+    box-sizing: border-box;
+    padding: 20px;
+    background-color: #f0f0f0;
+    max-width: 360px;
+    width: 100vw;
+  }
+}

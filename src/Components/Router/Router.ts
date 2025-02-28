@@ -1,6 +1,6 @@
 import { AuthPage } from "../Pages/AuthPage";
 import { InstructionPage } from "./../Pages/InstructionPage";
-import { MainPage } from "./../Pages/MainPage";
+import { MainPage } from "../Pages/MainPage/MainPage";
 
 interface Route {
   path: string;
