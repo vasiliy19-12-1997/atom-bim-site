@@ -4,7 +4,7 @@ import Group11767Image from "../../../Assets/Images/Group 11767_2.png";
 import Group11787Image from "../../../Assets/Images/Group 11787_2.png";
 import infoImage from "../../../Assets/Images/info.png";
 import licey24Image from "../../../Assets/Images/licey_24.jpg";
-import licey6Image from "../../../Assets/Images/licey6.jpg";
+
 import prostorMImage from "../../../Assets/Images/prostor_m.png";
 import eirImage from "../../../Assets/Images/section_eir.png";
 import pluginImage from "../../../Assets/Images/section_plugin.png";

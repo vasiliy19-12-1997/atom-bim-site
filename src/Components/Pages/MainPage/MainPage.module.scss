@@ -1,3 +1,4 @@
+@import "../../Styles/variables.scss";
 .MainPage {
   display: flex;
   flex-direction: column;
@@ -6,4 +7,43 @@
   max-width: 1440px;
   width: 100vw;
   margin-top: 120px;
+  padding: 20px;
+  box-sizing: border-box;
+  &Main {
+    display: grid;
+    grid-template-columns: 1fr 800px;
+    justify-content: center;
+
+    align-items: center;
+    @media (max-width: 1700px) {
+      grid-template-columns: 1fr 600px;
+      > div {
+        max-width: 400px;
+        width: 100%;
+        > img {
+          max-width: 600px;
+          width: 100vw;
+        }
+      }
+    }
+    > div {
+      display: flex;
+      flex-direction: column;
+
+      > h1 {
+        font-size: 56px;
+      }
+      > p {
+        color: $light-gray;
+      }
+      > img {
+        max-width: 800px;
+        width: 100vw;
+        height: 578px;
+        z-index: 10;
+        cursor: none;
+        border-radius: 32px;
+      }
+    }
+  }
 }

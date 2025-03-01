@@ -9,6 +9,7 @@ import prostorMImage from "./prostor_m.png";
 import eirImage from "./section_eir.png";
 import pluginImage from "./section_plugin.png";
 import testImage from "./section_test.png";
+import liceyPodl2 from "./licey_podl2.jpg";
 
 export const images = {
   bakin2Image,
@@ -22,4 +23,5 @@ export const images = {
   eirImage,
   pluginImage,
   testImage,
+  liceyPodl2,
 };
