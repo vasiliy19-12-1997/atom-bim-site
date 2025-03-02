@@ -180,9 +180,22 @@
   .Footer {
     max-width: 340px;
     width: 100%;
+
     &Links {
       display: flex;
       flex-direction: column;
+
+      > ul {
+        margin-top: 20px; // Отступ сверху для списка ссылок
+        margin-bottom: 20px; // Отступ снизу для списка ссылок
+        flex-direction: column; // Ссылки в столбец
+        gap: 10px; // Расстояние между ссылками
+        align-items: center; // Центрируем ссылки
+      }
+
+      &Site {
+        margin-top: 20px; // Отступ сверху для ссылки на сайт компании
+      }
     }
   }
 }

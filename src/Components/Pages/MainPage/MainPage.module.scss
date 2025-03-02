@@ -1,31 +1,25 @@
 @import "../../Styles/variables.scss";
+
 .MainPage {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   max-width: 1440px;
-  width: 100vw;
+  width: 100%;
   margin-top: 120px;
-  padding: 20px;
   box-sizing: border-box;
+
   &Main {
     display: grid;
-    grid-template-columns: 1fr 800px;
+    grid-template-columns: 1fr 1fr;
     justify-content: center;
-
     align-items: center;
-    @media (max-width: 1700px) {
-      grid-template-columns: 1fr 600px;
-      > div {
-        max-width: 400px;
-        width: 100%;
-        > img {
-          max-width: 600px;
-          width: 100vw;
-        }
-      }
-    }
+    width: 100%;
+    gap: 40px;
+    padding: 20px;
+    box-sizing: border-box;
+
     > div {
       display: flex;
       flex-direction: column;
@@ -33,17 +27,111 @@
       > h1 {
         font-size: 56px;
       }
+
       > p {
         color: $light-gray;
       }
+
       > img {
-        max-width: 800px;
-        width: 100vw;
-        height: 578px;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
         z-index: 10;
         cursor: none;
         border-radius: 32px;
       }
     }
+  }
+  &Video {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+
+    .videoContainer {
+      width: 100%;
+      max-width: 1268px;
+      aspect-ratio: 16/9; // Соотношение сторон видео
+      border: none;
+      background: #000; // Фон на случай черных полей
+
+      // Для браузеров не поддерживающих aspect-ratio
+      @supports not (aspect-ratio: 16/9) {
+        height: 0;
+        padding-top: 56.25%; // 16:9 = 9/16*100
+        position: relative;
+
+        iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .MainPageMain {
+    grid-template-columns: 1fr;
+    gap: 20px;
+
+    > div {
+      > h1 {
+        font-size: 48px;
+      }
+
+      > p {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .MainPageMain {
+    > div {
+      > h1 {
+        font-size: 36px;
+      }
+
+      > p {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .MainPage {
+    margin-top: 100px;
+    padding: 10px;
+  }
+
+  .MainPageMain {
+    gap: 10px;
+
+    > div {
+      > h1 {
+        font-size: 8vw;
+        margin-bottom: 10px;
+      }
+
+      > p {
+        font-size: 4vw;
+        line-height: 1.4;
+      }
+
+      > img {
+        border-radius: 16px;
+      }
+    }
+  }
+
+  .videoContainer {
+    margin: 10px auto;
   }
 }

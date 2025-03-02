@@ -15,19 +15,24 @@ export const MainPage: FC = () => {
           </p>
         </div>
         <div>
-          <img src={images.licey6Image} alt="Лицей" width="800px" />
-          {/* <img src={images.liceyPodl2} alt="Лицей" width="850px" /> */}
+          <img
+            id="licey6Image"
+            src={images.licey6Image}
+            alt="Лицей"
+            width="800px"
+          />
         </div>
       </section>
       <SectionSite />
-      {/* <iframe
-        src="https://rutube.ru/play/embed/b191fbe1f8ad0f6e3733401faba62c1c"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        width={1268}
-        height={768}
-        title="Rutube Video"
-      ></iframe> */}
+      <section className={s.MainPageVideo}>
+        <iframe
+          src="https://rutube.ru/play/embed/b191fbe1f8ad0f6e3733401faba62c1c"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          title="Rutube Video"
+          className={s.videoContainer} // Уберите width и height из атрибутов!
+        ></iframe>
+      </section>
     </div>
   );
 };

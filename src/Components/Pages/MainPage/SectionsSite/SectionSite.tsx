@@ -1,11 +1,7 @@
-import bakin2Image from "../../../Assets/Images/bakin2.png";
-import Group655Image from "../../../Assets/Images/Group 655_2.png";
 import Group11767Image from "../../../Assets/Images/Group 11767_2.png";
 import Group11787Image from "../../../Assets/Images/Group 11787_2.png";
+import Group655Image from "../../../Assets/Images/Group 655_2.png";
 import infoImage from "../../../Assets/Images/info.png";
-import licey24Image from "../../../Assets/Images/licey_24.jpg";
-
-import prostorMImage from "../../../Assets/Images/prostor_m.png";
 import eirImage from "../../../Assets/Images/section_eir.png";
 import pluginImage from "../../../Assets/Images/section_plugin.png";
 import testImage from "../../../Assets/Images/section_test.png";
@@ -21,7 +17,7 @@ export const SectionSite = () => {
           строительства.
         </p>
         <div>
-          <img src={infoImage} alt="info" />
+          <img id="infoImage" src={infoImage} alt="info" />
           <img src={eirImage} alt="eir" />
         </div>
       </div>
@@ -32,7 +28,7 @@ export const SectionSite = () => {
           семейства. плагины по автоматизации проектирования
         </p>
         <div>
-          <img src={infoImage} alt="info" />
+          <img id="infoImage" src={infoImage} alt="info" />
           <img src={Group11787Image} alt="eir" />
         </div>
       </div>
@@ -43,7 +39,7 @@ export const SectionSite = () => {
           семейства. плагины по автоматизации проектирования
         </p>
         <div>
-          <img src={infoImage} alt="info" />
+          <img id="infoImage" src={infoImage} alt="info" />
           <img src={Group11767Image} alt="eir" />
         </div>
       </div>
@@ -54,7 +50,7 @@ export const SectionSite = () => {
           семейства. плагины по автоматизации проектирования
         </p>
         <div>
-          <img src={infoImage} alt="info" />
+          <img id="infoImage" src={infoImage} alt="info" />
           <img src={Group655Image} alt="eir" />
         </div>
       </div>
@@ -65,7 +61,7 @@ export const SectionSite = () => {
           семейства. плагины по автоматизации проектирования
         </p>
         <div>
-          <img src={infoImage} alt="info" />
+          <img id="infoImage" src={infoImage} alt="info" />
           <img src={pluginImage} alt="eir" />
         </div>
       </div>
@@ -76,7 +72,7 @@ export const SectionSite = () => {
           семейства. плагины по автоматизации проектирования
         </p>
         <div>
-          <img src={infoImage} alt="info" />
+          <img id="infoImage" src={infoImage} alt="info" />
           <img src={testImage} alt="eir" />
         </div>
       </div>
