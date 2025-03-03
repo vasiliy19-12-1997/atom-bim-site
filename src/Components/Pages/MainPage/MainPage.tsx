@@ -2,6 +2,7 @@ import { FC } from "react";
 import s from "./MainPage.module.scss";
 import { SectionSite } from "./SectionsSite/SectionSite";
 import { images } from "../../Assets/Images/Images";
+import { Models } from "./Models/Models";
 export const MainPage: FC = () => {
   return (
     <div className={s.MainPage}>
@@ -33,6 +34,7 @@ export const MainPage: FC = () => {
           className={s.videoContainer} // Уберите width и height из атрибутов!
         ></iframe>
       </section>
+      <Models />
     </div>
   );
 };

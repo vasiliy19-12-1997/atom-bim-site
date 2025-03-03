@@ -9,7 +9,6 @@
   width: 100%;
   margin-top: 120px;
   box-sizing: border-box;
-
   &Main {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -51,10 +50,10 @@
 
     .videoContainer {
       width: 100%;
-      max-width: 1268px;
-      aspect-ratio: 16/9; // Соотношение сторон видео
+      max-width: 1440px;
+      aspect-ratio: 16/9;
       border: none;
-      background: #000; // Фон на случай черных полей
+      background: #000;
 
       // Для браузеров не поддерживающих aspect-ratio
       @supports not (aspect-ratio: 16/9) {

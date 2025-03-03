@@ -5,7 +5,7 @@
   align-items: center;
   gap: 40px;
   padding: 60px;
-
+  box-sizing: border-box;
   &Item {
     display: flex;
     flex-direction: column;

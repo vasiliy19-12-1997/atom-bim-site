@@ -10,7 +10,7 @@ import Modal from "./Components/UI/Modal/Modal";
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [value, setValue] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const location = useLocation();
   const isAuthPage = location.pathname.includes("/login");
   const openModal = () => {
