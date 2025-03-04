@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { lorem } from "../Utils/data";
+import { lorem } from "../../Utils/data";
 import s from "./InstructionPage.module.scss";
 
 export const InstructionPage = () => {

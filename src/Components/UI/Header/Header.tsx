@@ -3,6 +3,7 @@ import { AtomInput } from "../AtomInput/AtomInput";
 import { atom, burger } from "../../Assets/Icons/icons.js";
 import s from "./Header.module.scss";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 interface IHeaderProps {
   openModal: () => void;
 }
@@ -18,7 +19,9 @@ export const Header: React.FC<IHeaderProps> = ({ openModal }) => {
       <div className={s.BurgerMenu} onClick={toggleBurger}>
         {burger}
       </div>
-      <span>{atom}</span>
+      <Link to="/">
+        <span>{atom}</span>
+      </Link>
       <div className={s.HeaderContent}>
         <ul
           className={`${s.HeaderLinks} ${
@@ -26,19 +29,19 @@ export const Header: React.FC<IHeaderProps> = ({ openModal }) => {
           }`}
         >
           <li>
-            <a href="/"> EIR</a>
+            <Link to="/eir">EIR</Link>
           </li>
           <li>
-            <a href="/">Инструкции</a>
+            <Link to="/instruction">Инструкции</Link>
           </li>
           <li>
-            <a href="/">Библиотека</a>
+            <Link to="/library">Библиотека</Link>
           </li>
           <li>
-            <a href="/">Видео</a>
+            <Link to="/video">Видео</Link>
           </li>
           <li>
-            <a href="/">Faq</a>
+            <Link to="/faq">Faq</Link>
           </li>
         </ul>
         <AtomInput

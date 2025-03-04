@@ -1,7 +1,8 @@
 import { FC, useState } from "react";
 import s from "./AuthPage.module.scss";
-import { AtomButton } from "../UI/AtomButton/AtomButton";
-import { AtomInput } from "../UI/AtomInput/AtomInput";
+import { AtomInput } from "../../UI/AtomInput/AtomInput";
+import { AtomButton } from "../../UI/AtomButton/AtomButton";
+
 export const AuthPage: FC = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");

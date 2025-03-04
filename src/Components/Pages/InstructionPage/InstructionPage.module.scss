@@ -1,10 +1,11 @@
-@import "../Styles/variables.scss";
+@import "../../Styles/variables.scss";
 .InstructionPage {
   display: grid;
   grid-template-columns: 280px 124px 1fr 150px 300px;
   position: relative;
   justify-content: center;
   padding: 20px;
+  margin-top: 120px;
   &LeftAside {
     position: sticky;
     overflow-y: auto;
