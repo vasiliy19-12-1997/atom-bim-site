@@ -6,8 +6,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 interface IHeaderProps {
   openModal: () => void;
+  isAuthenticated: boolean;
+  setIsAuthenticated: (value: boolean) => void;
 }
-export const Header: React.FC<IHeaderProps> = ({ openModal }) => {
+export const Header: React.FC<IHeaderProps> = ({
+  openModal,
+  isAuthenticated,
+  setIsAuthenticated,
+}) => {
   const [value, setValue] = useState("");
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const toggleBurger = () => {
@@ -53,8 +59,11 @@ export const Header: React.FC<IHeaderProps> = ({ openModal }) => {
           module="small"
         />
       </div>
-      <AtomButton type="button" onClick={() => console.log("Open")}>
-        Войти
+      <AtomButton
+        type="button"
+        onClick={() => setIsAuthenticated(!isAuthenticated)}
+      >
+        {isAuthenticated ? "Выйти" : "Войти"}
       </AtomButton>
     </header>
   );

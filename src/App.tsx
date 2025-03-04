@@ -23,7 +23,13 @@ export default function App() {
 
   return (
     <div className="App">
-      {!isAuthPage && <Header openModal={openModal} />}
+      {!isAuthPage && (
+        <Header
+          openModal={openModal}
+          isAuthenticated={isAuthenticated}
+          setIsAuthenticated={setIsAuthenticated}
+        />
+      )}
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <AtomInput
