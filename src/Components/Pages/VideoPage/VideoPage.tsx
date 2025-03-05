@@ -1,15 +1,14 @@
 import { FC } from "react";
 import s from "./VideoPage.module.scss";
+import { atomVideo } from "../../Utils/atomVideo";
+import { VideoList } from "./VideoList/VideoList";
 export const VideoPage: FC = () => {
   return (
-    <div>
+    <div className={s.VideoPage}>
       <h1>Каталог видеоинструкций</h1>
-      <section>
-        <h2>Autocad</h2>
-        <hr />
-        <iframe src="https://rutube.ru/video/8736091992becc0799d81b0d5f184dd0/?r=plemwd"></iframe>
-      </section>
-      <section></section>
+      {atomVideo.map((item) => (
+        <VideoList category={item.category} />
+      ))}
     </div>
   );
 };
