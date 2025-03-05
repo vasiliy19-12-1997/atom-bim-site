@@ -1,49 +1,55 @@
+@import "../../../Styles/variables.scss";
+
 .SectionSite {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 40px;
-  padding: 60px;
+  gap: $padding-large;
+  padding: $padding-large;
   box-sizing: border-box;
+
   &Item {
     display: flex;
     flex-direction: column;
     flex: 1 1 calc(33.33% - 20px);
     align-items: center;
     box-sizing: border-box;
-    padding: 20px;
-    background-color: #f0f0f0;
-    border-radius: 20px;
+    padding: $padding-medium;
+    background-color: $gray-100;
+    border-radius: $border-radius;
     max-width: 400px;
-    transition: transform 0.7s ease;
+    transition: transform $animation-duration $animation-easing;
     border: 1px solid transparent;
     cursor: pointer;
     position: relative;
 
     &:hover {
       transform: scale(1.03);
-      border: 1px solid teal;
+      border: 1px solid $green;
     }
 
     h3 {
       font-size: 24px;
-      margin-bottom: 10px;
+      margin-bottom: $padding-small;
       text-align: center;
+      font-family: $font-rubik;
+      color: $gray-900;
     }
 
     p {
       font-size: 16px;
       text-align: center;
-      color: #555;
-      margin-bottom: 20px;
+      color: $light-gray;
+      margin-bottom: $padding-medium;
+      font-family: $font-inter;
     }
 
     div {
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      gap: 10px;
+      gap: $padding-small;
       width: 100%;
 
       img {
@@ -53,7 +59,7 @@
 
       #infoImage {
         position: absolute;
-        bottom: 20px;
+        bottom: $padding-small;
         left: 50%;
         transform: translateX(-50%);
         width: 40px;
@@ -69,8 +75,8 @@
 
 @media (max-width: 1200px) {
   .SectionSite {
-    gap: 30px;
-    padding: 40px;
+    gap: $padding-medium;
+    padding: $padding-medium;
 
     &Item {
       flex: 1 1 calc(50% - 20px);
@@ -95,12 +101,12 @@
 
 @media (max-width: 768px) {
   .SectionSite {
-    gap: 20px;
-    padding: 20px;
+    gap: $padding-medium;
+    padding: $padding-medium;
 
     &Item {
       flex: 1 1 calc(50% - 10px);
-      padding: 15px;
+      padding: $padding-small;
 
       h3 {
         font-size: 20px;
@@ -121,13 +127,13 @@
 
 @media (max-width: 576px) {
   .SectionSite {
-    gap: 15px;
-    padding: 10px;
+    gap: $padding-small;
+    padding: $padding-small;
 
     &Item {
       flex: 1 1 100%;
       max-width: 100%;
-      padding: 10px;
+      padding: $padding-small;
 
       h3 {
         font-size: 18px;

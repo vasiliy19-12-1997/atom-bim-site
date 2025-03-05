@@ -7,16 +7,17 @@
   align-items: center;
   max-width: 1440px;
   width: 100%;
-  margin-top: 120px;
   box-sizing: border-box;
+  padding: $padding-large;
+
   &Main {
     display: grid;
     grid-template-columns: 1fr 1fr;
     justify-content: center;
     align-items: center;
     width: 100%;
-    gap: 40px;
-    padding: 20px;
+    gap: $padding-large;
+    padding: $padding-medium;
     box-sizing: border-box;
 
     > div {
@@ -25,25 +26,28 @@
 
       > h1 {
         font-size: 56px;
+        font-family: $font-rubik;
+        color: $gray-900;
       }
 
       > p {
         color: $light-gray;
+        font-family: $font-inter;
       }
 
       > img {
         width: 100%;
         height: auto;
         object-fit: cover;
-        z-index: 10;
         cursor: none;
-        border-radius: 32px;
+        border-radius: $border-radius;
       }
     }
   }
+
   &Video {
     width: 100%;
-    padding: 20px;
+    padding: $padding-medium;
     box-sizing: border-box;
     display: flex;
     justify-content: center;
@@ -53,7 +57,7 @@
       max-width: 1440px;
       aspect-ratio: 16/9;
       border: none;
-      background: #000;
+      background: $black;
 
       // Для браузеров не поддерживающих aspect-ratio
       @supports not (aspect-ratio: 16/9) {
@@ -76,7 +80,7 @@
 @media (max-width: 1200px) {
   .MainPageMain {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: $padding-medium;
 
     > div {
       > h1 {
@@ -107,16 +111,16 @@
 @media (max-width: 480px) {
   .MainPage {
     margin-top: 100px;
-    padding: 10px;
+    padding: $padding-small;
   }
 
   .MainPageMain {
-    gap: 10px;
+    gap: $padding-small;
 
     > div {
       > h1 {
         font-size: 8vw;
-        margin-bottom: 10px;
+        margin-bottom: $padding-small;
       }
 
       > p {
@@ -131,6 +135,6 @@
   }
 
   .videoContainer {
-    margin: 10px auto;
+    margin: $padding-small auto;
   }
 }

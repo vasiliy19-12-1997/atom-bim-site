@@ -1,58 +1,62 @@
+@import "../../../Styles/variables.scss";
 .VideoList {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: $padding-large;
+}
 
-  h2 {
-    font-size: 28px;
-    text-align: center;
-    color: #333;
-    margin-bottom: 15px;
-  }
+.VideoList h2 {
+  font-size: 28px;
+  text-align: center;
+  color: $gray-900;
+  margin-bottom: $padding-medium;
+  font-family: $font-rubik;
+}
 
-  hr {
-    width: 80%;
-    border: 1px solid #ddd;
-    margin-bottom: 20px;
-  }
+.VideoList hr {
+  width: 80%;
+  border: 1px solid $gray-200;
+  margin-bottom: $padding-medium;
+}
 
-  /* Сетка видео */
-  .videoGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 видео в ряд */
-    gap: 20px;
-    justify-content: center;
-  }
+/* Сетка видео */
+.videoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 видео в ряд */
+  gap: $padding-medium;
+  justify-content: center;
 }
 
 .videoContainer {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  padding: 15px;
+  background: $white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  transition: transform $animation-duration $animation-easing,
+    box-shadow $animation-duration $animation-easing;
+  padding: $padding-medium;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
 
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-  }
+.videoContainer:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
 
-  iframe {
-    width: 100%;
-    height: 250px;
-    border-radius: 10px;
-    border: none;
-  }
+.videoContainer iframe {
+  width: 100%;
+  height: 250px;
+  border-radius: 10px;
+  border: none;
+}
 
-  p {
-    font-size: 16px;
-    color: #444;
-    text-align: center;
-    margin-top: 8px;
-  }
+.videoContainer p {
+  font-size: 16px;
+  color: $light-gray;
+  text-align: center;
+  margin-top: $padding-small;
+  font-family: $font-inter;
 }
 
 .placeholder {
@@ -61,20 +65,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f0f0f0;
+  background: $gray-100;
   border-radius: 10px;
   font-size: 18px;
-  color: #777;
+  color: $gray-900;
   text-transform: uppercase;
   font-weight: bold;
+  font-family: $font-mikro;
 }
 
-/* 🔹 Адаптивность */
 @media (max-width: 1024px) {
   .videoGrid {
     grid-template-columns: repeat(2, 1fr); /* 2 видео в ряд */
   }
-
   .videoContainer iframe {
     height: 220px;
   }
@@ -84,7 +87,6 @@
   .videoGrid {
     grid-template-columns: repeat(1, 1fr); /* 1 видео в ряд */
   }
-
   .videoContainer iframe {
     height: 200px;
   }
