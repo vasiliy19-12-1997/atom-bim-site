@@ -1,136 +1,114 @@
 @import "../../Styles/variables.scss";
+
 .Header {
   position: fixed;
   top: 0;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 1920px;
+  max-width: 1440px;
   z-index: 1000;
-  padding: $padding-large;
+  padding: $padding-medium $padding-large;
   border-bottom: 1px solid $gray-200;
   background-color: $white;
   box-shadow: $box-shadow;
   box-sizing: border-box;
+  transition: background-color $animation-duration $animation-easing;
 
   &Content {
     display: flex;
     gap: $padding-large;
     align-items: center;
   }
+
   &Links {
     display: flex;
     gap: $padding-large;
     list-style-type: none;
     padding: 0;
     margin: 0;
+
     > li {
       list-style-type: none;
       > a {
         text-decoration: none;
         color: $gray-900;
-        text-align: center;
         font-family: $font-mikro;
         font-size: 16px;
-        font-style: normal;
         font-weight: 700;
         line-height: 24px;
         letter-spacing: 0.5px;
         text-transform: uppercase;
+        transition: color 1s ease-in;
+
+        &:hover {
+          color: $green;
+        }
       }
     }
   }
+
+  &LinksOpen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $padding-medium 0;
+    background-color: $white;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    box-shadow: $box-shadow;
+    animation: fade-in 1s ease-in-out forwards;
+  }
 }
+
 .BurgerMenu {
   display: none;
   cursor: pointer;
-}
 
-.HeaderBox {
-  opacity: 0;
-}
-
-.HeaderActive {
-  animation: fade-in $animation-duration $animation-easing forwards;
+  @media (max-width: 768px) {
+    display: block;
+  }
 }
 
 @keyframes fade-in {
   from {
     opacity: 0;
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (max-width: 1520px) {
+@media (max-width: 1440px) {
   .Header {
-    // max-width: 1260px;
-    width: 100%;
-  }
-}
-
-@media (max-width: 1350px) {
-  .Header {
-    // max-width: 1040px;
-    width: 100%;
+    padding: $padding-large $padding-medium;
   }
 }
 
 @media (max-width: 1160px) {
   .Header {
-    // max-width: 960px;
-    width: 100%;
-    gap: $padding-medium;
-  }
-}
-
-@media (max-width: 865px) {
-  .Header {
-    // max-width: 700px;
-    width: 100%;
-    gap: $padding-medium;
+    padding: $padding-medium $padding-medium;
   }
 }
 
 @media (max-width: 768px) {
   .Header {
-    // max-width: 600px;
-    width: 100%;
-    gap: $padding-medium;
+    padding: $padding-medium;
+
     &Links {
       display: none;
-      opacity: 0;
     }
-    &LinksOpen {
-      padding: 10px 0 10px 50px;
-      display: flex;
-      flex-direction: column;
-      top: 100px;
-      position: absolute;
-      left: 0;
-      right: 0;
-      z-index: 999;
-      background-color: $white;
-      animation: fade-in $animation-duration $animation-easing forwards;
-    }
-  }
-  .BurgerMenu {
-    display: block;
-  }
-}
-
-@media (max-width: 680px) {
-  .Header {
-    // max-width: 420px;
-    width: 100%;
   }
 }
 
 @media (max-width: 520px) {
   .Header {
-    // max-width: 320px;
-    width: 100%;
+    padding: $padding-small;
   }
 }

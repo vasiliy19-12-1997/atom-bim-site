@@ -6,6 +6,7 @@
   border-radius: 8px;
   box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.4);
   text-align: center;
+  margin-bottom: 120px;
   &Form {
     display: flex;
     flex-direction: column;
@@ -16,7 +17,8 @@
     }
     > div > input {
       width: 100%;
-      width: 30vw;
+      width: 60vw;
+      max-width: 400px;
       margin-bottom: 24px;
     }
   }

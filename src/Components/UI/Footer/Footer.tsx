@@ -1,25 +1,26 @@
 import s from "./Footer.module.scss";
 import { atom } from "../../Assets/Icons/icons";
 import { link } from "../../Assets/Icons/icons";
+import { Link } from "react-router-dom";
 export const Footer = () => {
   return (
     <footer className={s.Footer}>
       <div className={s.FooterLinks}>
         <ul>
           <li>
-            <a href="/">EIR</a>
+            <Link to="/eir">EIR</Link>
           </li>
           <li>
-            <a href="/">Инструкции</a>
+            <Link to="/instruction">Инструкции</Link>
           </li>
           <li>
-            <a href="/">Этапы моделирования</a>
+            <Link to="/library">Библиотека</Link>
           </li>
           <li>
-            <a href="/">Библиотека</a>
+            <Link to="/video">Видео</Link>
           </li>
           <li>
-            <a href="/">Тесты</a>
+            <Link to="/faq">Faq</Link>
           </li>
         </ul>
         <div className={s.FooterLinksSite}>

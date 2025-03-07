@@ -44,7 +44,7 @@ export const SectionSite = () => {
         </div>
       </div>
       <div className={s.SectionSiteItem}>
-        <h3>Библиотека</h3>
+        <h3>Инструкции</h3>
         <p>Поэтапное описание процесса создания цифровой модели.</p>
         <div>
           <img id="infoImage" src={infoImage} alt="info" />

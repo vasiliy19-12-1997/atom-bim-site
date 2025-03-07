@@ -29,21 +29,21 @@
       font-size: 18px;
       font-style: normal;
       font-weight: 500;
-      line-height: 24px; /* 133.333% */
+      line-height: 24px;
     }
   }
 }
 
 @media (max-width: 768px) {
-  .modalContent {
+  .ModalContent {
     width: 100%;
     max-width: 540px;
   }
 }
 
 @media (max-width: 576px) {
-  .modalContent {
+  .ModalContent {
     width: 100%;
-    max-width: 320px;
+    max-width: 280px;
   }
 }
