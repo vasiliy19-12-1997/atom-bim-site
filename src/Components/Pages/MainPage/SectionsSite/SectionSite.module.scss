@@ -4,7 +4,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  align-items: stretch; // Ensure items stretch to fill the container height
   gap: $padding-large;
   padding: $padding-large;
   box-sizing: border-box;
@@ -14,11 +14,12 @@
     flex-direction: column;
     flex: 1 1 calc(33.33% - 20px);
     align-items: center;
+    justify-content: space-between; // Distribute space between items
     box-sizing: border-box;
     padding: $padding-medium;
     background-color: $gray-100;
     border-radius: $border-radius;
-    max-width: 400px;
+    height: 100%; // Ensure all items have the same height
     transition: transform $animation-duration $animation-easing;
     border: 1px solid transparent;
     cursor: pointer;
@@ -43,6 +44,7 @@
       color: $light-gray;
       margin-bottom: $padding-medium;
       font-family: $font-inter;
+      flex-grow: 1; // Allow text to grow and fill available space
     }
 
     div {
