@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/atom-bim-site/static/css/main.3236acfc.css",
-    "main.js": "/atom-bim-site/static/js/main.ec8b973a.js",
+    "main.css": "/atom-bim-site/static/css/main.72819221.css",
+    "main.js": "/atom-bim-site/static/js/main.18cca5ea.js",
     "static/media/bakin2.png": "/atom-bim-site/static/media/bakin2.a5505b324ba695215b8a.png",
     "static/media/licey_podl2.jpg": "/atom-bim-site/static/media/licey_podl2.cf2142933d4baf631035.jpg",
     "static/media/prostor_m.png": "/atom-bim-site/static/media/prostor_m.258d6c90b7816f808ae6.png",
@@ -14,11 +14,11 @@
     "static/media/Group 11787_2.png": "/atom-bim-site/static/media/Group 11787_2.207059e9a803f091fc76.png",
     "static/media/Group 655_2.png": "/atom-bim-site/static/media/Group 655_2.66a563fdb239ec7ce1b8.png",
     "index.html": "/atom-bim-site/index.html",
-    "main.3236acfc.css.map": "/atom-bim-site/static/css/main.3236acfc.css.map",
-    "main.ec8b973a.js.map": "/atom-bim-site/static/js/main.ec8b973a.js.map"
+    "main.72819221.css.map": "/atom-bim-site/static/css/main.72819221.css.map",
+    "main.18cca5ea.js.map": "/atom-bim-site/static/js/main.18cca5ea.js.map"
   },
   "entrypoints": [
-    "static/css/main.3236acfc.css",
-    "static/js/main.ec8b973a.js"
+    "static/css/main.72819221.css",
+    "static/js/main.18cca5ea.js"
   ]
 }
