@@ -1,5 +1,7 @@
 @import "../../Styles/variables.scss";
 .VideoPage {
   padding: $padding-large;
-  //   box-sizing: border-box;
+
+  @media (max-width: 1440px) {
+  }
 }

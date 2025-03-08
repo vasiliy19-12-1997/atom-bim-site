@@ -3,7 +3,7 @@ import { lorem } from "../../Utils/data";
 import s from "./InstructionPage.module.scss";
 
 export const InstructionPage = () => {
-  const [isLeftAsideOpen, setIsLeftAsideOpen] = useState(false);
+  const [isLeftAsideOpen, setIsLeftAsideOpen] = useState(true);
 
   const toggleLeftAside = () => {
     setIsLeftAsideOpen(!isLeftAsideOpen);
