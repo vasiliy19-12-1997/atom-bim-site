@@ -18,11 +18,14 @@ export const Header: React.FC<IHeaderProps> = ({
 }) => {
   const [value, setValue] = useState("");
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+  const [ActiveLink, setActiveLink] = useState<string | null>(null);
 
   const toggleBurger = () => {
     setIsBurgerOpen(!isBurgerOpen);
   };
-
+  const toggleActiveLink = (path: string) => {
+    setActiveLink(path);
+  };
   return (
     <header className={s.Header}>
       <div className={s.BurgerMenu} onClick={toggleBurger}>
@@ -38,19 +41,59 @@ export const Header: React.FC<IHeaderProps> = ({
           }`}
         >
           <li>
-            <Link to="/eir">EIR</Link>
+            <Link
+              onClick={() => toggleActiveLink("/eir")}
+              className={`${s.Link} ${
+                ActiveLink === "/eir" ? s.open : s.close
+              }`}
+              to="/eir"
+            >
+              EIR
+            </Link>
           </li>
           <li>
-            <Link to="/instruction">Инструкции</Link>
+            <Link
+              onClick={() => toggleActiveLink("/instruction")}
+              className={`${s.Link} ${
+                ActiveLink === "/instruction" ? s.open : s.close
+              }`}
+              to="/instruction"
+            >
+              Инструкции
+            </Link>
           </li>
           <li>
-            <Link to="/library">Библиотека</Link>
+            <Link
+              onClick={() => toggleActiveLink("/library")}
+              className={`${s.Link} ${
+                ActiveLink === "/library" ? s.open : s.close
+              }`}
+              to="/library"
+            >
+              Библиотека
+            </Link>
           </li>
           <li>
-            <Link to="/video">Видео</Link>
+            <Link
+              onClick={() => toggleActiveLink("/video")}
+              className={`${s.Link} ${
+                ActiveLink === "/video" ? s.open : s.close
+              }`}
+              to="/video"
+            >
+              Видео
+            </Link>
           </li>
           <li>
-            <Link to="/faq">Faq</Link>
+            <Link
+              onClick={() => toggleActiveLink("/faq")}
+              className={`${s.Link} ${
+                ActiveLink === "/faq" ? s.open : s.close
+              }`}
+              to="/faq"
+            >
+              Faq
+            </Link>
           </li>
         </ul>
         <AtomInput
