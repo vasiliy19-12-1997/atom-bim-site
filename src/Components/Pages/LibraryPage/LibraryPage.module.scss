@@ -1,0 +1,26 @@
+.LibraryPage {
+  max-width: 1440px;
+  width: 100vw;
+  padding: 20px;
+  box-sizing: border-box;
+  &Main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &Section {
+      display: flex;
+      flex-direction: column;
+      .Card {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+    }
+  }
+}
+hr {
+  border: 0;
+  height: 1px;
+  background-color: #ccc; /* Цвет линии */
+  margin: 20px 0; /* Отступы сверху и снизу */
+}
