@@ -1,10 +1,6 @@
+import { IAtomButton } from "../../Types/types";
 import s from "./AtomButton.module.scss";
-type ButtonType = "button" | "submit" | "reset";
-interface IAtomButton {
-  children: React.ReactNode;
-  onClick: () => void;
-  type: ButtonType;
-}
+
 export const AtomButton: React.FC<IAtomButton> = ({
   children,
   onClick,

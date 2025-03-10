@@ -4,12 +4,7 @@ import { AtomButton } from "../AtomButton/AtomButton";
 import { AtomInput } from "../AtomInput/AtomInput";
 import { atom, burger } from "../../Assets/Icons/icons.js";
 import s from "./Header.module.scss";
-
-interface IHeaderProps {
-  openModal: () => void;
-  isAuthenticated: boolean;
-  setIsAuthenticated: (value: boolean) => void;
-}
+import { IHeaderProps } from "../../Types/types";
 
 export const Header: React.FC<IHeaderProps> = ({
   openModal,

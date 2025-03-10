@@ -5,8 +5,8 @@ import { images } from "../../Assets/Images/Images";
 import { Models } from "./Models/Models";
 export const MainPage: FC = () => {
   return (
-    <div className={s.MainPage}>
-      <section className={s.MainPageMain}>
+    <section className={s.MainPage}>
+      <article className={s.MainPageMain}>
         <div>
           <h1>Добро пожаловать в ATOM.BIM!</h1>
           <p>
@@ -23,9 +23,9 @@ export const MainPage: FC = () => {
             width="800px"
           />
         </div>
-      </section>
+      </article>
       <SectionSite />
-      <section className={s.MainPageVideo}>
+      <article className={s.MainPageVideo}>
         <iframe
           src="https://rutube.ru/play/embed/b191fbe1f8ad0f6e3733401faba62c1c"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -33,8 +33,8 @@ export const MainPage: FC = () => {
           title="Rutube Video"
           className={s.videoContainer} // Уберите width и height из атрибутов!
         ></iframe>
-      </section>
+      </article>
       <Models />
-    </div>
+    </section>
   );
 };

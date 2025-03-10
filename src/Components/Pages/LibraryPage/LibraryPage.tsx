@@ -1,9 +1,9 @@
 import s from "./LibraryPage.module.scss";
 export const LibraryPage = () => {
   return (
-    <div className={s.LibraryPage}>
+    <section className={s.LibraryPage}>
       <div className={s.LibraryPageMain}>
-        <section className={s.LibraryPageMainSection}>
+        <article className={s.LibraryPageMainSection}>
           <h1>Шаблоны для Revit 2020</h1>
           <hr />
           <div className={s.Card}>
@@ -98,8 +98,8 @@ export const LibraryPage = () => {
               <p>АСК_Шаблон_АР (Жилье)</p>
             </div>
           </div>
-        </section>
-        <section className={s.LibraryPageMainSection}>
+        </article>
+        <article className={s.LibraryPageMainSection}>
           <h1>Шаблоны для Revit 2020</h1>
           <hr />
           <div className={s.Card}>
@@ -131,8 +131,8 @@ export const LibraryPage = () => {
               <p>АСК_Шаблон_АР (Жилье)</p>
             </div>
           </div>
-        </section>
-        <section className={s.LibraryPageMainSection}>
+        </article>
+        <article className={s.LibraryPageMainSection}>
           <h1>Шаблоны для Revit 2020</h1>
           <hr />
           <div className={s.Card}>
@@ -164,8 +164,8 @@ export const LibraryPage = () => {
               <p>АСК_Шаблон_АР (Жилье)</p>
             </div>
           </div>
-        </section>
-        <section className={s.LibraryPageMainSection}>
+        </article>
+        <article className={s.LibraryPageMainSection}>
           <h1>Шаблоны для Revit 2020</h1>
           <hr />
           <div className={s.Card}>
@@ -197,8 +197,8 @@ export const LibraryPage = () => {
               <p>АСК_Шаблон_АР (Жилье)</p>
             </div>
           </div>
-        </section>
+        </article>
       </div>
-    </div>
+    </section>
   );
 };

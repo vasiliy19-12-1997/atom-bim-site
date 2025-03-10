@@ -8,7 +8,7 @@ import testImage from "../../../Assets/Images/section_test.png";
 import s from "./SectionSite.module.scss";
 export const SectionSite = () => {
   return (
-    <section className={s.SectionSite}>
+    <article className={s.SectionSite}>
       {/* <h2>Разделы сайта</h2> */}
       <div className={s.SectionSiteItem}>
         <h3>EIR</h3>
@@ -70,6 +70,6 @@ export const SectionSite = () => {
           <img src={testImage} alt="eir" />
         </div>
       </div>
-    </section>
+    </article>
   );
 };

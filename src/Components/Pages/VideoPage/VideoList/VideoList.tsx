@@ -1,16 +1,13 @@
 import { FC, useEffect, useState, useRef } from "react";
 import { atomVideo } from "../../../Utils/atomVideo";
 import s from "./VideoList.module.scss";
-
-interface IVideoListProps {
-  category: string;
-}
+import { IVideoListProps } from "../../../Types/types";
 
 export const VideoList: FC<IVideoListProps> = ({ category }) => {
   const selectedCategory = atomVideo.find((item) => item.category === category);
 
   return (
-    <section className={s.VideoList}>
+    <article className={s.VideoList}>
       <h2>{selectedCategory?.category}</h2>
       <hr />
       <div className={s.videoGrid}>
@@ -22,7 +19,7 @@ export const VideoList: FC<IVideoListProps> = ({ category }) => {
           />
         ))}
       </div>
-    </section>
+    </article>
   );
 };
 

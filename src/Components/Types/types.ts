@@ -22,3 +22,25 @@ export interface IModalProps {
   onClose: () => void;
   children: React.ReactNode;
 }
+export interface IHeaderProps {
+  openModal: () => void;
+  isAuthenticated: boolean;
+  setIsAuthenticated: (value: boolean) => void;
+}
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+export interface IVideoListProps {
+  category: string;
+}
+export interface Route {
+  path: string;
+  element: React.ElementType;
+}
+export type ButtonType = "button" | "submit" | "reset";
+export interface IAtomButton {
+  children: React.ReactNode;
+  onClick: () => void;
+  type: ButtonType;
+}

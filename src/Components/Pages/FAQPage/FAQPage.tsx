@@ -1,28 +1,6 @@
 import React, { useState } from "react";
 import styles from "./FAQPage.module.scss";
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-const faqItems: FAQItem[] = [
-  {
-    question: "Какие услуги вы предоставляете?",
-    answer:
-      "Мы предоставляем полный спектр строительных услуг, включая проектирование, строительство и ремонт.",
-  },
-  {
-    question: "Сколько времени занимает строительство дома?",
-    answer:
-      "Срок строительства зависит от размера и сложности проекта, но в среднем это занимает от 6 до 12 месяцев.",
-  },
-  {
-    question: "Какие материалы вы используете?",
-    answer:
-      "Мы используем только высококачественные материалы от проверенных поставщиков.",
-  },
-];
+import { faqItems } from "../../Utils/faqArray";
 
 export const FAQPage: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -32,9 +10,9 @@ export const FAQPage: React.FC = () => {
   };
 
   return (
-    <div className={styles.faqContainer}>
+    <section className={styles.faqContainer}>
       <h1>Часто задаваемые вопросы</h1>
-      <div className={styles.faqList}>
+      <article className={styles.faqList}>
         {faqItems.map((item, index) => (
           <div
             key={index}
@@ -54,8 +32,8 @@ export const FAQPage: React.FC = () => {
             )}
           </div>
         ))}
-      </div>
-    </div>
+      </article>
+    </section>
   );
 };
 

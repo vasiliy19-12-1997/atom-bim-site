@@ -41,12 +41,6 @@ export default function App() {
         />
         <p>Начните ввод, чтобы увидеть результат</p>
       </Modal>
-      {/* <button
-        style={{ marginTop: "200px", position: "fixed", zIndex: "1000" }}
-        onClick={() => setIsAuthenticated(!isAuthenticated)}
-      >
-        Переключить
-      </button> */}
       <main>
         <div className="container">
           <AppRouter isAuthenticated={isAuthenticated} />

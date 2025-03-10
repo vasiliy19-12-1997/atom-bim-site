@@ -5,11 +5,7 @@ import { InstructionPage } from "../Pages/InstructionPage/InstructionPage";
 import { LibraryPage } from "../Pages/LibraryPage/LibraryPage";
 import { MainPage } from "../Pages/MainPage/MainPage";
 import { VideoPage } from "../Pages/VideoPage/VideoPage";
-
-interface Route {
-  path: string;
-  element: React.ElementType;
-}
+import { Route } from "../Types/types";
 
 export const privateRoutes: Route[] = [
   { path: "/", element: MainPage },
