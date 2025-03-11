@@ -3,6 +3,7 @@ import s from "./MainPage.module.scss";
 import { SectionSite } from "./SectionsSite/SectionSite";
 import { images } from "../../Assets/Images/Images";
 import { Models } from "./Models/Models";
+import { ImageTrack } from "./ImageTrack/ImageTrack";
 export const MainPage: FC = () => {
   return (
     <section className={s.MainPage}>
@@ -16,11 +17,10 @@ export const MainPage: FC = () => {
           </p>
         </div>
         <div>
-          <img
-            id="licey6Image"
-            src={images.licey6Image}
-            alt="Лицей"
-            width="800px"
+          <ImageTrack
+            frontSrc={images.licey6Image}
+            backSrc={images.liceyPodl2}
+            alt={"atom projects"}
           />
         </div>
       </article>

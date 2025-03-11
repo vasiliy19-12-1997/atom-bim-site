@@ -9,6 +9,7 @@ export const VideoList: FC<IVideoListProps> = ({ category }) => {
   return (
     <article className={s.VideoList}>
       <h2>{selectedCategory?.category}</h2>
+
       <hr />
       <div className={s.videoGrid}>
         {selectedCategory?.urls.map((url, index) => (

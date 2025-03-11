@@ -41,6 +41,7 @@
         object-fit: cover;
         cursor: none;
         border-radius: $border-radius;
+        background-position: center top;
       }
     }
   }
@@ -78,8 +79,6 @@
 }
 
 @media (max-width: 1200px) {
-  .MainPage {
-  }
   .MainPageMain {
     grid-template-columns: 1fr;
     gap: $padding-medium;

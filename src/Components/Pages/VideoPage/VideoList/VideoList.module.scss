@@ -1,25 +1,25 @@
 @import "../../../Styles/variables.scss";
 .VideoList {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 1440px;
+  width: 100%;
+  box-sizing: border-box;
   padding: $padding-large;
-}
+  display: flex;
+  flex-direction: column;
 
-.VideoList h2 {
-  font-size: 28px;
-  text-align: center;
-  color: $gray-900;
-  margin-bottom: $padding-medium;
-  font-family: $font-rubik;
+  > h2 {
+    font-size: 28px;
+    text-align: center;
+    color: $gray-900;
+    margin-bottom: $padding-medium;
+    font-family: $font-rubik;
+  }
+  > hr {
+    width: 80%;
+    border: 1px solid $gray-200;
+    margin-bottom: $padding-medium;
+  }
 }
-
-.VideoList hr {
-  width: 80%;
-  border: 1px solid $gray-200;
-  margin-bottom: $padding-medium;
-}
-
-/* Сетка видео */
 .videoGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 видео в ряд */
