@@ -1,8 +1,7 @@
 export interface IAsideProps {
-  position: "left" | "right";
-  show: boolean;
-  toggleShow: () => void;
+  show?: boolean;
   children: React.ReactNode;
+  className: string;
 }
 type inputModule = "small" | "modal" | "submit";
 

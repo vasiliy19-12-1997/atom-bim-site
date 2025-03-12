@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { lorem } from "../../Utils/data";
 import s from "./InstructionPage.module.scss";
+import { Aside } from "../../UI/Aside/Aside";
 
 export const InstructionPage = () => {
   const [isLeftAsideOpen, setIsLeftAsideOpen] = useState(true);
-
   const toggleLeftAside = () => {
     setIsLeftAsideOpen(!isLeftAsideOpen);
   };
   return (
     <section className={s.InstructionPage}>
-      <aside
+      <Aside
+        show={isLeftAsideOpen}
         className={`${s.InstructionPageLeftAside} ${
           isLeftAsideOpen ? s.open : s.close
         }`}
@@ -46,7 +47,7 @@ export const InstructionPage = () => {
             </li>
           </ul>
         </nav>
-      </aside>
+      </Aside>
       <button onClick={toggleLeftAside} className={s.InstructionPageLeftButton}>
         {isLeftAsideOpen ? "◀" : "▶"}
       </button>
@@ -56,7 +57,7 @@ export const InstructionPage = () => {
         <p>{lorem}</p>
       </div>
       <div></div>
-      <aside className={s.RightAside}>
+      <Aside className={s.RightAside}>
         <ol>
           <li>
             <a href="/">Описание семейства</a>
@@ -80,7 +81,7 @@ export const InstructionPage = () => {
             <a href="/">Параметры экземпляра</a>
           </li>
         </ol>
-      </aside>
+      </Aside>
     </section>
   );
 };

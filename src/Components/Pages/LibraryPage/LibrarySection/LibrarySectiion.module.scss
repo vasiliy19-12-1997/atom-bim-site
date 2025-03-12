@@ -9,6 +9,10 @@
     font-family: $font-rubik;
     color: $gray-900;
   }
+  > hr {
+    border: 1px solid $gray-200;
+    margin-bottom: $padding-medium;
+  }
   &Cards {
     display: flex;
     flex-wrap: wrap;
