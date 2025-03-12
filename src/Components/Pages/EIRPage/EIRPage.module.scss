@@ -1,0 +1,12 @@
+.EIRPage {
+  max-width: 1440px;
+  width: 100vw;
+  padding: 20px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  position: relative;
+}
+.Aside {
+  position: absolute;
+}

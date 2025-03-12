@@ -1,4 +1,4 @@
-export const atomVideo = [
+export const atomVideoArray = [
   {
     category: "Autocad",
     urls: ["https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0"],

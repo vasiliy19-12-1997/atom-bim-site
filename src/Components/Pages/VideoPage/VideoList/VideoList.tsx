@@ -1,10 +1,12 @@
 import { FC, useEffect, useState, useRef } from "react";
-import { atomVideo } from "../../../Utils/atomVideo";
+import { atomVideoArray } from "../../../Data/atomVideoArray";
 import s from "./VideoList.module.scss";
 import { IVideoListProps } from "../../../Types/types";
 
 export const VideoList: FC<IVideoListProps> = ({ category }) => {
-  const selectedCategory = atomVideo.find((item) => item.category === category);
+  const selectedCategory = atomVideoArray.find(
+    (item) => item.category === category
+  );
 
   return (
     <article className={s.VideoList}>

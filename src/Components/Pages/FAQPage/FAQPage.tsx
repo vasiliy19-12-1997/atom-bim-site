@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./FAQPage.module.scss";
-import { faqItems } from "../../Utils/faqArray";
+import { faqArray } from "../../Data/faqArray";
 
 export const FAQPage: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -13,7 +13,7 @@ export const FAQPage: React.FC = () => {
     <section className={styles.faqContainer}>
       <h1>Часто задаваемые вопросы</h1>
       <article className={styles.faqList}>
-        {faqItems.map((item, index) => (
+        {faqArray.map((item, index) => (
           <div
             key={index}
             className={`${styles.faqItem} ${

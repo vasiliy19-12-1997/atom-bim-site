@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { lorem } from "../../Utils/data";
+import { lorem } from "../../Data/data";
 import s from "./InstructionPage.module.scss";
 import { Aside } from "../../UI/Aside/Aside";
 
