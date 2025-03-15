@@ -1,0 +1,16 @@
+.LibraryPage {
+  max-width: 1440px;
+  width: 100vw;
+  padding: 20px;
+  box-sizing: border-box;
+  &Main {
+    display: flex;
+    flex-direction: column;
+  }
+}
+hr {
+  border: 0;
+  height: 1px;
+  background-color: #ccc;
+  margin: 20px 0;
+}

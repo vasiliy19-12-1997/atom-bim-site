@@ -1,0 +1,54 @@
+@import "../../Styles/variables.scss";
+.AtomInput {
+  display: flex;
+  align-items: center;
+  &Input {
+    background: $gray-100;
+    padding: $padding-small $padding-medium;
+    border-radius: $border-radius;
+    height: 32px;
+    width: 20vw;
+    max-width: 300px;
+    border: none;
+  }
+  &Search {
+    display: none;
+    padding: $padding-small;
+    align-items: flex-start;
+    border-radius: $border-radius;
+    background: $green;
+  }
+  &LightSearch {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+}
+.AtomInput > svg {
+  display: none;
+}
+
+@media (max-width: 1070px) {
+  .AtomInput {
+    &Search {
+      display: inline-flex;
+    }
+    &LightSearch {
+      display: none;
+    }
+    &Input {
+      display: none;
+    }
+  }
+  .AtomInput > svg {
+    display: block;
+  }
+}
+@media (max-width: 576px) {
+  .AtomInput {
+    &Input {
+      max-width: 250px;
+      width: 60vw;
+    }
+  }
+}

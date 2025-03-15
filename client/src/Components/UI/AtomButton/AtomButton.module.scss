@@ -1,0 +1,17 @@
+@import "../../Styles/variables.scss";
+.AtomButton {
+  height: 40px;
+  min-width: 80px;
+  padding: $padding-small $padding-large;
+  border: none;
+  border-radius: $border-radius;
+  background: $green;
+  color: $white;
+  font-family: $font-inter;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px; /* 133.333% */
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
