@@ -43,3 +43,8 @@ export interface IAtomButton {
   onClick: () => void;
   type: ButtonType;
 }
+export interface IVideoSection {
+  category: string;
+  urls: string[];
+  text: string[];
+}

@@ -1,8 +1,4 @@
-export interface IVideoSection {
-  category: string;
-  urls: string[];
-  text: string[];
-}
+import { IVideoSection } from "../Components/Types/types";
 
 export const fetchVideos = async (): Promise<IVideoSection[]> => {
   const response = await fetch("http://localhost:5000/api/videos");

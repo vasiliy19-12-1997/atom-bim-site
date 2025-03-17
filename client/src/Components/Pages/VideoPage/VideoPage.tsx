@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from "react";
-import s from "./VideoPage.module.scss";
-import { atomVideoArray } from "../../Data/atomVideoArray";
+import { fetchVideos } from "../../../API/API";
 import { VideoList } from "./VideoList/VideoList";
-import { fetchVideos, IVideoSection } from "../../../API/API";
+import s from "./VideoPage.module.scss";
+import { IVideoSection } from "../../Types/types";
 export const VideoPage: FC = () => {
   const [sections, setSections] = useState<IVideoSection[]>([]);
   const [loading, setLoading] = useState(false);
