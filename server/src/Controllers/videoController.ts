@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { atomVideoArray } from "../Data/videos.js";
-
+import { atomVideoArray } from "../Data/atomVideo.js";
 export const getVideos = (req: Request, res: Response) => {
   try {
     res.status(200).json(atomVideoArray);
