@@ -1,14 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./FAQPage.module.scss";
-import { faqArray } from "../../Data/faqArray";
+import { IFAQItem } from "../../Types/types";
+import { fetchFaq } from "../../../API/API";
 
 export const FAQPage: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [faqArray, setFaqArray] = useState<IFAQItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>("");
 
   const toggleAnswer = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchFaq();
+        setFaqArray(data);
+      } catch (error) {
+        setError("Ошибка загрузки данных на уровне компонента");
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
   return (
     <section className={styles.faqContainer}>
       <h1>Часто задаваемые вопросы</h1>

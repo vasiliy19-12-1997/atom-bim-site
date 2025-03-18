@@ -26,7 +26,7 @@ export interface IHeaderProps {
   isAuthenticated: boolean;
   setIsAuthenticated: (value: boolean) => void;
 }
-export interface FAQItem {
+export interface IFAQItem {
   question: string;
   answer: string;
 }
@@ -47,4 +47,12 @@ export interface IVideoSection {
   category: string;
   urls: string[];
   text: string[];
+}
+export interface ILibraryItem {
+  title: string;
+  image: string;
+}
+export interface IAtomLibraryArray {
+  category: string;
+  items: ILibraryItem[];
 }
