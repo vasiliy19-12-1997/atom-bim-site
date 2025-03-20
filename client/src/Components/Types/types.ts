@@ -31,6 +31,7 @@ export interface IFAQItem {
   answer: string;
 }
 export interface IVideoListProps {
+  sections: IVideoSection[];
   category: string;
 }
 export interface Route {
@@ -52,7 +53,11 @@ export interface ILibraryItem {
   title: string;
   image: string;
 }
-export interface IAtomLibraryArray {
+export interface ILibraryArray {
+  category: string;
+  items: ILibraryItem[];
+}
+export interface ILibrarySection {
   category: string;
   items: ILibraryItem[];
 }

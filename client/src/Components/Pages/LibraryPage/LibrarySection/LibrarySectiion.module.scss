@@ -1,9 +1,9 @@
 @import "../../../Styles/variables.scss";
 .LibrarySection {
   display: flex;
-  flex-direction: column;
   box-sizing: border-box;
   text-align: center;
+  flex-direction: column;
   > h1 {
     font-size: 28px;
     font-family: $font-rubik;
@@ -14,10 +14,6 @@
     margin-bottom: $padding-medium;
   }
   &Cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-around;
     .Card {
       max-width: 200px;
       width: 100vw;
@@ -40,7 +36,15 @@
     }
   }
 }
+.Map {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+}
 @media (max-width: 1200px) {
+  .Map {
+    justify-content: center;
+  }
   .LibrarySection {
     > h1 {
       font-size: 24px;

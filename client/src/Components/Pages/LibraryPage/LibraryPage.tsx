@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import { fetchLibrary } from "../../../API/API";
+import { ILibraryArray } from "../../Types/types";
 import s from "./LibraryPage.module.scss";
 import { LibrarySection } from "./LibrarySection/LibrarySection";
-import { IAtomLibraryArray } from "../../Types/types";
-import { fetchLibrary } from "../../../API/API";
 export const LibraryPage = () => {
-  const [libraryArray, setLibraryArray] = useState<IAtomLibraryArray[]>([]);
+  const [libraryArray, setLibraryArray] = useState<ILibraryArray[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>("");
   useEffect(() => {
@@ -25,7 +25,7 @@ export const LibraryPage = () => {
     <section className={s.LibraryPage}>
       <div className={s.LibraryPageMain}>{}</div>
       {libraryArray.map((item) => (
-        <LibrarySection />
+        <LibrarySection category={item.category} items={item.items} />
       ))}
     </section>
   );

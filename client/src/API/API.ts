@@ -1,6 +1,6 @@
 import {
-  IAtomLibraryArray,
   IFAQItem,
+  ILibraryArray,
   IVideoSection,
 } from "../Components/Types/types";
 
@@ -15,7 +15,7 @@ export const fetchFaq = async (): Promise<IFAQItem[]> => {
   if (!response.ok) throw new Error("Ошибка на сервере");
   return response.json();
 };
-export const fetchLibrary = async (): Promise<IAtomLibraryArray[]> => {
+export const fetchLibrary = async (): Promise<ILibraryArray[]> => {
   const response = await fetch("http://localhost:5000/api/library");
   if (!response.ok) throw new Error("Ошибка на сервере");
   return response.json();

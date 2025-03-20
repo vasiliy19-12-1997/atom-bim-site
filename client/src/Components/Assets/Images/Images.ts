@@ -10,7 +10,7 @@ import eirImage from "./section_eir.png";
 import pluginImage from "./section_plugin.png";
 import testImage from "./section_test.png";
 import liceyPodl2 from "./licey_podl2.jpg";
-
+import template2 from "./template2.png";
 export const images = {
   bakin2Image,
   Group655Image,
@@ -24,4 +24,5 @@ export const images = {
   pluginImage,
   testImage,
   liceyPodl2,
+  template2,
 };

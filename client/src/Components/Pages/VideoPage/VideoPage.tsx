@@ -29,7 +29,7 @@ export const VideoPage: FC = () => {
     <section className={s.VideoPage}>
       <h1>Каталог видеоинструкций</h1>
       {sections.map((item) => (
-        <VideoList category={item.category} />
+        <VideoList sections={sections} category={item.category} />
       ))}
     </section>
   );
