@@ -66,6 +66,7 @@
 
     &Content {
       max-width: 917px;
+      box-sizing: border-box;
 
       > p {
         color: var(--Gray-900, #1a1a1a);
@@ -165,12 +166,13 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    align-items: center;
     &LeftAside {
       top: 85px;
     }
   }
   .InstructionPageMainContent {
-    padding: 20px;
+    padding: 0px 50px 0px 50px;
   }
   .InstructionPageMainLeftAside {
     position: fixed;
