@@ -7,13 +7,14 @@
   &Container {
     display: grid;
     grid-template-columns: 360px 1fr;
+    gap: 40px;
     position: relative;
   }
 }
 .Aside {
   max-width: 360px;
   width: 100%;
-  top: 80px;
+  top: 140px;
   position: fixed;
   padding: $padding-medium;
   transition: transform 0.3s ease-in-out;
@@ -65,13 +66,15 @@
   .Aside {
     background-color: $dark-gray;
     height: 100vh;
+    top: 85px;
   }
   .OpenAside {
     display: block;
   }
 }
 
-@media (max-width: 480px) {
-  .EIRPageContainer {
+@media (max-width: 520px) {
+  .Aside {
+    top: 65px;
   }
 }
