@@ -13,7 +13,7 @@ export const LibraryPage = () => {
         const data = await fetchLibrary();
         setLibraryArray(data);
       } catch (error) {
-        setError("Ошибка при заггрузке на уровне компонента");
+        setError("Ошибка при загрузке на уровне компонента");
         console.error(error);
       } finally {
         setLoading(false);
