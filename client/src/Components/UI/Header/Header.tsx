@@ -13,7 +13,7 @@ export const Header: React.FC<IHeaderProps> = ({
 }) => {
   const [value, setValue] = useState("");
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
-  const [ActiveLink, setActiveLink] = useState<string | null>(null);
+  const [ActiveLink, setActiveLink] = useState<string | null>("");
 
   const toggleBurger = () => {
     setIsBurgerOpen(!isBurgerOpen);
