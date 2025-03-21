@@ -1,91 +1,105 @@
 @import "../../Styles/variables.scss";
 .InstructionPage {
-  display: grid;
-  grid-template-columns: 280px 124px 1fr 150px 300px;
-  position: relative;
-  justify-content: center;
   padding: 20px;
-  &LeftAside {
-    position: sticky;
-    overflow-y: auto;
-    padding: 20px;
-    top: 105px;
-    height: 100vh;
-    transition: transform 0.3s ease;
-    z-index: 100;
-    > nav {
-      > ul {
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        list-style-type: none;
-        > li {
-          margin-bottom: 24px;
-          > a {
-            text-decoration: none;
-            color: var(--Gray-800, #808080);
-            font-family: Inter;
-            font-size: 18px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: 24px;
+  box-sizing: border-box;
+
+  &Main {
+    max-width: 1440px;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 280px 124px 1fr;
+    position: relative;
+    box-sizing: border-box;
+
+    &LeftAside {
+      position: sticky;
+      overflow-y: auto;
+      padding: 20px;
+      top: 105px;
+      height: 100vh;
+      transition: transform 0.3s ease-in-out;
+      z-index: 100;
+
+      > nav {
+        > ul {
+          padding: 0;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          list-style-type: none;
+
+          > li {
+            margin-bottom: 24px;
+
+            > a {
+              text-decoration: none;
+              color: var(--Gray-800, #808080);
+              font-family: Inter;
+              font-size: 18px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: 24px;
+            }
           }
         }
       }
+
+      &.open {
+        transform: translateX(0);
+      }
+      &.close {
+        transform: translateX(-100%);
+      }
     }
-    &.open {
-      transform: translateX(0);
+
+    &LeftButton {
+      display: none;
+      position: fixed;
+      top: 600px;
+      left: 10px;
+      z-index: 100;
+      background-color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
     }
-    &.close {
-      transform: translateX(-100%);
-    }
-  }
-  &LeftButton {
-    display: none;
-    position: fixed;
-    top: 600px; /* Account for the fixed header */
-    left: 10px;
-    z-index: 100;
-    background-color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-  }
-  &Content {
-    > p {
-      color: var(--Gray-900, #1a1a1a);
-      font-family: Inter;
-      font-size: 18px;
-      font-style: normal;
-      font-weight: 300;
-      line-height: 28px;
+
+    &Content {
+      max-width: 917px;
+
+      > p {
+        color: var(--Gray-900, #1a1a1a);
+        font-family: Inter;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 28px;
+      }
     }
   }
 }
+
 .RightAside {
-  position: sticky;
-  height: 100vh;
-  top: 120px;
+  position: fixed;
   overflow-y: auto;
+  top: 140px;
+  right: calc((100vw - 1920px) / 2 + 20px);
+  height: 100vh;
+  z-index: 100;
+  width: 300px;
+  transition: all 0.3s ease;
 
   > ol {
     list-style-type: decimal;
     padding-left: 0;
-
     margin: 0;
     margin-top: 20px;
     position: relative;
+
     > li {
       counter-increment: custom-counter;
       margin-bottom: 12px;
-      text-decoration: none;
-      color: var(--Gray-800, #808080);
-      font-family: Inter;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 24px; /* 150% */
+
       > a {
         text-decoration: none;
         color: var(--Gray-800, #808080);
@@ -93,9 +107,10 @@
         font-size: 16px;
         font-style: normal;
         font-weight: 500;
-        line-height: 24px; /* 150% */
+        line-height: 24px;
       }
     }
+
     li::before {
       content: counter(custom-counter);
       padding-right: 8px;
@@ -104,48 +119,66 @@
 }
 
 @media (max-width: 1760px) {
-  .InstructionPage {
-    grid-template-columns: 280px 124px 1fr 150px 300px;
+  .InstructionPageMain {
+    grid-template-columns: 280px 124px 1fr;
+    &Content {
+      max-width: 780px;
+    }
+  }
+  .RightAside {
+    right: calc((100vw - 1760px) / 2 + 20px);
   }
 }
+
 @media (max-width: 1560px) {
-  .InstructionPage {
-    grid-template-columns: 240px 60px 1fr 50px 240px;
+  .InstructionPageMain {
+    grid-template-columns: 240px 60px 1fr;
+    &Content {
+      max-width: 700px;
+    }
+  }
+  .RightAside {
+    right: calc((100vw - 1560px) / 2 + 20px);
   }
 }
+
 @media (max-width: 1360px) {
-  .InstructionPage {
-    grid-template-columns: 200px 30px 1fr 30px 200px;
+  .InstructionPageMain {
+    grid-template-columns: 200px 30px 1fr;
+  }
+  .RightAside {
+    right: calc((100vw - 1360px) / 2 + 20px);
   }
 }
+
 @media (max-width: 1160px) {
-  .InstructionPage {
+  .InstructionPageMain {
     grid-template-columns: 180px 20px 1fr;
   }
   .RightAside {
     display: none;
   }
 }
+
 @media (max-width: 960px) {
-  .InstructionPage {
+  .InstructionPageMain {
     display: flex;
+    flex-direction: column;
     position: relative;
   }
-  .InstructionPageContent {
+  .InstructionPageMainContent {
     padding: 20px;
   }
-  .InstructionPageLeftAside {
+  .InstructionPageMainLeftAside {
     position: fixed;
-    left: 0px;
+    left: 0;
     background-color: $white;
-  }
-  .InstructionPageLeftAside {
     display: none;
     &.open {
       display: block;
     }
   }
-  .InstructionPageLeftButton {
+  .InstructionPageMainLeftButton {
     display: block;
   }
 }
