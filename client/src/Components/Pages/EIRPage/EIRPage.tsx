@@ -66,7 +66,7 @@ export const EIRPage = () => {
         <button onClick={toggleLeftAside} className={s.OpenAside}>
           {isLeftAside ? "◀" : "▶"}
         </button>
-        <article>
+        <article className={s.EIRPageContainerContent}>
           <NumberestList items={eirData} />
         </article>
       </div>

@@ -4,16 +4,16 @@
   width: 100vw;
   padding: $padding-large;
   box-sizing: border-box;
+
   &Container {
     display: grid;
-    grid-template-columns: 360px 1fr;
+    grid-template-columns: 1fr 3fr;
+    gap: 40px;
     position: relative;
   }
 }
 .Aside {
-  max-width: 360px;
-  width: 100%;
-  top: 80px;
+  top: 120px;
   position: fixed;
   padding: $padding-medium;
   transition: transform 0.3s ease-in-out;
@@ -51,9 +51,20 @@
 @media (max-width: 1200px) {
   .EIRPageContainer {
     grid-template-columns: 280px 1fr;
+    gap: 5;
   }
   .Aside {
     max-width: 240px;
+    width: 100%;
+  }
+}
+@media (max-width: 1024px) {
+  .EIRPageContainer {
+    grid-template-columns: 240px 1fr;
+    gap: 0;
+  }
+  .Aside {
+    max-width: 200px;
     width: 100%;
   }
 }
