@@ -5,13 +5,13 @@ import s from "./EIRPage.module.scss";
 import { Link } from "react-router-dom";
 import { NumberestList } from "./NumberestList/NumberestList";
 import { eirData } from "../../Data/eirArray";
+import { CollapsibleSection } from "../../UI/CollapsibleSection/CollapsibleSection";
 export const EIRPage = () => {
   const [value, setValue] = useState("");
   const [isLeftAside, setIsLeftAside] = useState(true);
 
-  const toggleLeftAside = () => {
-    setIsLeftAside(!isLeftAside);
-  };
+  const toggleLeftAside = () => setIsLeftAside(!isLeftAside);
+
   return (
     <section className={s.EIRPage}>
       <div className={s.EIRPageContainer}>
@@ -26,41 +26,64 @@ export const EIRPage = () => {
             module="small"
             type="text"
           />
+
           <ul>
-            <li>
-              EIR
-              <ol>
+            <CollapsibleSection title="EIR">
+              <>
                 <li>
                   <Link to="">Общие положения</Link>
                 </li>
                 <li>
-                  <Link to="">Общие положения</Link>
+                  <Link to="">Термины</Link>
                 </li>
                 <li>
-                  <Link to="">Общие положения</Link>
+                  <Link to="">Требования к програмному обеспечению</Link>
                 </li>
                 <li>
-                  <Link to="">Общие положения</Link>
+                  <Link to="">Общие требоавния к модели</Link>
                 </li>
                 <li>
-                  <Link to="">Общие положения</Link>
-                </li>
-              </ol>
-            </li>
-            <li>
-              Приложения
-              <ol>
-                <li>
-                  <Link to="">Общие положения</Link>
+                  <Link to="">Запрещенные действия</Link>
                 </li>
                 <li>
-                  <Link to="">Общие положения</Link>
+                  <Link to="">Правила наименования</Link>
                 </li>
                 <li>
-                  <Link to="">Общие положения</Link>
+                  <Link to="">Рабочие наборы</Link>
                 </li>
-              </ol>
-            </li>
+                <li>
+                  <Link to="">Требования к файлам Civil 3D</Link>
+                </li>
+                <li>
+                  <Link to="">Контроль качества ЦИМ</Link>
+                </li>
+                <li>
+                  <Link to="">Обмен данными через АТОМ. Облако</Link>
+                </li>
+              </>
+            </CollapsibleSection>
+            <CollapsibleSection title="Приложения">
+              <>
+                <li>
+                  <Link to="">Матрица наполнения</Link>
+                </li>
+                <li>
+                  <Link to="">Матрица коллизий</Link>
+                </li>
+                <li>
+                  <Link to="">Идентификация материалов</Link>
+                </li>
+                <li>
+                  <Link to="">Идентификация элементов</Link>
+                </li>
+                <li>
+                  <Link to="">Типы инженерных систем</Link>
+                </li>
+                <li>
+                  <Link to="">Этапы моделирования</Link>
+                </li>
+              </>
+            </CollapsibleSection>
           </ul>
         </Aside>
         <button onClick={toggleLeftAside} className={s.OpenAside}>

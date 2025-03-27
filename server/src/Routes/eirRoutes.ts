@@ -3,7 +3,6 @@ import mammoth from "mammoth";
 import { UploadedFile } from "express-fileupload";
 import { Request, Response } from "express";
 
-// Расширяем тип Request
 declare module "express" {
   interface Request {
     files?: {

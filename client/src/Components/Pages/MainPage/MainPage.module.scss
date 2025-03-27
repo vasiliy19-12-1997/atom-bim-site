@@ -60,10 +60,9 @@
       border: none;
       background: $black;
 
-      // Для браузеров не поддерживающих aspect-ratio
       @supports not (aspect-ratio: 16/9) {
         height: 0;
-        padding-top: 56.25%; // 16:9 = 9/16*100
+        padding-top: 56.25%;
         position: relative;
 
         iframe {

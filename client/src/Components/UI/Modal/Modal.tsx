@@ -1,4 +1,3 @@
-// Modal.tsx
 import React from "react";
 import { IModalProps } from "../../Types/types";
 import s from "./Modal.module.scss";
