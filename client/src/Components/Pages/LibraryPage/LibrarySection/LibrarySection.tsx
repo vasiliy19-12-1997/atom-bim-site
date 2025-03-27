@@ -11,7 +11,7 @@ export const LibrarySection: FC<ILibrarySection> = ({ category, items }) => {
           {items.map((item, index) => (
             <div className={s.LibrarySectionCards}>
               <div className={s.Card} key={index}>
-                <img src={item.image} alt="test" width={150} height={200} />
+                <img src={item.image} alt="test" width={125} height={150} />
                 <p>{item.title}</p>
               </div>
             </div>

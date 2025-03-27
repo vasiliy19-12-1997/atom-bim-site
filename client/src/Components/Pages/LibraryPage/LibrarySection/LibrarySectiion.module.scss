@@ -22,8 +22,8 @@
       align-items: center;
       flex-direction: column;
       > img {
-        width: 100%;
         height: auto;
+
         object-fit: cover;
         cursor: none;
         border-radius: $border-radius;
