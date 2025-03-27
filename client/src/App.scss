@@ -1,5 +1,7 @@
 @import "../src/Components/Styles/variables.scss";
 #root {
+  display: flex;
+  justify-content: center;
 }
 
 .App {

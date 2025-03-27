@@ -6,11 +6,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba($color: $light-gray, $alpha: 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba($color: $light-gray, $alpha: 0.7);
   z-index: $z-index-modal;
+  padding: $padding-medium;
+  box-sizing: border-box;
   &Content {
     display: flex;
     flex-direction: column;
