@@ -1,14 +1,13 @@
 @import "../../Styles/variables.scss";
 
-.faqContainer {
+.FaqContainer {
   font-family: $font-inter;
   padding: $padding-large;
   background-color: $gray-100;
   border-radius: $border-radius;
   box-shadow: $box-shadow;
   max-width: 800px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: $padding-medium;
 
   h1 {
     color: $gray-900;
@@ -17,12 +16,12 @@
   }
 }
 
-.faqList {
+.FaqList {
   list-style: none;
   padding: 0;
 }
 
-.faqItem {
+.FaqItem {
   background-color: $white;
   border: 1px solid $gray-200;
   border-radius: $border-radius;
@@ -35,7 +34,7 @@
   }
 }
 
-.faqQuestion {
+.FaqQuestion {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -56,7 +55,7 @@
   }
 }
 
-.faqAnswer {
+.FaqAnswer {
   padding: 0 $padding-medium;
   background-color: $gray-100;
   color: $gray-900;
@@ -68,26 +67,26 @@
     padding $animation-duration $animation-easing;
 }
 
-.faqItemOpen .faqAnswer {
+.FaqItemOpen .FaqAnswer {
   max-height: 500px;
   padding: $padding-medium;
   transition: max-height 1s ease-out, padding 1s ease-out;
 }
 
-.faqItemOpen .faqQuestion span {
+.FaqItemOpen .FaqQuestion span {
   transform: rotate(180deg);
 }
 
 @media (max-width: 600px) {
-  .faqContainer {
+  .FaqContainer {
     padding: $padding-medium;
   }
 
-  .faqQuestion h2 {
+  .FaqQuestion h2 {
     font-size: 1.1rem;
   }
 
-  .faqAnswer {
+  .FaqAnswer {
     font-size: 0.9rem;
   }
 }

@@ -28,25 +28,25 @@ export const FAQPage: React.FC = () => {
     loadData();
   }, []);
   return (
-    <section className={styles.faqContainer}>
+    <section className={styles.FaqContainer}>
       <h1>Часто задаваемые вопросы</h1>
-      <article className={styles.faqList}>
+      <article className={styles.FaqList}>
         {faqArray.map((item, index) => (
           <div
             key={index}
-            className={`${styles.faqItem} ${
-              openIndex === index ? styles.faqItemOpen : ""
+            className={`${styles.FaqItem} ${
+              openIndex === index ? styles.FaqItemOpen : ""
             }`}
           >
             <div
-              className={styles.faqQuestion}
+              className={styles.FaqQuestion}
               onClick={() => toggleAnswer(index)}
             >
               <h2>{item.question}</h2>
               <span>{openIndex === index ? "-" : "+"}</span>
             </div>
             {openIndex === index && (
-              <p className={styles.faqAnswer}>{item.answer}</p>
+              <p className={styles.FaqAnswer}>{item.answer}</p>
             )}
           </div>
         ))}
