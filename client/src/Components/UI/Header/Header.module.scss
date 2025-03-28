@@ -15,7 +15,6 @@
   box-shadow: $box-shadow;
   box-sizing: border-box;
   transition: background-color $animation-duration $animation-easing;
-
   &Content {
     display: flex;
     gap: $padding-large;
