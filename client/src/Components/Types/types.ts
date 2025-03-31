@@ -26,11 +26,12 @@ export interface IHeaderProps {
   isAuthenticated: boolean;
   setIsAuthenticated: (value: boolean) => void;
 }
-export interface FAQItem {
+export interface IFAQItem {
   question: string;
   answer: string;
 }
 export interface IVideoListProps {
+  sections: IVideoSection[];
   category: string;
 }
 export interface Route {
@@ -42,4 +43,21 @@ export interface IAtomButton {
   children: React.ReactNode;
   onClick: () => void;
   type: ButtonType;
+}
+export interface IVideoSection {
+  category: string;
+  urls: string[];
+  text: string[];
+}
+export interface ILibraryItem {
+  title: string;
+  image: string;
+}
+export interface ILibraryArray {
+  category: string;
+  items: ILibraryItem[];
+}
+export interface ILibrarySection {
+  category: string;
+  items: ILibraryItem[];
 }

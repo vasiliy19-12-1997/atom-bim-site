@@ -1,6 +1,6 @@
-import { FAQItem } from "../Types/types";
+import { IFAQItem } from "../Types/types";
 
-export const faqArray: FAQItem[] = [
+export const faqArray: IFAQItem[] = [
   {
     question: "Какие услуги вы предоставляете?",
     answer:

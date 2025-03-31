@@ -31,7 +31,7 @@ export const MainPage: FC = () => {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
           title="Rutube Video"
-          className={s.videoContainer} // Уберите width и height из атрибутов!
+          className={s.videoContainer}
         ></iframe>
       </article>
       <Models />

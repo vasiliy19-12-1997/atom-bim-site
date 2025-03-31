@@ -1,0 +1,21 @@
+.Test {
+  display: flex;
+  height: 90vh;
+  justify-content: flex-end;
+}
+
+.Card {
+  border: 1px solid teal;
+  padding: 40px;
+  font-size: 30px;
+}
+
+.card1 {
+  order: 3;
+}
+.card2 {
+  order: 2;
+}
+.card3 {
+  order: 1;
+}

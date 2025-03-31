@@ -1,0 +1,18 @@
+{
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "gh-pages": "^6.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "homepage": "https://vasiliy19-12-1997.github.io/atom-bim-site",
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "build": "react-scripts build",
+    "start": "react-scripts start",
+    "client": "cd client && yarn start",
+    "server": "cd server && yarn dev",
+    "dev": "concurrently \"yarn server\" \"yarn client\""
+  }
+}

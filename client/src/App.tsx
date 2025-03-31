@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./App.scss";
 import { AppRouter } from "./Components/Router/AppRouter";
 import { AtomInput } from "./Components/UI/AtomInput/AtomInput";

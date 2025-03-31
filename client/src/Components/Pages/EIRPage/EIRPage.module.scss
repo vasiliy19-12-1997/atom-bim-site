@@ -4,24 +4,30 @@
   width: 100vw;
   padding: $padding-large;
   box-sizing: border-box;
+  min-height: 900px;
   &Container {
     display: grid;
-    grid-template-columns: 360px 1fr;
+    grid-template-columns: 1fr 3fr;
+    gap: 40px;
     position: relative;
   }
 }
 .Aside {
-  max-width: 360px;
-  width: 100%;
-  top: 80px;
+  top: 120px;
   position: fixed;
   padding: $padding-medium;
   transition: transform 0.3s ease-in-out;
   z-index: 100;
+  max-width: 280px;
+  width: 100%;
+  // box-sizing: border-box;
+
   > ul {
+    margin-top: 60px;
     padding: 0;
     list-style-type: none;
     color: $light-gray;
+
     > li {
       > ol {
         color: $light-gray;
@@ -43,7 +49,7 @@
 }
 .OpenAside {
   position: fixed;
-  top: 200px;
+  top: 170px;
   left: 10px;
   display: none;
   z-index: 200;
@@ -51,9 +57,20 @@
 @media (max-width: 1200px) {
   .EIRPageContainer {
     grid-template-columns: 280px 1fr;
+    gap: 5;
   }
   .Aside {
     max-width: 240px;
+    width: 100%;
+  }
+}
+@media (max-width: 1024px) {
+  .EIRPageContainer {
+    grid-template-columns: 240px 1fr;
+    gap: 0;
+  }
+  .Aside {
+    max-width: 200px;
     width: 100%;
   }
 }
@@ -63,15 +80,18 @@
     grid-template-columns: 1fr;
   }
   .Aside {
+    top: 85px;
     background-color: $dark-gray;
     height: 100vh;
+    left: 0;
   }
   .OpenAside {
     display: block;
   }
 }
 
-@media (max-width: 480px) {
-  .EIRPageContainer {
+@media (max-width: 520px) {
+  .Aside {
+    top: 65px;
   }
 }

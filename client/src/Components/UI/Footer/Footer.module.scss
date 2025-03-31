@@ -2,7 +2,7 @@
 .Footer {
   color: $white;
   text-align: center;
-  padding: 10px;
+  padding: $padding-small;
   max-width: 920px;
   width: 100%;
   border-top: 1px solid $gray-200;
@@ -26,7 +26,7 @@
           font-size: 15px;
           font-style: normal;
           font-weight: 400;
-          line-height: 20px; /* 133.333% */
+          line-height: 20px;
           letter-spacing: -0.3px;
         }
       }
@@ -42,7 +42,7 @@
         font-size: 15px;
         font-style: normal;
         font-weight: 400;
-        line-height: 20px; /* 133.333% */
+        line-height: 20px;
         letter-spacing: -0.3px;
         margin-right: 5px;
       }
@@ -71,7 +71,7 @@
         font-size: 14px;
         font-style: normal;
         font-weight: 400;
-        line-height: 20px; /* 142.857% */
+        line-height: 20px;
         letter-spacing: -0.28px;
       }
       > span {
@@ -111,7 +111,7 @@
       font-size: 12px;
       font-style: normal;
       font-weight: 400;
-      line-height: 18px; /* 150% */
+      line-height: 18px;
       letter-spacing: -0.24px;
     }
     > ul {
@@ -185,15 +185,15 @@
       flex-direction: column;
 
       > ul {
-        margin-top: 20px; // Отступ сверху для списка ссылок
-        margin-bottom: 20px; // Отступ снизу для списка ссылок
-        flex-direction: column; // Ссылки в столбец
-        gap: 10px; // Расстояние между ссылками
-        align-items: center; // Центрируем ссылки
+        margin-top: $padding-medium;
+        margin-bottom: $padding-medium;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
       }
 
       &Site {
-        margin-top: 20px; // Отступ сверху для ссылки на сайт компании
+        margin-top: $padding-medium;
       }
     }
   }
