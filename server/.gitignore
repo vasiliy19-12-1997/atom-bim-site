@@ -18,3 +18,4 @@ Thumbs.db
 
 # Игнорировать файлы временной сборки и кеша
 *.tsbuildinfo
+.vercel

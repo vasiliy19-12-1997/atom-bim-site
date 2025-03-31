@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node --loader ts-node/esm src/app.ts",
     "dev": "nodemon --exec node --loader ts-node/esm src/app.ts",
-    "build": "tsc"
+    "build": "tsc && echo 'Build completed in dist/'",
+    "vercel-build": "npm run build"
   },
   "dependencies": {
     "cors": "^2.8.5",
