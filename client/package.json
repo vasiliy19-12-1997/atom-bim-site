@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.2.0",
     "@types/react-router-dom": "^5.3.3",
     "antd": "^5.24.1",
+    "dotenv": "^16.4.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.17.0",
