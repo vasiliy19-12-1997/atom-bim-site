@@ -2,10 +2,12 @@ import { FC, useState } from "react";
 import s from "./AuthPage.module.scss";
 import { AtomInput } from "../../UI/AtomInput/AtomInput";
 import { AtomButton } from "../../UI/AtomButton/AtomButton";
+import { useAuth } from "../../../Context/AuthContext";
 
 export const AuthPage: FC = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
   return (
     <div className={s.AuthPage}>
       <h2>Вход</h2>
@@ -32,7 +34,11 @@ export const AuthPage: FC = () => {
           name="password"
           required
         />
-        <AtomButton type="submit" onClick={() => console.log("")} key="">
+        <AtomButton
+          type="submit"
+          onClick={() => setIsAuthenticated(!isAuthenticated)}
+          key=""
+        >
           Войти
         </AtomButton>
       </form>

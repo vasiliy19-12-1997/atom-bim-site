@@ -7,9 +7,9 @@ interface AppRouterProps {
 }
 
 export const AppRouter: React.FC<AppRouterProps> = ({ isAuthenticated }) => {
+  const location = useLocation();
   const routesToRender = isAuthenticated ? privateRoutes : publicRoutes;
 
-  const location = useLocation();
   if (!isAuthenticated && !location.pathname.includes("login")) {
     return <Navigate to="/login" />;
   }

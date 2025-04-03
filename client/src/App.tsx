@@ -6,17 +6,18 @@ import { AtomInput } from "./Components/UI/AtomInput/AtomInput";
 import { Footer } from "./Components/UI/Footer/Footer";
 import { Header } from "./Components/UI/Header/Header";
 import Modal from "./Components/UI/Modal/Modal";
+import { useAuth } from "./Context/AuthContext";
 
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [value, setValue] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
   const location = useLocation();
   const isAuthPage = location.pathname.includes("/login");
+
   const openModal = () => {
     setIsModalOpen(true);
   };
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
