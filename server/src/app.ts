@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 // Список разрешённых Origin
 const allowedOrigins = [
   "http://localhost:3000", // локальный клиент (если используется порт 3000)
-  "https://atom-bim-site-client.vercel.app/", // продакшен домен клиента
+  "https://atom-bim-site-client.vercel.app", // продакшен домен клиента
 ];
 
 app.use(
@@ -33,7 +33,6 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
