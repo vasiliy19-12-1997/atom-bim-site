@@ -53,13 +53,16 @@
     cursor: pointer;
   }
   &Content {
-    > p {
-      color: var(--Gray-900, #1a1a1a);
-      font-family: Inter;
-      font-size: 18px;
-      font-style: normal;
-      font-weight: 300;
-      line-height: 28px;
+    > h2 {
+      text-align: center;
+    }
+    > img {
+      max-width: 100%; // Изображение не будет превышать ширину родителя
+      height: auto; // Сохраняет пропорции
+      display: block; // Устраняет лишние отступы
+      margin: 0 auto; // Центрирование изображения
+      border-radius: 8px; // Опционально: скругление углов
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Опционально: тень
     }
   }
 }
@@ -155,6 +158,11 @@
 @media (max-width: 768px) {
   .InstructionPageLeftAside {
     top: 85px;
+  }
+  .InstructionPageContent {
+    > img {
+      padding: 0 16px;
+    }
   }
 }
 

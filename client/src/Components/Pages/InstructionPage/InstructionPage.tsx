@@ -53,8 +53,8 @@ export const InstructionPage = () => {
       </button>
       <div></div>
       <div className={s.InstructionPageContent}>
-        <h2>Content</h2>
-        <p>{lorem}</p>
+        <h2>Для начала работы выберете нужный пункт меню</h2>
+        <img src="https://atom-bim.ru/Images/4559994.jpg" alt="menu" />
       </div>
       <div></div>
       <Aside className={s.RightAside}>

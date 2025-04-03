@@ -4,6 +4,8 @@ import { SectionSite } from "./SectionsSite/SectionSite";
 import { images } from "../../Assets/Images/Images";
 import { Models } from "./Models/Models";
 import { ImageTrack } from "./ImageTrack/ImageTrack";
+import { Aside } from "../../UI/Aside/Aside";
+import { AtomInput } from "../../UI/AtomInput/AtomInput";
 export const MainPage: FC = () => {
   return (
     <section className={s.MainPage}>
