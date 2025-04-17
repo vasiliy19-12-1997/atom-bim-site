@@ -1,13 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "module": "ESNext",
     "esModuleInterop": true,
-    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES6",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "strict": true,
     "outDir": "build",
     "baseUrl": ".",
-    "strict": true,
-    "skipLibCheck": true
+    "paths": {
+      "*": ["node_modules/*", "src/types/*"]
+    }
   },
-  "include": ["api", "src"]
+  "include": ["src/**/*", "api"],
+  "exclude": ["node_modules"]
 }
