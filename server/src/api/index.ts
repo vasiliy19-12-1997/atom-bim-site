@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import videoRoutes from "./Routes/videoRoutes.js";
-import faqRoutes from "./Routes/faqRoutes.js";
-import libraryRoutes from "./Routes/libraryRoutes.js";
-import eirRoutes from "./Routes/eirRoutes.js";
+import videoRoutes from "../Routes/videoRoutes.js";
+import faqRoutes from "../Routes/faqRoutes.js";
+import libraryRoutes from "../Routes/libraryRoutes.js";
+import eirRoutes from "../Routes/eirRoutes.js";
 import fileUpload from "express-fileupload";
 
 dotenv.config();
