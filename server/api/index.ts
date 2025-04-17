@@ -5,7 +5,6 @@ import videoRoutes from "../src/Routes/videoRoutes.js";
 import faqRoutes from "../src/Routes/faqRoutes.js";
 import libraryRoutes from "../src/Routes/libraryRoutes.js";
 import eirRoutes from "../src/Routes/eirRoutes.js";
-import fileUpload from "express-fileupload";
 
 dotenv.config();
 const app = express();
@@ -34,7 +33,6 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(fileUpload());
 
 // Routes
 app.use("/api/videos", videoRoutes);
