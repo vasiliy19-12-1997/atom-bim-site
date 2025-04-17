@@ -5,7 +5,8 @@ import {
 } from "../Components/Types/types";
 
 const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+  process.env.REACT_APP_API_BASE_URL ||
+  "http:atom-bim-site-server-n8qiz2q9v-vasiliy19121997s-projects.vercel.app";
 
 export const fetchVideos = async (): Promise<IVideoSection[]> => {
   const response = await fetch(`${API_BASE_URL}/api/videos`);
