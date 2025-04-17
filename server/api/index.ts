@@ -8,20 +8,17 @@ import eirRoutes from "../src/Routes/eirRoutes.js";
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// Список разрешённых Origin
 const allowedOrigins = [
-  "http://localhost:3000", // локальный клиент (если используется порт 3000)
-  "https://atom-bim-site-client.vercel.app", // продакшен домен клиента
+  "http://localhost:3000",
+  "https://atom-bim-site-client.vercel.app",
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Если нет origin (например, для curl или postman) — разрешаем
       if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1) {
+      if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error(`Not allowed by CORS: ${origin}`));
@@ -31,6 +28,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -40,15 +38,4 @@ app.use("/api/faq", faqRoutes);
 app.use("/api/library", libraryRoutes);
 app.use("/api/eir", eirRoutes);
 
-// app.listen(PORT, () => {
-//   console.log(`Сервер запущен на http://localhost:${PORT}`);
-// });
-import { createServer } from "http";
-import { parse } from "url";
-
-const server = createServer((req, res) => {
-  const parsedUrl = parse(req.url || "", true);
-  (app as any).handle(req, res, parsedUrl);
-});
-
-export default server;
+export default app;
