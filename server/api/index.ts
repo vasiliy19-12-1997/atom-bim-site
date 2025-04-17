@@ -40,9 +40,9 @@ app.use("/api/faq", faqRoutes);
 app.use("/api/library", libraryRoutes);
 app.use("/api/eir", eirRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Сервер запущен на http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Сервер запущен на http://localhost:${PORT}`);
+// });
 import { createServer } from "http";
 import { parse } from "url";
 
