@@ -22,3 +22,4 @@ Thumbs.db
 # ENV
 .env
 .vercel
+.package-lock

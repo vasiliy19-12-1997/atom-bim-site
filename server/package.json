@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nodemon --watch src --exec tsx api/index.ts",
     "dev": "nodemon --watch src --exec tsx api/index.ts",
-    "build:ui": "@powershell Remove-Item -Recurse -Force dist && cd ../frontend && npm run build && @powershell Copy-Item -Recurse dist ../backend",
+    "build:ui": "@powershell Remove-Item -Recurse -Force build && cd ../frontend && npm run build && @powershell Copy-Item -Recurse build ../backend",
+    "build": "tsc",
     "lint": "eslint ."
   },
   "dependencies": {
