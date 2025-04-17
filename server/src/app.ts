@@ -1,14 +1,13 @@
 import dotenv from "dotenv";
-dotenv.config();
-
 import express from "express";
 import cors from "cors";
-import videoRoutes from "./src/Routes/videoRoutes.js";
-import faqRoutes from "./src/Routes/faqRoutes.js";
-import libraryRoutes from "./src/Routes/libraryRoutes.js";
-import eirRoutes from "./src/Routes/eirRoutes.js";
+import videoRoutes from "./Routes/videoRoutes.js";
+import faqRoutes from "./Routes/faqRoutes.js";
+import libraryRoutes from "./Routes/libraryRoutes.js";
+import eirRoutes from "./Routes/eirRoutes.js";
 import fileUpload from "express-fileupload";
 
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 

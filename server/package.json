@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --exec node --loader ts-node/esm app.ts",
-    "build": "tsc --outDir dist && echo 'Build completed in dist/'",
-    "vercel-build": "npm run build && cp -r src/Routes dist/src/Routes && cp app.js dist/",
-    "start": "node app.js"
+    "start:watch": "nodemon src/app.ts",
+    "start": "npx ts-node src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "express-fileupload": "^1.5.1",
     "mammoth": "^1.9.0"
