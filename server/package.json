@@ -7,12 +7,14 @@
     "dev": "nodemon --watch src --exec tsx api/index.ts",
     "build:ui": "@powershell Remove-Item -Recurse -Force build && cd ../frontend && npm run build && @powershell Copy-Item -Recurse build ../backend",
     "build": "tsc",
+    "vercel-build": "tsc",
     "lint": "eslint ."
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
-    "mammoth": "^1.9.0"
+    "mammoth": "^1.9.0",
+    "typescript": "^5.8.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
@@ -22,7 +24,6 @@
     "express-fileupload": "^1.5.1",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
-    "tsx": "^4.19.3",
-    "typescript": "^5.8.3"
+    "tsx": "^4.19.3"
   }
 }
