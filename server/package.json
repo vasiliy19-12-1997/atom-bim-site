@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "nodemon --watch src --exec tsx src/index.ts",
-    "dev": "nodemon --watch src --exec tsx src/index.ts",
+    "start": "nodemon --watch src --exec tsx api/index.ts",
+    "dev": "nodemon --watch src --exec tsx api/index.ts",
     "build:ui": "@powershell Remove-Item -Recurse -Force dist && cd ../frontend && npm run build && @powershell Copy-Item -Recurse dist ../backend",
     "lint": "eslint ."
   },
