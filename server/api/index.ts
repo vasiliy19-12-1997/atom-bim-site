@@ -43,4 +43,12 @@ app.use("/api/eir", eirRoutes);
 app.listen(PORT, () => {
   console.log(`Сервер запущен на http://localhost:${PORT}`);
 });
-export default app;
+import { createServer } from "http";
+import { parse } from "url";
+
+const server = createServer((req, res) => {
+  const parsedUrl = parse(req.url || "", true);
+  (app as any).handle(req, res, parsedUrl);
+});
+
+export default server;
