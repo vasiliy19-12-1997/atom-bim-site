@@ -3,12 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "nodemon --watch src --exec tsx api/index.ts",
-    "dev": "nodemon --watch src --exec tsx api/index.ts",
-    "build:ui": "@powershell Remove-Item -Recurse -Force build && cd ../frontend && npm run build && @powershell Copy-Item -Recurse build ../backend",
-    "build": "tsc",
-    "vercel-build": "tsc",
-    "lint": "eslint ."
+    "start": "nodemon --watch src --exec tsx index.ts",
+    "dev": "nodemon --watch src --exec tsx index.ts",
+    "build": "npx tsc",
+    "vercel-build": "npx tsc"
   },
   "dependencies": {
     "cors": "^2.8.5",
