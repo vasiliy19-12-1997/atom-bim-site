@@ -1,59 +1,37 @@
-// import express from "express";
+import express from 'express';
+import cors from 'cors';
 
-// const app = express();
-
-// app.get("/", (req, res) => res.send("Express on Vercel"));
-
-// app.listen(3000, () => console.log("Server ready on port 3000."));
-
-import dotenv from "dotenv";
-import express from "express";
-import cors from "cors";
-import videoRoutes from "routes/videoRoutes";
-import faqRoutes from "routes/faqRoutes";
-import eirRoutes from "routes/eirRoutes";
-import libraryRoutes from "routes/libraryRoutes";
-
-
-dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
-// Список разрешённых Origin
-const allowedOrigins = [
-  "http://localhost:3000", // локальный клиент (если используется порт 3000)
-  "https://atom-bim-site-client.vercel.app", // продакшен домен клиента
-];
-
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Если нет origin (например, для curl или postman) — разрешаем
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error(`Not allowed by CORS: ${origin}`));
-      }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+// Минимальная конфигурация
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(testUploadWord())
 
-// Routes
-app.use("/api/videos", videoRoutes);
-app.use("/api/faq", faqRoutes);
-app.use("/api/library", libraryRoutes);
-app.use("/api/eir", eirRoutes);
+// Явный обработчик для всех путей
+app.get('*', (req, res) => {
+    console.log(`Получен запрос на: ${req.path}`);
+    
+    if (req.path === '/') {
+        return res.json({
+            status: 'OK',
+            message: 'Главная страница API',
+            endpoints: ['/api/faq', '/api/library', '/api/videos', '/health']
+        });
+    }
 
-app.listen(PORT, () => {
-  console.log(`Сервер запущен на http://localhost:${PORT}`);
+    res.status(404).json({ error: 'Маршрут не найден' });
 });
-function testUploadWord(): any {
-  throw new Error("Function not implemented.");
-}
 
+// Запуск сервера с подробным логом
+const server = app.listen(PORT, () => {
+    console.log(`Сервер запущен на порту ${PORT}`);
+    console.log('Проверьте работу:');
+    console.log(`curl http://localhost:${PORT}/`);
+});
+
+// Логирование всех запросов
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+    next();
+});

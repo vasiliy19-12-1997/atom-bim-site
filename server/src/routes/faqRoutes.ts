@@ -1,7 +1,8 @@
-import { getFaq } from "controllers/faqController";
-import { Router } from "express";
-
+import { Router } from 'express';
+import { getFaq } from '../controllers/faqController';
 
 const router = Router();
-router.get("/", getFaq);
+ 
+router.get('/', getFaq);
+
 export default router;
