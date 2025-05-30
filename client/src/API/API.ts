@@ -6,10 +6,10 @@ import {
 
 const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL ||
-  "http:atom-bim-site-server-n8qiz2q9v-vasiliy19121997s-projects.vercel.app";
+  "http://localhost:5001";
 
 export const fetchVideos = async (): Promise<IVideoSection[]> => {
-  const response = await fetch(`${API_BASE_URL}/api/videos`);
+  const response = await fetch(`${API_BASE_URL}/api/video`);
   if (!response.ok) throw new Error("Ошибка загрузки данных");
   return response.json();
 };

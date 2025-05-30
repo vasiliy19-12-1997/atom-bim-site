@@ -1,36 +1,34 @@
 import express from 'express';
 import cors from 'cors';
+import fileUpload from 'express-fileupload';
+import dotenv from 'dotenv';
+import faqRoutes from './routes/faqRoutes';
+import libraryRoutes from './routes/libraryRoutes';
+import videoRoutes from './routes/videoRoutes';
+
+
+dotenv.config();
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// Middleware setup
+// Middleware
 app.use(cors());
 app.use(express.json());
+app.use(fileUpload());
+app.use(express.static('public'));
 
-// Logging middleware should come before route handlers
-app.use((req, res, next) => {
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
-    next();
-});
+// Routes
+app.use('/api/video', videoRoutes);
+app.use('/api/faq', faqRoutes);
+app.use('/api/library', libraryRoutes);
 
-// Root route handler
-app.get('/', (req, res) => {
-    res.json({
-        status: 'OK',
-        message: 'Главная страница API',
-        endpoints: ['/api/faq', '/api/library', '/api/videos', '/health']
-    });
-});
-
-// Catch-all for 404
-app.use((req, res) => {
-    res.status(404).json({ error: 'Маршрут не найден' });
+// Health check
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'OK' });
 });
 
 // Start server
-const server = app.listen(PORT, () => {
-    console.log(`Сервер запущен на порту ${PORT}`);
-    console.log('Проверьте работу:');
-    console.log(`curl http://localhost:${PORT}/`);
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });

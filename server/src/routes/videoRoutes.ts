@@ -1,6 +1,5 @@
-
-import { getVideos } from '../controllers/videoController';
 import { Router } from 'express';
+import { getVideos } from '../controllers/videoController';
 
 const router = Router();
 
