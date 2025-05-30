@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import faqRoutes from './routes/faqRoutes';
 import libraryRoutes from './routes/libraryRoutes';
 import videoRoutes from './routes/videoRoutes';
+import wordRoutes from './routes/word.routes';
 
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(express.static('public'));
 app.use('/api/video', videoRoutes);
 app.use('/api/faq', faqRoutes);
 app.use('/api/library', libraryRoutes);
+app.use('/api/word', wordRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
