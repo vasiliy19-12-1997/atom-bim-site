@@ -6,12 +6,24 @@ import faqRoutes from './routes/faqRoutes';
 import libraryRoutes from './routes/libraryRoutes';
 import videoRoutes from './routes/videoRoutes';
 import wordRoutes from './routes/word.routes';
-
+import { fileURLToPath } from 'url';
+import path from 'path';
+import fs from 'fs';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Получаем __dirname в ES модулях
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Создаем временную папку, если ее нет
+const tempDir = path.join(__dirname, 'temp');
+if (!fs.existsSync(tempDir)) {
+    fs.mkdirSync(tempDir, { recursive: true });
+}
 
 // Middleware
 app.use(cors());

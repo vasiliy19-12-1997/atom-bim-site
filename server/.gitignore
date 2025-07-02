@@ -15,10 +15,10 @@ app.js
 .DS_Store
 Thumbs.db
 
+temp
 # Игнорировать файлы временной сборки и кеша
 *.tsbuildinfo
 .vercel
-
 # ENV
 .env
 .vercel
