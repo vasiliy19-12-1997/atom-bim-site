@@ -1,16 +1,18 @@
 .CommentaryCard {
-  border: 1px solid var(--primary-color);
-  padding: 12px;
+    border: 1px solid var(--primary-color);
+    padding: 12px;
 }
-.wrapperAvatar{
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  
+
+.wrapperAvatar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
-.avatar{
-  margin-right: 10px;
+
+.avatar {
+    margin-right: 10px;
 }
-.loading{
-  border:none
+
+.loading {
+    border: none;
 }
