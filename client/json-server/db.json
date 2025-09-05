@@ -1,0 +1,38 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "title": "json-server",
+      "userId": 2
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "123"
+    }
+  ],
+  "profile": {
+    "first": "Василийfdfdf",
+    "lastname": "Коноваловfdfdfdf",
+    "age": 271111,
+    "currency": "USD",
+    "country": "Irish",
+    "city": "Прага",
+    "username": "admin",
+    "avatar": "https://i.pinimg.com/736x/3a/93/23/3a93230f9140c43031ea0bdd0f23c37e.jpg"
+  }
+}

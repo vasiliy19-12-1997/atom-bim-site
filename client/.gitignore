@@ -52,3 +52,10 @@ server/.vercel
 *.bak
 *.tmp
 *.log
+
+/build
+node_modules
+.idea
+/storybook-static
+.loki/report.html
+.loki/report.json
