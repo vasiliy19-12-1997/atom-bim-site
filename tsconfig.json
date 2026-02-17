@@ -7,7 +7,7 @@
     "noImplicitAny": true,
     "module": "ESNext",
     // В какую спецификацию компилируем: для поддержки большинства браузеров
-    "target": "es5",
+    "target": "es2015",
     "jsx": "react-jsx",
     // Компилятор будет обрабатывать не только TS файлы, но и JS файлы
     "allowJs": true,
@@ -15,9 +15,9 @@
     // Для абсолютного импорта
     "baseUrl": ".",
     "paths": {
-      "*": ["./src/*"],
-      "shared/*": ["./src/shared/*"],
+      "@/*": ["./src/*"],
     },
+    "isolatedModules":true,
    "strict": true,
     // esModuleInterop позволяет работать с пакетами, которые используют
     // common js как с обычными пакета с помощью import (require() module.export) = common js

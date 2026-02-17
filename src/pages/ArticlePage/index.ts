@@ -1,2 +1,11 @@
 export { ArticlePageAsync as ArticlePage } from './ui/ArticlePage/ArticlePage.async';
-export { ArticlePageSchema } from 'pages/ArticlePage/model/types/articlePageSchema';
+export type { ArticlePageSchema } from '@/pages/ArticlePage/model/types/articlePageSchema';
+export { articlePageActions } from './model/slice/articlePageSlice';
+export {
+    getArticlesPageType,
+    getFilterSelectorSort,
+    getFilterSelectorOrder,
+    getFilterSelectorSearch,
+} from './model/selectors/articles';
+
+export { fetchArticles } from './model/services/fetchArticles/fetchArticles';

@@ -1,6 +1,6 @@
-import { Country } from 'entities/Country';
-import { Currency } from 'entities/Currency';
-import { ValidateProfileErrors } from 'entities/Profile';
+import { Country } from '@/entities/Country';
+import { Currency } from '@/entities/Currency';
+import { ValidateProfileErrors } from '@/entities/Profile';
 import { validateProfileData } from './validateProfileData';
 
 describe('validateProfileDatatest', () => {
@@ -32,12 +32,10 @@ describe('validateProfileDatatest', () => {
     });
     test('incorect all', async () => {
         const result = validateProfileData({});
-        expect(result).toEqual(
-            [
-                ValidateProfileErrors.INCORRECT_USER_DATA,
-                ValidateProfileErrors.INCORRECT_AGE,
-                ValidateProfileErrors.INCORRECT_COUNTRY,
-            ],
-        );
+        expect(result).toEqual([
+            ValidateProfileErrors.INCORRECT_USER_DATA,
+            ValidateProfileErrors.INCORRECT_AGE,
+            ValidateProfileErrors.INCORRECT_COUNTRY,
+        ]);
     });
 });

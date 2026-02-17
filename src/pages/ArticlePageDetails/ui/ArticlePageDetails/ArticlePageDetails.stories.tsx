@@ -1,11 +1,11 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { Article } from 'entities/Article';
-import { StoreDecorator } from 'shared/config/storybook/StoreDecorator/StoreDecorator';
-import { ArticleType, ArticleBlockType } from 'entities/Article/model/types/artcile';
+import { Article, ArticleType, ArticleBlockType } from '@/entities/Article';
+import { StoreDecorator } from '@/shared/config/storybook/StoreDecorator/StoreDecorator';
+
 import ArticlePageDetails from './ArticlePageDetails';
 
 export default {
-    title: 'pages/ArticlePageDetails',
+    title: 'pages/ArticlePageDetails/ArticlePageDetails',
     component: ArticlePageDetails,
     argTypes: {
         backgroundColor: { control: 'color' },
@@ -56,8 +56,44 @@ const article: Article = {
 
 export const Normal = Template.bind({});
 Normal.args = {};
-Normal.decorators = [StoreDecorator({
-    articles: {
-        data: article,
-    },
-})];
+Normal.decorators = [
+    StoreDecorator({
+        articlesDetails: {
+            data: article,
+        },
+    }),
+];
+Normal.parameters = {
+    mockData: [
+        {
+            url: 'https://testapi.ru/articles?_limit=10',
+            method: 'GET',
+            status: 200,
+            response: [
+                {
+                    id: '101',
+                    title: 'Похожая статья 1',
+                    subtitle: 'Короткое описание',
+                    img: 'https://placehold.co/600x400',
+                    views: 10,
+                    createdAt: '01.01.2024',
+                    user: { id: 'u1', username: 'demo' },
+                    type: [ArticleType.IT],
+                    blocks: [{ id: 'b1', type: ArticleBlockType.TEXT, paragraphs: ['Текст...'] }],
+                },
+                {
+                    id: '102',
+                    title: 'Похожая статья 2',
+                    subtitle: 'Короткое описание',
+                    img: 'https://placehold.co/600x400',
+                    views: 20,
+                    createdAt: '02.01.2024',
+                    user: { id: 'u2', username: 'demo2' },
+                    type: [ArticleType.IT],
+                    blocks: [{ id: 'b2', type: ArticleBlockType.TEXT, paragraphs: ['Текст...'] }],
+                },
+            ],
+            delay: 0,
+        },
+    ],
+};

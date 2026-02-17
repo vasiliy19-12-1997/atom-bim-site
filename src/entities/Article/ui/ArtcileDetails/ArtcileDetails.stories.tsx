@@ -1,12 +1,12 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { Theme } from 'app/providers/ThemeProvider';
-import { Article, ArticleBlockType, ArticleType } from 'entities/Article/model/types/artcile';
-import { StoreDecorator } from 'shared/config/storybook/StoreDecorator/StoreDecorator';
-import { ThemeDecorator } from 'shared/config/storybook/ThemeDecorator/ThemeDecorator';
+import { StoreDecorator } from '@/shared/config/storybook/StoreDecorator/StoreDecorator';
+import { ThemeDecorator } from '@/shared/config/storybook/ThemeDecorator/ThemeDecorator';
+import { Article, ArticleBlockType, ArticleType } from '../../../Article/model/types/artcile';
 import { ArtcileDetails } from './ArticleDetails';
+import { Theme } from '@/shared/const/theme';
 
 export default {
-    title: 'entities/ArtcileDetails',
+    title: 'entities/Article/ArtcileDetails',
     component: ArtcileDetails,
     argTypes: {
         backgroundColor: { control: 'color' },
@@ -15,7 +15,7 @@ export default {
 
 const Template: ComponentStory<typeof ArtcileDetails> = (args) => <ArtcileDetails {...args} />;
 
-const articles:Article = {
+const articles: Article = {
     id: '1',
     title: 'Javascript news',
     subtitle: 'Что нового в JS за 2022 год?',
@@ -94,7 +94,7 @@ Normal.args = {};
 Normal.decorators = [
     ThemeDecorator(Theme.LIGHT),
     StoreDecorator({
-        articles: {
+        articlesDetails: {
             data: articles,
         },
     }),
@@ -104,7 +104,7 @@ export const IsLoading = Template.bind({});
 IsLoading.decorators = [
     ThemeDecorator(Theme.LIGHT),
     StoreDecorator({
-        articles: {
+        articlesDetails: {
             isLoading: true,
         },
     }),
@@ -113,7 +113,7 @@ export const Error = Template.bind({});
 Error.decorators = [
     ThemeDecorator(Theme.LIGHT),
     StoreDecorator({
-        articles: {
+        articlesDetails: {
             error: 'Произошла ошибка',
         },
     }),

@@ -1,7 +1,7 @@
-import { Country } from 'entities/Country';
-import { Currency } from 'entities/Currency';
-import { TestAsyncThunk } from 'shared/lib/tests/TestAsyncThunk/TestAsyncThunk';
-import { ValidateProfileErrors } from 'entities/Profile';
+import { Country } from '@/entities/Country';
+import { Currency } from '@/entities/Currency';
+import { TestAsyncThunk } from '@/shared/lib/tests/TestAsyncThunk/TestAsyncThunk';
+import { ValidateProfileErrors } from '@/entities/Profile';
 import { updateProfileData } from './updateProfileData';
 
 describe('updateProfileData.test', () => {
@@ -48,6 +48,6 @@ describe('updateProfileData.test', () => {
         const result = await thunk.callThunk();
 
         expect(result.meta.requestStatus).toBe('rejected');
-        expect(result.payload).toEqual([ValidateProfileErrors.NO_DATA]);
+        expect(result.payload).toEqual([ValidateProfileErrors.INCORRECT_USER_DATA]);
     });
 });

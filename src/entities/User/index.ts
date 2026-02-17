@@ -1,9 +1,13 @@
-import { userReducer } from 'entities/User/model/slice/UserSlice';
-import { userActions } from './model/slice/UserSlice';
-import { User, UserSchema } from './model/types/UserSchema';
+import { userReducer, userActions } from './model/slice/UserSlice';
+import { User, UserRoles, UserSchema } from './model/types/UserSchema';
 import { getAuthUserData } from './model/selectors/getAuthUserData';
 import { getAuthUserMounted } from './model/selectors/getAuthUserMounted';
 
-export {
-    User, userActions, userReducer, UserSchema, getAuthUserData, getAuthUserMounted,
-};
+export { userActions, userReducer, getAuthUserData, getAuthUserMounted };
+export type { User, UserSchema };
+export { getRoleSelector, isUserAdmin, isUserManager } from './model/selectors/roleSelector/roleSelector';
+export { UserRoles };
+export type { JsonSettingsProperties } from './model/types/jsonSettings';
+export { saveJsonSettings } from './model/services/saveJsonSettings';
+export { useJsonSettings, getJsonSettings } from './model/selectors/jsonSettings/jsonSettings';
+export { initedAuthData } from './model/services/initedAuthData';

@@ -1,10 +1,6 @@
-import {
-    createEntityAdapter,
-    createSlice,
-    PayloadAction,
-} from '@reduxjs/toolkit';
-import { StateSchema } from 'app/providers/StoreProvider';
-import { Article } from 'entities/Article';
+import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { StateSchema } from '@/app/providers/StoreProvider';
+import { Article } from '@/entities/Article';
 import { ArticleDetailsRecommendSchema } from '../types/ArticleDetailsRecommendSchema';
 import { fetchArticlesRecommends } from '../services/fetchArticlesRecommends';
 
@@ -24,7 +20,7 @@ const RecommendSlice = createSlice({
         ids: ['1', '2'],
         entities: {},
     }),
-    reducers: { },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(fetchArticlesRecommends.pending, (state) => {
@@ -42,7 +38,4 @@ const RecommendSlice = createSlice({
     },
 });
 
-export const {
-    reducer: recommendSliceReducer,
-    actions: recommendSliceActions,
-} = RecommendSlice;
+export const { reducer: articleRecommendationReducer, actions: articleRecommendationAction } = RecommendSlice;

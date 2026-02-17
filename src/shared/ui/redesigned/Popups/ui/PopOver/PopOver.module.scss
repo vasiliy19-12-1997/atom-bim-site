@@ -1,0 +1,13 @@
+.PopOver {
+    /* Ваши стили */
+}
+
+.panel {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    z-index: 10000;
+    background: (var(--dark-bg-redesign));
+    padding: 15px;
+    border-radius: 10px;
+}

@@ -4,3 +4,6 @@ node_modules
 /storybook-static
 .loki/report.html
 .loki/report.json
+/reports/unit
+.history
+npm-debug.txt 
