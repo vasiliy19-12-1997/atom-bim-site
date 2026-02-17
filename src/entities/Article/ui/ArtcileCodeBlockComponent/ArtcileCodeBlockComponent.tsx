@@ -1,13 +1,13 @@
-import { classNames } from 'shared/lib/classNames/classNames';
 import { useTranslation } from 'react-i18next';
-import { ArtcileBlockCode } from 'entities/Article/model/types/artcile';
-import { Code } from 'shared/ui/Code/Code';
-import { Text } from 'shared/ui/Text/Text';
+import { classNames } from '@/shared/lib/classNames/classNames';
+import { Code as CodeDeprecated } from '@/shared/ui/redesigned/Code';
+import { ArtcileBlockCode } from '../../../Article/model/types/artcile';
 import cls from './ArtcileCodeBlockComponent.module.scss';
+import { ToggleFeatures } from '@/shared/features';
 
 interface ArtcileCodeBlockComponentProps {
-  className?: string;
-  block?: ArtcileBlockCode
+    className?: string;
+    block?: ArtcileBlockCode;
 }
 
 export const ArtcileCodeBlockComponent = (props: ArtcileCodeBlockComponentProps) => {
@@ -15,12 +15,18 @@ export const ArtcileCodeBlockComponent = (props: ArtcileCodeBlockComponentProps)
     const { className, block } = props;
 
     return (
-        // eslint-disable-next-line i18next/no-literal-string
-        <div className={classNames(cls.ArtcileCodeBlockComponent, {}, [className])}>
-            {block?.code && (
-                <Code text={block.code} />
-            )}
-        </div>
-
+        <ToggleFeatures
+            name="isNewDesignEnabled"
+            on={
+                <div className={classNames(cls.ArtcileCodeBlockComponent, {}, [className])}>
+                    {block?.code && <CodeDeprecated text={block.code} />}
+                </div>
+            }
+            off={
+                <div className={classNames(cls.ArtcileCodeBlockComponent, {}, [className])}>
+                    {block?.code && <CodeDeprecated text={block.code} />}
+                </div>
+            }
+        />
     );
 };

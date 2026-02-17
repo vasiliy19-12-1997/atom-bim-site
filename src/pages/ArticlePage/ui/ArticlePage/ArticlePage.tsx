@@ -1,50 +1,60 @@
-import {
-    ArticleList, ArticleSortSelector,
-} from 'entities/Article';
-import { fetchNextArticlePage } from 'pages/ArticlePage/model/services/fetchNextArticlePage/fetchNextArticlePage';
-import { ininArticlePage } from 'pages/ArticlePage/model/services/ininArticlePage/ininArticlePage';
 import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import { DynamicModuleLoader, ReducersList } from 'shared/lib/components/DynamicModuleLoader/DynamicModuleLoader';
-import { useAppDispatch } from 'shared/lib/hooks/useAppDispatch/useAppDispatch';
-import { useInitialEffect } from 'shared/lib/hooks/useInitialEffect/useInitialEffect';
-import { Page } from 'widgets/Page/Page';
-import { useSearchParams } from 'react-router-dom';
-import {
-    getArticlesIsLoading,
-    getArticlesViews,
-} from '../../model/selectors/articles';
-import { articlesReducer, getArticles } from '../../model/slice/articlePageSlice';
+import { ArticlePageGreeting } from '@/features/articlePageGreeting';
+import { ToggleFeatures } from '@/shared/features';
+import { StickyContentLayout } from '@/shared/layouts/StickyContentLayout';
+import { DynamicModuleLoader, ReducersList } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch';
+import { Page } from '@/shared/ui/deprecated/Page';
+import { fetchNextArticlePage } from '../../model/services/fetchNextArticlePage/fetchNextArticlePage';
+import { articlesReducer } from '../../model/slice/articlePageSlice';
+import { ArticleInfiniteList } from '../ArticleInfiniteList/ArticleInfiniteList';
 import { ArticlePageFilter } from '../ArticlePageFilter/ArticlePageFilter';
+import { ViewSelectorContainer } from '../ViewSelectorContainer/ViewSelectorContainer';
 import cls from './ArticlePage.module.scss';
+import { FiltersContainer } from '../FiltersContainer/FiltersContainer';
 
 const ArticlePage = memo(() => {
-    const { t } = useTranslation('ArticlePage');
+    const { t } = useTranslation('');
     const dispatch = useAppDispatch();
-    const [searchParams] = useSearchParams();
-    const articles = useSelector(getArticles.selectAll);
-    const isLoading = useSelector(getArticlesIsLoading);
-    const views = useSelector(getArticlesViews);
-    const reducers:ReducersList = {
+    const reducers: ReducersList = {
         articlePage: articlesReducer,
     };
-
-    useInitialEffect(() => {
-        dispatch(ininArticlePage(searchParams));
-    }, [dispatch, searchParams]);
 
     const onNextLoad = useCallback(() => {
         dispatch(fetchNextArticlePage());
     }, [dispatch]);
 
+    const content = (
+        <ToggleFeatures
+            name="isNewDesignEnabled"
+            on={
+                <StickyContentLayout
+                    left={<ViewSelectorContainer />}
+                    right={<FiltersContainer />}
+                    content={
+                        <Page data-testid="ArticlePageRedesign" onScrollEnd={onNextLoad}>
+                            {t('Article Page')}
+                            <ArticleInfiniteList className={cls.list} />
+                            <ArticlePageGreeting />
+                        </Page>
+                    }
+                />
+            }
+            off={
+                <Page data-testid="ArticlePage" onScrollEnd={onNextLoad}>
+                    {t('Article Page')}
+                    <ArticlePageFilter />
+                    <ArticlePageGreeting />
+                    <ArticleInfiniteList className={cls.list} />
+                </Page>
+            }
+        />
+    );
+
     return (
         <DynamicModuleLoader reducers={reducers} removeAfterUnmount={false}>
-            <Page onScrollEnd={onNextLoad}>
-                {t('Article Page')}
-                <ArticlePageFilter />
-                <ArticleList className={cls.list} articles={articles} isLoading={isLoading} views={views} />
-            </Page>
+            {content}
         </DynamicModuleLoader>
     );
 });

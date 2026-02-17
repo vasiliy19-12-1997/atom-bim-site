@@ -7,13 +7,47 @@
 .app {
     background: var(--bg-color);
     min-height: 100vh;
-}
-
-body {
     font: var(--font-m);
     color: var(--primary-color);
 }
 
+.app_redesign {
+    min-height: 100vh;
+    background: var(--bg-redesign);
+    font: var(--font-m-redesign);
+    color: var(--text-redesign);
+}
+
 .content-page {
     display: flex;
+}
+
+*::-webkit-scrollbar {
+    width: 12px; /* ширина scrollbar */
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--light-bg-redesign); /* цвет дорожки */
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--icon-redesign); /* цвет плашки */
+    border-radius: 20px; /* закругления плашки */
+    border: 2px solid var(--accent-redesign); /* padding вокруг плашки */
+}
+
+.app *::-webkit-scrollbar {
+    width: 12px; /* ширина scrollbar */
+    height: 8px;
+}
+
+.app *::-webkit-scrollbar-track {
+    background: var(--card-bg); /* цвет дорожки */
+}
+
+.app *::-webkit-scrollbar-thumb {
+    background-color: var(--inverted-primary-color); /* цвет плашки */
+    border-radius: 20px; /* закругления плашки */
+    border: 2px solid var(--primary-color); /* padding вокруг плашки */
 }

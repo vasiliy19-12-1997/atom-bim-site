@@ -1,68 +1,78 @@
-import { ArtcileDetails, ArticleList } from 'entities/Article';
-import { CommentaryList } from 'entities/Сommentary';
-import { AddCommentForm } from 'features/AddCommentForm';
-import { articleDetailsReducer } from 'pages/ArticlePageDetails/model/selectors';
-import { getArticleDetailsRecommendError, getArticleDetailsRecommendIsLoading } from 'pages/ArticlePageDetails/model/selectors/recommends/recommends';
-import { fetchArticlesRecommends } from 'pages/ArticlePageDetails/model/services/fetchArticlesRecommends';
-import { getRecommend } from 'pages/ArticlePageDetails/model/slice/ArticleDetailsRecommendSlice';
-import { memo, useCallback } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { RoutePath } from 'shared/config/routeConfig/routeConfig';
-import { DynamicModuleLoader, ReducersList } from 'shared/lib/components/DynamicModuleLoader/DynamicModuleLoader';
-import { useInitialEffect } from 'shared/lib/hooks/useInitialEffect/useInitialEffect';
-import { Button } from 'shared/ui/Button/Button';
-import { Text } from 'shared/ui/Text/Text';
-import { Page } from 'widgets/Page/Page';
-import { getArticleDetailsCommentsIsLoading } from '../../model/selectors/comments/comments';
-import { addCommentForArticle } from '../../model/services/addCommentForArticle';
+import { useParams } from 'react-router-dom';
+import { ArtcileDetails } from '@/entities/Article';
+import { ArticleRating } from '@/features/ArticleRating';
+import { ArticleRecomendationList } from '@/features/ArticleRecomendationList';
+import { ToggleFeatures } from '@/shared/features';
+import { StickyContentLayout } from '@/shared/layouts/StickyContentLayout';
+import { classNames } from '@/shared/lib/classNames/classNames';
+import { DynamicModuleLoader, ReducersList } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch';
+import { useInitialEffect } from '@/shared/lib/hooks/useInitialEffect/useInitialEffect';
+import { Page } from '@/shared/ui/deprecated/Page';
+import { VStack } from '@/shared/ui/redesigned/Stack';
+import { ArticleDetailsComments } from '../../../ArticleDetailsComments';
+import { fetchArticlesRecommends } from '../../model/services/fetchArticlesRecommends';
 import { fetchCommentsByArticleId } from '../../model/services/fetchCommentsByArticleId';
-import { getArticleComments } from '../../model/slice/ArticleDetailsCommentSlice';
-import cls from './ArticlePageDetails.module.scss';
+import { articlePageDetailsReducer } from '../../model/slice';
 import { ArticlePageDetailsHeader } from '../ArticlePageDetailsHeader/ArticlePageDetailsHeader';
+import { DetailsContainer } from '../DetailsContainer/DetailsContainer';
+import cls from './ArticlePageDetails.module.scss';
+import { AdditionalInfoContainer } from '../AdditionalInfoContainer/AdditionalInfoContainer';
 
 const ArticlePageDetails = memo(() => {
-    const { t } = useTranslation('ArticlePageDetails');
-    const { id } = useParams<{id?:string}>();
-    const isLoading = useSelector(getArticleDetailsCommentsIsLoading);
-    const dispatch = useDispatch();
-
-    const comments = useSelector(getArticleComments.selectAll);
-    const recommends = useSelector(getRecommend.selectAll);
-    const isLoadingRecommends = useSelector(getArticleDetailsRecommendIsLoading);
-    const errorRecommends = useSelector(getArticleDetailsRecommendError);
-    const reducers:ReducersList = {
-        articlePageDetails: articleDetailsReducer,
+    const { t } = useTranslation('');
+    const { id } = useParams<{ id?: string }>();
+    const dispatch = useAppDispatch();
+    const reducers: ReducersList = {
+        articlePageDetails: articlePageDetailsReducer,
     };
     useInitialEffect(() => {
         dispatch(fetchCommentsByArticleId(id));
         dispatch(fetchArticlesRecommends());
     }, [dispatch, id]);
-    const onSendComments = useCallback((text:string) => {
-        dispatch(addCommentForArticle(text));
-    }, [dispatch]);
 
     if (!id) {
-        return (
-            <div>
-                {t('Статья не найдена')}
-            </div>
-        );
+        return null;
     }
+
+    // const articleRatingCard = toggleFeatures({
+    //     name: 'isArticleRatingEnabled',
+    //     on: () => <ArticleRating articleId={id} />,
+    //     off: () => <Card>{t('Карточка рейтинга статьи')}</Card>,
+    // });
 
     return (
         <DynamicModuleLoader reducers={reducers} removeAfterUnmount>
-            <Page>
-                {t('Article Page Details')}
-                <ArticlePageDetailsHeader />
-                <ArtcileDetails id={id} />
-                <Text title={t('Рекомендации')} />
-                <ArticleList target="_blank" className={cls.recommends} articles={recommends} isLoading={isLoadingRecommends} />
-                <Text title={t('Комментарии')} className={cls.comments} />
-                <AddCommentForm onSendComments={onSendComments} />
-                <CommentaryList isLoading={isLoading} comments={comments} />
-            </Page>
+            <ToggleFeatures
+                name="isNewDesignEnabled"
+                on={
+                    <StickyContentLayout
+                        content={
+                            <Page className={classNames(cls.ArticleDetailsPage, {}, [])}>
+                                <VStack gap={16}>
+                                    <DetailsContainer />
+                                    <ArticleRating articleId={id} />
+                                    <ArticleRecomendationList />
+                                    <ArticleDetailsComments id={id} />
+                                </VStack>
+                            </Page>
+                        }
+                        right={<AdditionalInfoContainer />}
+                    />
+                }
+                off={
+                    <Page>
+                        {t('Article Page Details')}
+                        <ArticlePageDetailsHeader />
+                        <ArtcileDetails id={id} />
+                        <ArticleRating articleId={id} />
+                        <ArticleRecomendationList />
+                        <ArticleDetailsComments id={id} />
+                    </Page>
+                }
+            />
         </DynamicModuleLoader>
     );
 });

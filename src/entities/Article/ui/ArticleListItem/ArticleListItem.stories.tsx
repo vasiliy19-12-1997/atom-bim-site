@@ -1,11 +1,8 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { Theme } from 'app/providers/ThemeProvider';
-import { StoreDecorator } from 'shared/config/storybook/StoreDecorator/StoreDecorator';
-import { ThemeDecorator } from 'shared/config/storybook/ThemeDecorator/ThemeDecorator';
-import { Article, ArticleViews } from 'entities/Article/model/types/artcile';
-import { $api } from 'shared/config/api/api';
+import { Theme } from '@/shared/const/theme';
+import { ThemeDecorator } from '@/shared/config/storybook/ThemeDecorator/ThemeDecorator';
+import { Article, ArticleView } from '../../model/types/artcile';
 import { ArticleListItem } from './ArticleListItem';
-import { Dark } from '../../../../shared/ui/ThemeSwitcher/ui/ThemeSwitcher.stories';
 
 export default {
     title: 'entities/Article/ArticleListItem',
@@ -28,9 +25,7 @@ const articles = {
         id: '1',
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcK8LuTRihbc5t5dlS6Lw6Q710u02oN80LJw&s',
     },
-    type: [
-        'IT', 'fgfg', 'fdfdfdf', 'fdfdfdf',
-    ],
+    type: ['IT', 'fgfg', 'fdfdfdf', 'fdfdfdf'],
     blocks: [
         {
             id: '1',
@@ -95,32 +90,24 @@ const articles = {
 export const ListItemSmall = Template.bind({});
 ListItemSmall.args = {
     article: articles,
-    view: ArticleViews.SMALL,
+    view: ArticleView.SMALL,
 };
-ListItemSmall.decorators = [
-    ThemeDecorator(Theme.LIGHT),
-];
+ListItemSmall.decorators = [ThemeDecorator(Theme.LIGHT)];
 export const ListItemSmallDark = Template.bind({});
 ListItemSmallDark.args = {
     article: articles,
-    view: ArticleViews.SMALL,
+    view: ArticleView.SMALL,
 };
-ListItemSmallDark.decorators = [
-    ThemeDecorator(Theme.DARK),
-];
+ListItemSmallDark.decorators = [ThemeDecorator(Theme.DARK)];
 export const ListItemBig = Template.bind({});
 ListItemBig.args = {
     article: articles,
-    view: ArticleViews.BIG,
+    view: ArticleView.BIG,
 };
-ListItemBig.decorators = [
-    ThemeDecorator(Theme.LIGHT),
-];
+ListItemBig.decorators = [ThemeDecorator(Theme.LIGHT)];
 export const ListItemBigDark = Template.bind({});
 ListItemBigDark.args = {
     article: articles,
-    view: ArticleViews.BIG,
+    view: ArticleView.BIG,
 };
-ListItemBigDark.decorators = [
-    ThemeDecorator(Theme.DARK),
-];
+ListItemBigDark.decorators = [ThemeDecorator(Theme.DARK)];

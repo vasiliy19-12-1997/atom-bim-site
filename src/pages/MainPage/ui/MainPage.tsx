@@ -1,25 +1,11 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Input } from 'shared/ui/Input/Input';
-import { Page } from 'widgets/Page/Page';
+import { Page } from '@/shared/ui/deprecated/Page';
 
 const MainPage = memo(() => {
     const { t } = useTranslation();
-    const [value, setValue] = useState('');
-    const onChange = (val:string) => {
-        setValue(val);
-    };
-    return (
-        <Page>
-            {t('Главная страница')}
-            <Input
-                onChange={onChange}
-                value={value}
-                placeholder={t('Введите текст')}
 
-            />
-        </Page>
-    );
+    return <Page data-testid="MainPage">{t('Главная страница')}</Page>;
 });
 
 export default MainPage;
