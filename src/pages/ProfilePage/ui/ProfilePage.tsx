@@ -12,8 +12,7 @@ import { ProfileRating } from '@/features/ProfileRating';
 interface ProfilePageProps {
     className?: string;
 }
-
-export const ProfilePage = memo((props: ProfilePageProps) => {
+const ProfilePage = memo((props: ProfilePageProps) => {
     const { className } = props;
     const { t } = useTranslation();
     const { id } = useParams<{ id: string }>();
@@ -29,3 +28,4 @@ export const ProfilePage = memo((props: ProfilePageProps) => {
         </Page>
     );
 });
+export default ProfilePage

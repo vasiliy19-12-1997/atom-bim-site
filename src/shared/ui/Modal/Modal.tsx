@@ -2,10 +2,10 @@ import React, {
     MutableRefObject,
     ReactNode, useCallback, useEffect, useRef, useState,
 } from 'react';
-import { classNames, Mods } from 'shared/lib/classNames/classNames';
-import { useTheme } from 'app/providers/ThemeProvider';
+import { classNames, Mods } from '@/shared/lib/classNames/classNames';
 import cls from './Modal.module.scss';
 import { Portal } from '../Portal/Portal';
+import { useTheme } from '@/shared/lib/hooks/useTheme/useTheme';
 
 const ANIMATION_DELAY = 300;
 interface ModalProps {
