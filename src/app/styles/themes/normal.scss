@@ -1,24 +1,36 @@
 :root {
-    --bg-color: #e8e8ea;
-    --inverted-bg-color: #090949;
-    --primary-color: #0232c2;
-    --secondary-color: #306ae7;
-    --inverted-primary-color: #049604;
-    --inverted-secondary-color: #04ff04;
-    --skeleton-color: #fff;
-    --skeleton-shadow: rgba(0 0 0 / 20%);
-    --code-btn: #fff;
-    --card-bg: #d5d5d7;
-    --list-box-bg: #d5d5d7;
+    /* === BACKGROUND === */
+    --color-bg-primary: #fff;
+    --color-bg-secondary: #f6f6f6; // Gray 100
+    --color-bg-tertiary: #e8e9e9; // Gray 200
+    --color-surface: #f6f6f6;
+    --color-surface-hover: #e8e9e9;
 
-    // redesign colors
-    --dark-bg-redesign: #ffff;
-    --bg-redesign: #eff5f6;
-    --light-bg-redesign: #e2eef1;
-    --text-redesign: #141c1f;
-    --hint-redesign: #adbcc0;
-    --cancel-redesign: #f77;
-    --save-redesign: #62de85;
-    --icon-redesign: #5ed3f3;
-    --accent-redesign: #00c8ff;
+    /* === TEXT === */
+    --color-text-primary: #1a1a1a; // Gray 900
+    --color-text-secondary: #4d4c4c; // Gray 850
+    --color-text-muted: #939598; // Gray 700
+    --color-text-inverted: #fff;
+
+    /* === BORDER === */
+    --color-border: #d1d3d4; // Gray 300
+
+    /* === ACCENT / PRIMARY === */
+    --color-accent: #008060; // Green
+    --color-accent-hover: #049604;
+
+    /* === STATUS COLORS === */
+    --color-success: #008060;
+    --color-warning: #e5ca1e;
+    --color-danger: #f1585b;
+    --color-info: #5c74b8;
+
+    /* === SKELETON === */
+    --color-skeleton-bg: #e8e9e9;
+    --color-skeleton-highlight: rgba(0, 0, 0, 0.1);
+
+    /* === COMPONENTS === */
+    --color-card-bg: #fff;
+    --color-list-bg: #f6f6f6;
+    --color-code-bg: #f6f6f6;
 }

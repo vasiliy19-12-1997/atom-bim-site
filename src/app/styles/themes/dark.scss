@@ -1,24 +1,36 @@
 .app_dark_theme {
-    --bg-color: #090949;
-    --inverted-bg-color: #e8e8ea;
-    --primary-color: #04ff04;
-    --secondary-color: #049604;
-    --inverted-primary-color: #0452ff;
-    --inverted-secondary-color: #0232c2;
-    --skeleton-color: #1515ad;
-    --skeleton-shadow: #2b2be8;
-    --code-btn: #1212a1;
-    --card-bg: #0d0d6b;
-    --list-box-bg: #0d0d6b;
+    /* === BACKGROUND === */
+    --color-bg-primary: #090f11;
+    --color-bg-secondary: #0c1214;
+    --color-bg-tertiary: #151c1f;
+    --color-surface: #151c1f;
+    --color-surface-hover: #1f262a;
 
-    // redesign colors
-    --dark-bg-redesign: #090f11;
-    --bg-redesign: #0c1214;
-    --light-bg-redesign: #151c1f;
-    --text-redesign: #dbdbdb;
-    --hint-redesign: #555;
-    --cancel-redesign: #d95757;
-    --save-redesign: #6cd98b;
-    --icon-redesign: #74a2b2;
-    --accent-redesign: #5ed3f3;
+    /* === TEXT === */
+    --color-text-primary: #dbdbdb;
+    --color-text-secondary: #adbcc0;
+    --color-text-muted: #777;
+    --color-text-inverted: #090f11;
+
+    /* === BORDER === */
+    --color-border: #2b2b2b;
+
+    /* === ACCENT / PRIMARY === */
+    --color-accent: #5ed3f3;
+    --color-accent-hover: #74a2b2;
+
+    /* === STATUS COLORS === */
+    --color-success: #6cd98b;
+    --color-warning: #e6c56a;
+    --color-danger: #d95757;
+    --color-info: #5c74b8;
+
+    /* === SKELETON === */
+    --color-skeleton-bg: #151c1f;
+    --color-skeleton-highlight: #2b2b2b;
+
+    /* === COMPONENTS === */
+    --color-card-bg: #0d0d0d;
+    --color-list-bg: #0d0d0d;
+    --color-code-bg: #121a1f;
 }
