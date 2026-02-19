@@ -5,7 +5,17 @@ import EIRIcon from '@/shared/assets/icons/new/Information 24px.svg';
 import ProfileIcon from '@/shared/assets/icons/avatar.svg';
 import MainIcon from '@/shared/assets/icons/home.svg';
 import AboutIcon from '@/shared/assets/icons/Info.svg';
-import { getRouteAbout, getRouteArticle, getRouteEir, getRouteMain, getRouteProfile } from '@/shared/const/router';
+import {
+    getRouteAbout,
+    getRouteArticle,
+    getRouteEir,
+    getRouteInstruction,
+    getRouteLibrary,
+    getRouteMain,
+    getRouteProfile,
+    getRouteTests,
+    getRouteVideos,
+} from '@/shared/const/router';
 import { SidebarItemType } from '../types/sidebar';
 
 export const useSidebarItems = () => {
@@ -40,6 +50,30 @@ export const useSidebarItems = () => {
                 path: getRouteEir(),
                 Icon: EIRIcon,
                 text: 'EIR',
+                authOnly: true,
+            },
+            {
+                path: getRouteInstruction(),
+                Icon: EIRIcon,
+                text: 'Инструкции',
+                authOnly: true,
+            },
+            {
+                path: getRouteVideos(),
+                Icon: EIRIcon,
+                text: 'Видео',
+                authOnly: true,
+            },
+            {
+                path: getRouteLibrary(),
+                Icon: EIRIcon,
+                text: 'Библиотека',
+                authOnly: true,
+            },
+            {
+                path: getRouteTests(),
+                Icon: EIRIcon,
+                text: 'Тесты',
                 authOnly: true,
             },
         );

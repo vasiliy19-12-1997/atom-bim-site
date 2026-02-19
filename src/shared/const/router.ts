@@ -11,6 +11,10 @@ export enum AppRoutes {
     FORBIDDEN = 'forbidden',
     SETTINGS = 'settings',
     EIR = 'eir',
+    INSTRUCTION = 'instruction',
+    VIDEOS = 'videos',
+    LIBRARY = 'library',
+    TESTS = 'tests',
 }
 
 export const getRouteMain = () => '/';
@@ -24,6 +28,10 @@ export const getRouteAdmin = () => '/admin';
 export const getRouteForbidden = () => '/forbidden';
 export const getRouteSettings = () => '/settings';
 export const getRouteEir = () => '/eir';
+export const getRouteInstruction = () => '/instruction';
+export const getRouteVideos = () => '/videos';
+export const getRouteLibrary = () => 'library';
+export const getRouteTests = () => 'tests';
 
 export const AppRouteByPathPattern: Record<string, AppRoutes> = {
     [getRouteMain()]: AppRoutes.MAIN,
@@ -37,4 +45,8 @@ export const AppRouteByPathPattern: Record<string, AppRoutes> = {
     [getRouteForbidden()]: AppRoutes.FORBIDDEN,
     [getRouteSettings()]: AppRoutes.SETTINGS,
     [getRouteEir()]: AppRoutes.EIR,
+    [getRouteInstruction()]: AppRoutes.INSTRUCTION,
+    [getRouteVideos()]: AppRoutes.VIDEOS,
+    [getRouteLibrary()]: AppRoutes.LIBRARY,
+    [getRouteTests()]: AppRoutes.TESTS,
 };

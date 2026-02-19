@@ -32,7 +32,7 @@
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: var(--icon-redesign); /* цвет плашки */
+    background-color: var(--color-accent); /* цвет плашки */
     border-radius: 20px; /* закругления плашки */
     border: 2px solid var(--color-bg-secondary); /* padding вокруг плашки */
 }

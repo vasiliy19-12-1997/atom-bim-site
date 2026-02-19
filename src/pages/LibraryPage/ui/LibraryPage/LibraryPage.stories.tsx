@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { LibraryPage } from './LibraryPage';
+import LibraryPage from './LibraryPage';
 
 export default {
     title: 'pages/LibraryPage',
@@ -14,6 +14,4 @@ export default {
 const Template: ComponentStory<typeof LibraryPage> = (args) => <LibraryPage {...args} />;
 
 export const Normal = Template.bind({});
-Normal.args = {
-   
-};
+Normal.args = {};

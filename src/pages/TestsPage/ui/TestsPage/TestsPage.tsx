@@ -11,6 +11,6 @@ const TestsPage = memo((props: TestsPageProps) => {
     const { className } = props;
     const { t } = useTranslation();
 
-    return <div className={classNames(cls.TestsPage, {}, [className])}>1</div>;
+    return <div className={classNames(cls.TestsPage, {}, [className])}>{t('Тесты')}</div>;
 });
 export default TestsPage;

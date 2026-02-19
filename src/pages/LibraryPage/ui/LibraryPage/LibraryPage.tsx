@@ -11,6 +11,6 @@ const LibraryPage = memo((props: LibraryPageProps) => {
     const { className } = props;
     const { t } = useTranslation();
 
-    return <div className={classNames(cls.LibraryPage, {}, [className])}>1</div>;
+    return <div className={classNames(cls.LibraryPage, {}, [className])}>{t('LibraryPage')}</div>;
 });
 export default LibraryPage;

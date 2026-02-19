@@ -11,7 +11,7 @@ const InstructionPage = memo((props: InstructionPageProps) => {
     const { t } = useTranslation();
     const { className } = props;
 
-    return <div className={classNames(cls.InstructionPage, {}, [className])}>1</div>;
+    return <div className={classNames(cls.InstructionPage, {}, [className])}>{t('Страница инструкций')}</div>;
 });
 
 export default InstructionPage;
