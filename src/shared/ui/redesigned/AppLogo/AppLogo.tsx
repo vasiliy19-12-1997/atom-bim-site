@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import AppSvg from '@/shared/assets/icons/app-image.svg';
+import AppSvg from '@/shared/assets/icons/old/app-image.svg';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import cls from './AppLogo.module.scss';
 import { HStack } from '../Stack';

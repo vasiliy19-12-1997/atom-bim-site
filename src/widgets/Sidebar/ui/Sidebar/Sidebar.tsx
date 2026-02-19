@@ -1,7 +1,7 @@
 import { memo, useMemo, useState } from 'react';
 import { LangSwitcher } from '@/features/LangSwitcher';
 import { ThemeSwitcher } from '@/features/ThemeSwitcher';
-import ArrowIcon from '@/shared/assets/icons/arrow-bottom.svg';
+import ArrowIcon from '@/shared/assets/icons/old/arrow-bottom.svg';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { AppLogo } from '@/shared/ui/redesigned/AppLogo';
 import { Icon } from '@/shared/ui/redesigned/Icon';

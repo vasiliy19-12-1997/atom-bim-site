@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import EyeIcon from '@/shared/assets/icons/eye.svg';
+import EyeIcon from '@/shared/assets/icons/old/eye.svg';
 import { getRouteArticleDetails } from '@/shared/const/router';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { AppImage } from '@/shared/ui/redesigned/AppImage';

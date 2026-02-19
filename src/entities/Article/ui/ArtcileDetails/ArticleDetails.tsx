@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import CalendarIcon from '@/shared/assets/icons/calendar-20-20.svg';
-import EyeIcon from '@/shared/assets/icons/eye-20-20.svg';
+import CalendarIcon from '@/shared/assets/icons/old/calendar-20-20.svg';
+import EyeIcon from '@/shared/assets/icons/old/eye-20-20.svg';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { DynamicModuleLoader, ReducersList } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch';
@@ -47,14 +47,14 @@ export const ArtcileDetails = memo((props: ArtcileDetailsProps) => {
     }, [dispatch, id]);
     // TODO доделать скелетона детальной страницы
     let element = (
-                <>
-                    <Sceleton className={cls.avatar} width={200} height={200} border="50%" />
-                    <Sceleton className={cls.title} width={300} height={32} />
-                    <Sceleton className={cls.title} width={600} height={24} />
-                    <Sceleton className={cls.sceleton} width="100%" height={200} />
-                    <Sceleton className={cls.sceleton} width="100%" height={200} />
-                </>
-            );
+        <>
+            <Sceleton className={cls.avatar} width={200} height={200} border="50%" />
+            <Sceleton className={cls.title} width={300} height={32} />
+            <Sceleton className={cls.title} width={600} height={24} />
+            <Sceleton className={cls.sceleton} width="100%" height={200} />
+            <Sceleton className={cls.sceleton} width="100%" height={200} />
+        </>
+    );
 
     // eslint-disable-next-line react/no-unstable-nested-components
     const Deprecated = () => {

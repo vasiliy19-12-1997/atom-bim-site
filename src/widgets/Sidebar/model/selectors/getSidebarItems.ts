@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux';
 import { getAuthUserData } from '@/entities/User';
-import ArticleIcon from '@/shared/assets/icons/article.svg';
+import ArticleIcon from '@/shared/assets/icons/old/article.svg';
 import EIRIcon from '@/shared/assets/icons/new/Information 24px.svg';
-import ProfileIcon from '@/shared/assets/icons/avatar.svg';
-import MainIcon from '@/shared/assets/icons/home.svg';
-import AboutIcon from '@/shared/assets/icons/Info.svg';
+import ProfileIcon from '@/shared/assets/icons/old/avatar.svg';
+import MainIcon from '@/shared/assets/icons/old/home.svg';
+import AboutIcon from '@/shared/assets/icons/old/Info.svg';
 import {
     getRouteAbout,
     getRouteArticle,

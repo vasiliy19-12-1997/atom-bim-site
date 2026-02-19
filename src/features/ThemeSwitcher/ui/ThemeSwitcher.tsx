@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react';
-import ThemeIcon from '@/shared/assets/icons/theme.svg';
+import ThemeIcon from '@/shared/assets/icons/old/theme.svg';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { Button, ButtonTheme } from '../../../shared/ui/deprecated/Button/Button';
 import { useTheme } from '@/shared/lib/hooks/useTheme/useTheme';
@@ -21,7 +21,7 @@ export const ThemeSwitcher = memo(({ className }: ThemeSwitcherProps) => {
     }, [dispatch, toggleTheme]);
     return (
         <Button theme={ButtonTheme.CLEAR} className={classNames('', {}, [className])} onClick={handleTheme}>
-                            <Icon width={40} height={40} Svg={ThemeIcon} />
-                        </Button>
+            <Icon width={40} height={40} Svg={ThemeIcon} />
+        </Button>
     );
 });
