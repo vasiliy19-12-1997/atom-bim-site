@@ -1,7 +1,7 @@
 import { memo, MutableRefObject, ReactNode, UIEvent, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-// eslint-disable-next-line atom-bim-site-plugin/layer-imports
+// eslint-disable-next-line big-react-app-plugin/layer-imports
 import { getScrollRestorationByPath, scrollRestorationSliceActions } from '@/features/ScrollRestoration';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch';
@@ -11,7 +11,6 @@ import { useThrotle } from '@/shared/lib/hooks/useThrotle/useThrotle';
 import { useInfiniteScroll } from '@/shared/lib/hooks/useInitialScroll/useInfiniteScroll';
 import cls from './Page.module.scss';
 import { TestProps } from '@/shared/types/tests';
-import { toggleFeatures } from '@/shared/features';
 
 interface PageProps extends TestProps {
     className?: string;
@@ -32,11 +31,7 @@ export const Page = memo((props: PageProps) => {
     const scrollPosition = useSelector((state: StateSchema) => getScrollRestorationByPath(state, pathname));
 
     useInfiniteScroll({
-        wrapperRef: toggleFeatures({
-            name: 'isNewDesignEnabled',
-            on: () => undefined, // браузер берет дефолтные настройки
-            off: () => wrapperRef,
-        }),
+        wrapperRef: undefined,
         triggerRef,
         callback: onScrollEnd,
     });
@@ -57,15 +52,7 @@ export const Page = memo((props: PageProps) => {
             id={PAGE_ID}
             onScroll={onScroll}
             ref={wrapperRef}
-            className={classNames(
-                toggleFeatures({
-                    name: 'isNewDesignEnabled',
-                    on: () => cls.PageRedesigned,
-                    off: () => cls.Page,
-                }),
-                {},
-                [className],
-            )}
+            className={classNames(cls.PageRedesigned, {}, [className])}
         >
             {children}
             {onScrollEnd ? <div className={cls.trigger} ref={triggerRef} /> : null}

@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-// eslint-disable-next-line atom-bim-site-plugin/layer-imports
+// eslint-disable-next-line big-react-app-plugin/layer-imports
 import { StateSchema } from '@/app/providers/StoreProvider/config/StateSchema';
 
 export interface ThunkExtraArg {

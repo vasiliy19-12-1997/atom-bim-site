@@ -4,10 +4,8 @@ import { useSelector } from 'react-redux';
 import { RatingCard } from '@/entities/Rating';
 import { getAuthUserData } from '@/entities/User';
 import { classNames } from '@/shared/lib/classNames/classNames';
-import { Sceleton as SceletonRedesign } from '@/shared/ui/deprecated/Sceleton';
 import { useGetRatingsProfile, usePostRatingsProfile } from '../../api/profileRatingApi';
 import cls from './ProfileRating.module.scss';
-import { ToggleFeatures } from '@/shared/features';
 import { Sceleton } from '@/shared/ui/redesigned/Sceleton';
 
 export interface ProfileRatingProps {
@@ -50,11 +48,7 @@ const ProfileRating = memo((props: ProfileRatingProps) => {
 
     if (isLoading) {
         return (
-            <ToggleFeatures
-                name="isNewDesignEnabled"
-                on={<Sceleton width="100%" height={200} />}
-                off={<SceletonRedesign height={200} width={200} />}
-            />
+            <Sceleton width="100%" height={200} />
         );
     }
     const rate = data?.[0];

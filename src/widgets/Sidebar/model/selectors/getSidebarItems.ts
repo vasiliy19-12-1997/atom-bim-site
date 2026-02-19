@@ -1,15 +1,11 @@
 import { useSelector } from 'react-redux';
 import { getAuthUserData } from '@/entities/User';
-import AboutIconDeprecated from '@/shared/assets/icons/about-20-20.svg';
-import ArticleIconDeprecated from '@/shared/assets/icons/article-20-20.svg';
 import ArticleIcon from '@/shared/assets/icons/article.svg';
+import EIRIcon from '@/shared/assets/icons/new/Information 24px.svg';
 import ProfileIcon from '@/shared/assets/icons/avatar.svg';
 import MainIcon from '@/shared/assets/icons/home.svg';
 import AboutIcon from '@/shared/assets/icons/Info.svg';
-import MainIconDeprecated from '@/shared/assets/icons/main-20-20.svg';
-import ProfileIconDeprecated from '@/shared/assets/icons/profile-20-20.svg';
-import { getRouteAbout, getRouteArticle, getRouteMain, getRouteProfile } from '@/shared/const/router';
-import { toggleFeatures } from '@/shared/features';
+import { getRouteAbout, getRouteArticle, getRouteEir, getRouteMain, getRouteProfile } from '@/shared/const/router';
 import { SidebarItemType } from '../types/sidebar';
 
 export const useSidebarItems = () => {
@@ -17,20 +13,12 @@ export const useSidebarItems = () => {
     const SidebarItemsList: SidebarItemType[] = [
         {
             path: getRouteMain(),
-            Icon: toggleFeatures({
-                name: 'isNewDesignEnabled',
-                on: () => MainIcon,
-                off: () => MainIconDeprecated,
-            }),
+            Icon: MainIcon,
             text: 'Главная',
         },
         {
             path: getRouteAbout(),
-            Icon: toggleFeatures({
-                name: 'isNewDesignEnabled',
-                on: () => AboutIcon,
-                off: () => AboutIconDeprecated,
-            }),
+            Icon: AboutIcon,
             text: 'О сайте',
         },
     ];
@@ -38,22 +26,20 @@ export const useSidebarItems = () => {
         SidebarItemsList.push(
             {
                 path: getRouteProfile(userData.id),
-                Icon: toggleFeatures({
-                    name: 'isNewDesignEnabled',
-                    on: () => ProfileIcon,
-                    off: () => ProfileIconDeprecated,
-                }),
+                Icon: ProfileIcon,
                 text: 'Профиль',
                 authOnly: true,
             },
             {
                 path: getRouteArticle(),
-                Icon: toggleFeatures({
-                    name: 'isNewDesignEnabled',
-                    on: () => ArticleIcon,
-                    off: () => ArticleIconDeprecated,
-                }),
+                Icon: ArticleIcon,
                 text: 'Article',
+                authOnly: true,
+            },
+            {
+                path: getRouteEir(),
+                Icon: EIRIcon,
+                text: 'EIR',
                 authOnly: true,
             },
         );

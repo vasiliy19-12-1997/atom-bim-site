@@ -4,6 +4,7 @@ import { AdminPanelPage } from '@/pages/AdminPanelPage';
 import { ArticleEditPage } from '@/pages/ArticleEditPage';
 import { ArticlePage } from '@/pages/ArticlePage';
 import { ArticlePageDetails } from '@/pages/ArticlePageDetails';
+import { EIRPage } from '@/pages/EIRPage';
 import { ForbiddenPage } from '@/pages/ForbiddenPage';
 import { MainPage } from '@/pages/MainPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
@@ -17,6 +18,7 @@ import {
     getRouteArticleCreate,
     getRouteArticleDetails,
     getRouteArticleEdit,
+    getRouteEir,
     getRouteForbidden,
     getRouteMain,
     getRouteProfile,
@@ -76,5 +78,10 @@ export const routeConfig: Record<AppRoutes, AppRouteProps> = {
         path: getRouteSettings(),
         element: <SettingsPage />,
         roles: [UserRoles.ADMIN, UserRoles.MANAGER],
+    },
+    [AppRoutes.EIR]: {
+        path: getRouteEir(),
+        element: <EIRPage />,
+        authOnly: true,
     },
 };

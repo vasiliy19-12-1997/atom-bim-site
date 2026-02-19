@@ -1,14 +1,14 @@
-@import "reset";
-@import "variables/global";
-@import "themes/normal";
-@import "themes/dark";
-@import "themes/yellow";
+@import 'reset';
+@import 'variables/global';
+@import 'themes/normal';
+@import 'themes/dark';
+@import 'themes/yellow';
 
 .app {
-    background: var(--bg-color);
+    background: var(--color-bg-primary);
     min-height: 100vh;
     font: var(--font-m);
-    color: var(--primary-color);
+    color: var(--color-text-primary);
 }
 
 .app_redesign {
@@ -28,26 +28,11 @@
 }
 
 *::-webkit-scrollbar-track {
-    background: var(--light-bg-redesign); /* цвет дорожки */
+    background: var(--color-bg-primary); /* цвет дорожки */
 }
 
 *::-webkit-scrollbar-thumb {
     background-color: var(--icon-redesign); /* цвет плашки */
     border-radius: 20px; /* закругления плашки */
-    border: 2px solid var(--accent-redesign); /* padding вокруг плашки */
-}
-
-.app *::-webkit-scrollbar {
-    width: 12px; /* ширина scrollbar */
-    height: 8px;
-}
-
-.app *::-webkit-scrollbar-track {
-    background: var(--card-bg); /* цвет дорожки */
-}
-
-.app *::-webkit-scrollbar-thumb {
-    background-color: var(--inverted-primary-color); /* цвет плашки */
-    border-radius: 20px; /* закругления плашки */
-    border: 2px solid var(--primary-color); /* padding вокруг плашки */
+    border: 2px solid var(--color-bg-secondary); /* padding вокруг плашки */
 }

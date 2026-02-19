@@ -10,6 +10,7 @@ export enum AppRoutes {
     ADMIN = 'admin',
     FORBIDDEN = 'forbidden',
     SETTINGS = 'settings',
+    EIR = 'eir',
 }
 
 export const getRouteMain = () => '/';
@@ -22,6 +23,7 @@ export const getRouteArticleEdit = (id: string) => `/articles/${id}/edit`;
 export const getRouteAdmin = () => '/admin';
 export const getRouteForbidden = () => '/forbidden';
 export const getRouteSettings = () => '/settings';
+export const getRouteEir = () => '/eir';
 
 export const AppRouteByPathPattern: Record<string, AppRoutes> = {
     [getRouteMain()]: AppRoutes.MAIN,
@@ -34,4 +36,5 @@ export const AppRouteByPathPattern: Record<string, AppRoutes> = {
     [getRouteAdmin()]: AppRoutes.ADMIN,
     [getRouteForbidden()]: AppRoutes.FORBIDDEN,
     [getRouteSettings()]: AppRoutes.SETTINGS,
+    [getRouteEir()]: AppRoutes.EIR,
 };

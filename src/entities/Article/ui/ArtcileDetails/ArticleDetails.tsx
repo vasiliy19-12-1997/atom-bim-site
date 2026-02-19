@@ -21,7 +21,6 @@ import { fetchArticleById } from '../../model/services/fetchArticleById';
 import { articleDetailsReducers } from '../../testing';
 import cls from './ArtcileDetails.module.scss';
 import { renderBlocks } from './ArticleRenderBlock';
-import { toggleFeatures, ToggleFeatures } from '@/shared/features';
 import { Text } from '@/shared/ui/redesigned/Text';
 import { Icon } from '@/shared/ui/redesigned/Icon';
 import { AppImage } from '@/shared/ui/redesigned/AppImage';
@@ -47,28 +46,15 @@ export const ArtcileDetails = memo((props: ArtcileDetailsProps) => {
         dispatch(fetchArticleById(id));
     }, [dispatch, id]);
     // TODO доделать скелетона детальной страницы
-    let element = toggleFeatures({
-        name: 'isNewDesignEnabled',
-        on: () => (
-            <>
-                <Sceleton className={cls.avatar} width={200} height={200} border="50%" />
-                <Sceleton className={cls.title} width={300} height={32} />
-                <Sceleton className={cls.title} width={600} height={24} />
-                <Sceleton className={cls.sceleton} width="100%" height={200} />
-                <Sceleton className={cls.sceleton} width="100%" height={200} />
-            </>
-        ),
-
-        off: () => (
-            <>
-                <SceletonDeprecated className={cls.avatar} width={200} height={200} border="50%" />
-                <SceletonDeprecated className={cls.title} width={300} height={32} />
-                <SceletonDeprecated className={cls.title} width={600} height={24} />
-                <SceletonDeprecated className={cls.sceleton} width="100%" height={200} />
-                <SceletonDeprecated className={cls.sceleton} width="100%" height={200} />
-            </>
-        ),
-    });
+    let element = (
+                <>
+                    <Sceleton className={cls.avatar} width={200} height={200} border="50%" />
+                    <Sceleton className={cls.title} width={300} height={32} />
+                    <Sceleton className={cls.title} width={600} height={24} />
+                    <Sceleton className={cls.sceleton} width="100%" height={200} />
+                    <Sceleton className={cls.sceleton} width="100%" height={200} />
+                </>
+            );
 
     // eslint-disable-next-line react/no-unstable-nested-components
     const Deprecated = () => {
@@ -123,7 +109,7 @@ export const ArtcileDetails = memo((props: ArtcileDetailsProps) => {
     } else if (isLoading) {
         return element;
     } else {
-        element = <ToggleFeatures name="isNewDesignEnabled" on={<Redesigned />} off={<Deprecated />} />;
+        element = <Redesigned />;
     }
     return (
         <DynamicModuleLoader reducers={reducers} removeAfterUnmount>

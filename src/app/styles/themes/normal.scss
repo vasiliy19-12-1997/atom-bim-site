@@ -1,8 +1,14 @@
 :root {
     /* === BACKGROUND === */
     --color-bg-primary: #fff;
+
+    /* sidebar, navigation */
     --color-bg-secondary: #f6f6f6; // Gray 100
+
+    /* hover */
     --color-bg-tertiary: #e8e9e9; // Gray 200
+
+    /* card, modal, dropdown */
     --color-surface: #f6f6f6;
     --color-surface-hover: #e8e9e9;
 
@@ -28,9 +34,4 @@
     /* === SKELETON === */
     --color-skeleton-bg: #e8e9e9;
     --color-skeleton-highlight: rgba(0, 0, 0, 0.1);
-
-    /* === COMPONENTS === */
-    --color-card-bg: #fff;
-    --color-list-bg: #f6f6f6;
-    --color-code-bg: #f6f6f6;
 }

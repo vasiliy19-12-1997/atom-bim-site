@@ -6,7 +6,6 @@ import { Article, ArticleView } from '../../model/types/artcile';
 import { ArticleListItem } from '../ArticleListItem/ArticleListItem';
 import { ArticleListItemSceleton } from '../ArticleListItem/ArticleListItemSceleton';
 import cls from './ArticleList.module.scss';
-import { ToggleFeatures } from '@/shared/features';
 import { HStack } from '@/shared/ui/redesigned/Stack';
 
 interface ArticleListProps {
@@ -36,29 +35,17 @@ export const ArticleList = memo((props: ArticleListProps) => {
     }
 
     return (
-        <ToggleFeatures
-            name="isNewDesignEnabled"
-            on={
-                <HStack
-                    wrap="wrap"
-                    gap={16}
-                    data-testid="ArticleListRedesign"
-                    className={classNames(cls.ArticleList, {}, [])}
-                >
-                    {articles.map((item, index) => (
-                        <ArticleListItem article={item} view={views} key={index} className={cls.card} target={target} />
-                    ))}
-                    {isLoading && getSceletons(views)}
-                </HStack>
-            }
-            off={
-                <div data-testid="ArticleList" className={classNames(cls.ArticleList, {}, [className, cls[views]])}>
-                    {articles.map((item, index) => (
-                        <ArticleListItem article={item} view={views} key={index} className={cls.card} target={target} />
-                    ))}
-                    {isLoading && getSceletons(views)}
-                </div>
-            }
-        />
+        <HStack
+                            wrap="wrap"
+                            gap={16}
+                            data-testid="ArticleListRedesign"
+                            className={classNames(cls.ArticleList, {}, [])}
+                        >
+                            {articles.map((item, index) => (
+                                <ArticleListItem article={item} view={views} key={index} className={cls.card}
+target={target} />
+                            ))}
+                            {isLoading && getSceletons(views)}
+                        </HStack>
     );
 });

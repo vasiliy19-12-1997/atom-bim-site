@@ -1,6 +1,6 @@
-import { ArticleType } from '@/entities/Article/model/types/artcile';
 import { memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ArticleType } from '../../model/types/artcile';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { TabItem, Tabs } from '@/shared/ui/Tabs/Tabs';
 
