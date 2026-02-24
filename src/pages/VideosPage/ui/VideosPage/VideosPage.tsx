@@ -11,6 +11,6 @@ const VideosPage = memo((props: VideosPageProps) => {
     const { className } = props;
     const { t } = useTranslation();
 
-    return <div className={classNames(cls.VideosPage, {}, [className])}>1</div>;
+    return <div className={classNames(cls.VideosPage, {}, [className])}>{t('Видеоролики')}</div>;
 });
 export default VideosPage;

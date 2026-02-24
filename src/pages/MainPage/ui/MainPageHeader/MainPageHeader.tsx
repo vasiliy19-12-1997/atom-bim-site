@@ -17,7 +17,7 @@ export const MainPageHeader = memo((props: MainPageHeaderProps) => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isHover, setIsHover] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
-    const circleSize = 200;
+    const circleSize = 150;
 
     const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!wrapperRef.current) return;
@@ -28,8 +28,8 @@ export const MainPageHeader = memo((props: MainPageHeaderProps) => {
     };
 
     return (
-        <HStack>
-            <VStack>
+        <HStack max gap={24}>
+            <VStack max className={cls.content} gap={16}>
                 {t('Главная страница')}
                 <Text title={t('Добро пожаловать в Atom.BIM!')} />
                 <Text
