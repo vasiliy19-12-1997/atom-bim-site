@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { AppImage } from '@/shared/ui/redesigned/AppImage';
 import { HStack, VStack } from '@/shared/ui/redesigned/Stack';
 import { Text } from '@/shared/ui/redesigned/Text';
-import mainImage from '../assets/licey6.jpg';
-import innerImage from '../assets/licey_podl2.jpg';
+import mainImage from '../../lib/assets/licey6.jpg';
+import innerImage from '../../lib/assets/licey_podl2.jpg';
 import cls from './MainPageHeader.module.scss';
 
 interface MainPageHeaderProps {
@@ -28,7 +28,7 @@ export const MainPageHeader = memo((props: MainPageHeaderProps) => {
     };
 
     return (
-        <HStack max gap={24}>
+        <HStack max gap={24} className={cls.MainPageHeader}>
             <VStack max className={cls.content} gap={16}>
                 {t('Главная страница')}
                 <Text title={t('Добро пожаловать в Atom.BIM!')} />
