@@ -10,6 +10,7 @@ import { Sidebar } from '@/widgets/Sidebar';
 import { useAppToolbar } from './lib/useAppToolbar';
 import { AppRouter } from './providers/router';
 import { withTheme } from './providers/ThemeProvider/ui/withTheme';
+import { Footer } from '@/widgets/Footer';
 
 const App = memo(() => {
     const auth = useSelector(getAuthUserMounted);
@@ -26,9 +27,18 @@ const App = memo(() => {
     }
 
     return (
-        <div id="app" className={classNames('app', {}, [])}>
+        <div
+            id="app"
+            className={classNames('app', {}, [])}
+        >
             <Suspense fallback="">
-                <MainLayout header={<Navbar />} content={<AppRouter />} sidebar={<Sidebar />} toolbar={toolbar} />
+                <MainLayout
+                    header={<Navbar />}
+                    content={<AppRouter />}
+                    sidebar={<Sidebar />}
+                    toolbar={toolbar}
+                    footer={<Footer />}
+                />
             </Suspense>
         </div>
     );

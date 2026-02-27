@@ -1,0 +1,82 @@
+import { useSelector } from 'react-redux';
+import { getAuthUserData } from '@/entities/User';
+import ArticleIcon from '@/shared/assets/icons/old/article.svg';
+import EIRIcon from '@/shared/assets/icons/new/Information 24px.svg';
+import ProfileIcon from '@/shared/assets/icons/old/avatar.svg';
+import MainIcon from '@/shared/assets/icons/old/home.svg';
+import AboutIcon from '@/shared/assets/icons/old/Info.svg';
+import {
+    getRouteAbout,
+    getRouteArticle,
+    getRouteEir,
+    getRouteInstruction,
+    getRouteLibrary,
+    getRouteMain,
+    getRouteProfile,
+    getRouteTests,
+    getRouteVideos,
+} from '@/shared/const/router';
+import { FooterItemProps } from '../types/footer';
+
+export const useFooterItems = () => {
+    const userData = useSelector(getAuthUserData);
+    const FooterItemsList: FooterItemProps[] = [
+        {
+            path: getRouteMain(),
+            Icon: MainIcon,
+            text: 'Главная',
+        },
+        {
+            path: getRouteAbout(),
+            Icon: AboutIcon,
+            text: 'О сайте',
+        },
+    ];
+    if (userData) {
+        FooterItemsList.push(
+            {
+                path: getRouteProfile(userData.id),
+                Icon: ProfileIcon,
+                text: 'Профиль',
+                authOnly: true,
+            },
+            {
+                path: getRouteArticle(),
+                Icon: ArticleIcon,
+                text: 'Article',
+                authOnly: true,
+            },
+            {
+                path: getRouteEir(),
+                Icon: EIRIcon,
+                text: 'EIR',
+                authOnly: true,
+            },
+            {
+                path: getRouteInstruction(),
+                Icon: EIRIcon,
+                text: 'Инструкции',
+                authOnly: true,
+            },
+            {
+                path: getRouteVideos(),
+                Icon: EIRIcon,
+                text: 'Видео',
+                authOnly: true,
+            },
+            {
+                path: getRouteLibrary(),
+                Icon: EIRIcon,
+                text: 'Библиотека',
+                authOnly: true,
+            },
+            {
+                path: getRouteTests(),
+                Icon: EIRIcon,
+                text: 'Тесты',
+                authOnly: true,
+            },
+        );
+    }
+    return FooterItemsList;
+};

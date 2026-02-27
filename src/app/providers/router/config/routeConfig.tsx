@@ -112,4 +112,9 @@ export const routeConfig: Record<AppRoutes, AppRouteProps> = {
         element: <TestsPage />,
         authOnly: true,
     },
+    [AppRoutes.TESTS]: {
+        path: getRouteTests(),
+        element: <TestsPage />,
+        authOnly: false,
+    },
 };

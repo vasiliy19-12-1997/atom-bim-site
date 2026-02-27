@@ -24,7 +24,6 @@ const MainPage = memo(() => {
             <MainPageVideoSection />
             <MainPageModelsSection />
             <hr />
-            {/*  TODO footer */}
         </Page>
     );
 });
