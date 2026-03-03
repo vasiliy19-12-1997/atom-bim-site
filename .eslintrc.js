@@ -89,7 +89,7 @@ module.exports = {
                 ],
             },
         ],
-        'max-len': ['error', { ignoreComments: true, code: 200 }],
+        'max-len': ['error', { ignoreComments: true, code: 250 }],
         'react-hooks/rules-of-hooks': 'error',
         'no-param-reassign': 'off',
         'no-undef': 'off',
