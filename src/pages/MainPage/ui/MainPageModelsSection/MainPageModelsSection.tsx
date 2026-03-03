@@ -42,11 +42,6 @@ export const MainPageModelsSection = memo((props: MainPageModelsSectionProps) =>
                                     <Text text={`${stat.label} - ${stat.value}`} />
                                 ))}
                             </VStack>
-                            <AppImage
-                                src={section.img}
-                                className={cls.image}
-                                style={{ borderRadius: '20px' }}
-                            />
                         </HStack>
                     </Card>
                 );
