@@ -1,10 +1,8 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { ArtcileDetails } from '@/entities/Article';
 import { ArticleRating } from '@/features/ArticleRating';
 import { ArticleRecomendationList } from '@/features/ArticleRecomendationList';
-import { ToggleFeatures } from '@/shared/features';
 import { StickyContentLayout } from '@/shared/layouts/StickyContentLayout';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { DynamicModuleLoader, ReducersList } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader';
@@ -16,7 +14,6 @@ import { ArticleDetailsComments } from '../../../ArticleDetailsComments';
 import { fetchArticlesRecommends } from '../../model/services/fetchArticlesRecommends';
 import { fetchCommentsByArticleId } from '../../model/services/fetchCommentsByArticleId';
 import { articlePageDetailsReducer } from '../../model/slice';
-import { ArticlePageDetailsHeader } from '../ArticlePageDetailsHeader/ArticlePageDetailsHeader';
 import { DetailsContainer } from '../DetailsContainer/DetailsContainer';
 import cls from './ArticlePageDetails.module.scss';
 import { AdditionalInfoContainer } from '../AdditionalInfoContainer/AdditionalInfoContainer';
@@ -45,34 +42,19 @@ const ArticlePageDetails = memo(() => {
 
     return (
         <DynamicModuleLoader reducers={reducers} removeAfterUnmount>
-            <ToggleFeatures
-                name="isNewDesignEnabled"
-                on={
-                    <StickyContentLayout
-                        content={
-                            <Page className={classNames(cls.ArticleDetailsPage, {}, [])}>
-                                <VStack gap={16}>
-                                    <DetailsContainer />
-                                    <ArticleRating articleId={id} />
-                                    <ArticleRecomendationList />
-                                    <ArticleDetailsComments id={id} />
-                                </VStack>
-                            </Page>
-                        }
-                        right={<AdditionalInfoContainer />}
-                    />
-                }
-                off={
-                    <Page>
-                        {t('Article Page Details')}
-                        <ArticlePageDetailsHeader />
-                        <ArtcileDetails id={id} />
-                        <ArticleRating articleId={id} />
-                        <ArticleRecomendationList />
-                        <ArticleDetailsComments id={id} />
-                    </Page>
-                }
-            />
+            <StickyContentLayout
+                                    content={
+                                        <Page className={classNames(cls.ArticleDetailsPage, {}, [])}>
+                                            <VStack gap={16}>
+                                                <DetailsContainer />
+                                                <ArticleRating articleId={id} />
+                                                <ArticleRecomendationList />
+                                                <ArticleDetailsComments id={id} />
+                                            </VStack>
+                                        </Page>
+                                    }
+                                    right={<AdditionalInfoContainer />}
+                                />
         </DynamicModuleLoader>
     );
 });

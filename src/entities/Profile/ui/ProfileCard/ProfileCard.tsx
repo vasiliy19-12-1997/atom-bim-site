@@ -1,13 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Country } from '@/entities/Country';
 import { Currency } from '@/entities/Currency';
-import { ToggleFeatures } from '@/shared/features';
 import { Profile } from '../../model/types/profile';
-import {
-    ProfileCardDeprecated,
-    ProfileCardDeprecatedError,
-    ProfileCardDeprecatedLoader,
-} from '../ProfileCardDeprecated/ProfileCardDeprecated';
+
+
 import {
     ProfileCardRedesign,
     ProfileCardRedesignError,
@@ -53,29 +49,17 @@ export const ProfileCard = (props: ProfileCardProps) => {
     // TODO сделать чтобы лоадер скелетон отображался, сейчас нет
     if (isLoading) {
         return (
-            <ToggleFeatures
-                name="isNewDesignEnabled"
-                on={<ProfileCardRedesignSceleton />}
-                off={<ProfileCardDeprecatedLoader />}
-            />
+            <ProfileCardRedesignSceleton />
         );
     }
 
     if (error) {
         return (
-            <ToggleFeatures
-                name="isNewDesignEnabled"
-                on={<ProfileCardRedesignError />}
-                off={<ProfileCardDeprecatedError />}
-            />
+            <ProfileCardRedesignError />
         );
     }
 
     return (
-        <ToggleFeatures
-            name="isNewDesignEnabled"
-            on={<ProfileCardRedesign {...props} />}
-            off={<ProfileCardDeprecated {...props} />}
-        />
+        <ProfileCardRedesign {...props} />
     );
 };

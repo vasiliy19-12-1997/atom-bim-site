@@ -7,7 +7,6 @@ import { Sceleton as SceletonRedesign } from '@/shared/ui/redesigned/Sceleton';
 import { useNotificationList } from '../../api/notificationApi';
 import { NotificationItem } from '../NotificationItem/NotificationItem';
 import { VStack } from '@/shared/ui/redesigned/Stack';
-import { toggleFeatures } from '@/shared/features';
 
 interface NotificationListProps {
     className?: string;
@@ -18,34 +17,28 @@ export const NotificationList = memo((props: NotificationListProps) => {
     const { className } = props;
     const { data, isLoading } = useNotificationList(null, { pollingInterval: 5000 });
 
-    const Sceleton = toggleFeatures({
-        name: 'isNewDesignEnabled',
-        on: () => {
-            return SceletonRedesign;
-        },
-        off: () => {
-            return SceletonDeprecated;
-        },
-    });
+    const Sceleton = <SceletonRedesign />;
     const Mobile = (
         <VStack gap={16} max className={classNames('', {}, [className])}>
-            <Sceleton height={120} border="8%" />
-            <Sceleton height={120} border="8%" />
-            <Sceleton height={120} border="8%" />
+            <SceletonDeprecated height={120} border="8%" />
+            <SceletonDeprecated height={120} border="8%" />
+            <SceletonDeprecated height={120} border="8%" />
         </VStack>
     );
+
     if (isLoading) {
         if (isMobile) {
             return Mobile;
         }
         return (
             <VStack gap={16} max className={classNames('', {}, [className])}>
-                <Sceleton width={400} height={80} border="8%" />
-                <Sceleton width={400} height={80} border="8%" />
-                <Sceleton width={400} height={80} border="8%" />
+                <SceletonDeprecated width={400} height={80} border="8%" />
+                <SceletonDeprecated width={400} height={80} border="8%" />
+                <SceletonDeprecated width={400} height={80} border="8%" />
             </VStack>
         );
     }
+
     return (
         <VStack gap={16} max className={classNames('', {}, [className])}>
             {data?.map((item, index) => (

@@ -2,8 +2,12 @@
     min-height: 100vh;
     display: grid;
     /* stylelint-disable-next-line string-quotes */
-    grid-template-areas: 'sidebar content rightbar';
+    grid-template-areas:
+        'sidebar content rightbar'
+        'footer  footer  footer';
     grid-template-columns: min-content 1fr 100px;
+    /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
+    grid-template-rows: 1fr auto;
 }
 
 .header {
@@ -21,7 +25,7 @@
 .sidebar {
     grid-area: sidebar;
     padding: 32px;
-    max-width: 284px;
+    max-width: 280px;
 }
 
 .rightbar {
@@ -41,4 +45,12 @@
 .toolbar {
     height: 100%;
     width: 100%;
+}
+
+.footer {
+    grid-area: footer;
+    height: 300px;
+    background: var(--color-footer-bg);
+    display: flex;
+    justify-content: center;
 }

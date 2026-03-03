@@ -9,11 +9,12 @@ interface MainLayoutProps {
     content: ReactElement;
     sidebar: ReactElement;
     toolbar?: ReactElement;
+    footer?: ReactElement;
 }
 
 export const MainLayout = memo((props: MainLayoutProps) => {
     const { t } = useTranslation();
-    const { className, header, content, sidebar, toolbar } = props;
+    const { className, header, content, sidebar, toolbar, footer } = props;
 
     return (
         <div className={classNames(cls.MainLayout, {}, [className])}>
@@ -23,6 +24,7 @@ export const MainLayout = memo((props: MainLayoutProps) => {
                 <div className={cls.header}>{header}</div>
                 <div className={cls.toolbar}>{toolbar}</div>
             </div>
+            <div className={cls.footer}>{footer}</div>
         </div>
     );
 });

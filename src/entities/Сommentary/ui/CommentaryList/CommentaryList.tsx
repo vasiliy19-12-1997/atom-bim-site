@@ -5,8 +5,6 @@ import { VStack } from '@/shared/ui/redesigned/Stack';
 import { Commentary } from '../../model/types/commentary';
 import { CommentaryCard } from '../CommentaryCard/CommentaryCard';
 import cls from './CommentaryList.module.scss';
-import { Text as TextDeprecated } from '@/shared/ui/deprecated/Text';
-import { ToggleFeatures } from '@/shared/features';
 import { Text } from '@/shared/ui/redesigned/Text';
 
 interface CommentaryListProps {
@@ -37,11 +35,7 @@ export const CommentaryList = memo((props: CommentaryListProps) => {
                     <CommentaryCard key={index} isLoading={isLoading} className={cls.cards} comment={comment} />
                 ))
             ) : (
-                <ToggleFeatures
-                    name="isNewDesignEnabled"
-                    on={<Text title={t('Комментарии отсутствуют')} />}
-                    off={<TextDeprecated title={t('Комментарии отсутствуют')} />}
-                />
+                <Text title={t('Комментарии отсутствуют')} />
             )}
         </VStack>
     );

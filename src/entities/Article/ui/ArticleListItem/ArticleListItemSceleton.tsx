@@ -1,12 +1,9 @@
 import { memo } from 'react';
 import { classNames } from '@/shared/lib/classNames/classNames';
-import { Card as CardDeprecated } from '@/shared/ui/deprecated/Card';
 import { Card as CardRedesgn } from '@/shared/ui/redesigned/Card';
-import { Sceleton as SceletonDeprecated } from '@/shared/ui/deprecated/Sceleton';
 import { Sceleton as SceletonRedesign } from '@/shared/ui/redesigned/Sceleton';
 import { ArticleView } from '../../model/types/artcile';
 import cls from './ArticleListItem.module.scss';
-import { ToggleFeatures, toggleFeatures } from '@/shared/features';
 
 interface ArticleListItemSceletonProps {
     className?: string;
@@ -16,21 +13,9 @@ interface ArticleListItemSceletonProps {
 export const ArticleListItemSceleton = memo((props: ArticleListItemSceletonProps) => {
     const { className, view } = props;
 
-    const mainClass = toggleFeatures({
-        name: 'isNewDesignEnabled',
-        on: () => cls.ArticleListItemRedesign,
-        off: () => cls.ArticleListItem,
-    });
-    const Sceleton = toggleFeatures({
-        name: 'isNewDesignEnabled',
-        on: () => SceletonRedesign,
-        off: () => SceletonDeprecated,
-    });
-    const Card = toggleFeatures({
-        name: 'isNewDesignEnabled',
-        on: () => CardRedesgn,
-        off: () => CardDeprecated,
-    });
+    const mainClass = cls.ArticleListItemRedesign;
+    const Sceleton = SceletonRedesign;
+    const Card = CardRedesgn;
     const contentBig = (
         <div className={classNames(mainClass, {}, [className, cls[view]])}>
             <div className={cls.header}>
@@ -47,33 +32,18 @@ export const ArticleListItemSceleton = memo((props: ArticleListItemSceletonProps
     );
 
     if (view === ArticleView.BIG) {
-        return <ToggleFeatures name="isNewDesignEnabled" on={contentBig} off={contentBig} />;
+        return contentBig;
     }
 
     return (
         // @ts-ignore
-        <ToggleFeatures
-            name="isNewDesignEnabled"
-            on={
-                <div className={classNames(cls.ArticleListItem, {}, [className, cls[view]])}>
-                    <Card>
-                        <div className={cls.imageWrapper}>
-                            <Sceleton className={cls.img} width={200} height={200} />
+        <div className={classNames(cls.ArticleListItem, {}, [className, cls[view]])}>
+                            <Card>
+                                <div className={cls.imageWrapper}>
+                                    <Sceleton className={cls.img} width={200} height={200} />
+                                </div>
+                                <Sceleton className={cls.textWrapper} />
+                            </Card>
                         </div>
-                        <Sceleton className={cls.textWrapper} />
-                    </Card>
-                </div>
-            }
-            off={
-                <div className={classNames(cls.ArticleListItem, {}, [className, cls[view]])}>
-                    <Card>
-                        <div className={cls.imageWrapper}>
-                            <Sceleton className={cls.img} width={200} height={200} />
-                        </div>
-                        <Sceleton className={cls.textWrapper} />
-                    </Card>
-                </div>
-            }
-        />
     );
 });

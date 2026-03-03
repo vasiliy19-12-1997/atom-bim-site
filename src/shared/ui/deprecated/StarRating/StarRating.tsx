@@ -2,9 +2,7 @@ import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import cls from './StarRating.module.scss';
-import { Icon as IconDeprecated } from '../Icon/Icon';
-import StarSvg from '@/shared/assets/icons/star.svg';
-import { toggleFeatures, ToggleFeatures } from '@/shared/features';
+import StarSvg from '@/shared/assets/icons/old/star.svg';
 import { Icon } from '../../redesigned/Icon';
 
 interface StarRatingProps {
@@ -43,17 +41,7 @@ export const StarRating = memo((props: StarRatingProps) => {
         }
     };
     return (
-        <div
-            className={classNames(
-                toggleFeatures({
-                    name: 'isNewDesignEnabled',
-                    on: () => cls.StarRatingRedesign,
-                    off: () => cls.StarRating,
-                }),
-                {},
-                [className],
-            )}
-        >
+        <div className={classNames(cls.StarRatingRedesign, {}, [className])}>
             {stars.map((starNumber, index) => {
                 const sharedProps = {
                     'data-testid': `StarRating.${starNumber}`,
@@ -69,14 +57,7 @@ export const StarRating = memo((props: StarRatingProps) => {
                     onClick: onClick(starNumber),
                     'data-selected': isSelected && currentStarsCount >= starNumber,
                 };
-                return (
-                    <ToggleFeatures
-                        key={starNumber}
-                        name="isNewDesignEnabled"
-                        on={<Icon clickable={!isSelected} {...sharedProps} />}
-                        off={<IconDeprecated {...sharedProps} />}
-                    />
-                );
+                return <Icon clickable={!isSelected} {...sharedProps} />;
             })}
         </div>
     );

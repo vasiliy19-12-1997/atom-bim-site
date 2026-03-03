@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@/shared/ui/redesigned/Icon';
 import { classNames } from '@/shared/lib/classNames/classNames';
-import ArrowUpIcon from '@/shared/assets/icons/circle-up.svg';
+import ArrowUpIcon from '@/shared/assets/icons/old/circle-up.svg';
 
 interface ScrollToUpButtonProps {
     className?: string;
