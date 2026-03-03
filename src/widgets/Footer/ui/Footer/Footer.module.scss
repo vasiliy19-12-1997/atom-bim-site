@@ -1,3 +1,6 @@
 .Footer {
-  /* Ваши стили */
+    background-color: var(--color-footer-bg);
+    display: flex;
+    justify-content: center;
+    max-width: 1000px;
 }

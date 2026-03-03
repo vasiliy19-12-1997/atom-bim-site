@@ -49,4 +49,8 @@
 
 .footer {
     grid-area: footer;
+    display: flex;
+    justify-content: center;
+    height: 300px;
+    width: 100vw;
 }

@@ -15,7 +15,6 @@ export enum AppRoutes {
     VIDEOS = 'videos',
     LIBRARY = 'library',
     TESTS = 'tests',
-    SITE_ATOM = 'site_atom',
 }
 
 export const getRouteMain = () => '/';
@@ -33,7 +32,6 @@ export const getRouteInstruction = () => '/instruction';
 export const getRouteVideos = () => '/videos';
 export const getRouteLibrary = () => 'library';
 export const getRouteTests = () => 'tests';
-export const getRouteSiteAtom = () => 'site_atom';
 
 export const AppRouteByPathPattern: Record<string, AppRoutes> = {
     [getRouteMain()]: AppRoutes.MAIN,
@@ -51,5 +49,4 @@ export const AppRouteByPathPattern: Record<string, AppRoutes> = {
     [getRouteVideos()]: AppRoutes.VIDEOS,
     [getRouteLibrary()]: AppRoutes.LIBRARY,
     [getRouteTests()]: AppRoutes.TESTS,
-    [getRouteSiteAtom()]: AppRoutes.SITE_ATOM,
 };
