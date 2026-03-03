@@ -1,2 +1,9 @@
-/node_modules
-/.history
+/build
+node_modules
+.idea
+/storybook-static
+.loki/report.html
+.loki/report.json
+/reports/unit
+.history
+npm-debug.txt 

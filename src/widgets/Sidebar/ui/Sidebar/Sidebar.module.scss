@@ -1,0 +1,56 @@
+.SidebarRedesign {
+    border-radius: 32px;
+    background: var(--color-bg-secondary);
+    height: 100%;
+    width: 220px;
+    position: relative;
+    transition: width 0.3s ease;
+
+    .theme {
+        display: flex;
+    }
+
+    .appLogo {
+        padding-top: 20px;
+    }
+
+    .switchers {
+        position: absolute;
+        bottom: 20px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        gap: 16px;
+    }
+
+    .items {
+        margin-top: 20px;
+        margin-left: 0;
+    }
+
+    .collapsedBtn {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%) rotate(90deg);
+        z-index: 10;
+    }
+}
+
+.collapsedRedesign {
+    width: 50px;
+
+    .lang {
+        margin-left: 0;
+    }
+
+    .collapsedBtn {
+        transform: rotate(-90deg);
+        right: -30px;
+    }
+
+    .switchers {
+        flex-direction: column;
+        align-items: center;
+    }
+}

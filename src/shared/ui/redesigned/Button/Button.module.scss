@@ -1,0 +1,114 @@
+.Button {
+    cursor: pointer;
+    color: var(--text-redesign);
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+}
+
+.withAddon {
+    padding: 0 16px;
+}
+
+.addonLeft,
+.addonRight {
+    display: flex;
+}
+
+.addonLeft svg,
+.addonRight svg {
+    color: var(--hint-redesign);
+}
+
+.disabled {
+    opacity: 0.5;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.clear {
+    padding: 0;
+    border: none;
+    background: none;
+    outline: none;
+}
+
+.outline {
+    border: 2px solid var(--icon-redesign);
+    color: var(--text-redesign);
+    border-radius: 34px;
+    background: none;
+
+    &:hover {
+        border: 1px solid var(--accent-redesign);
+    }
+
+    &.normal {
+        border: 1px solid var(--icon-redesign);
+
+        &:hover {
+            border: 1px solid var(--accent-redesign);
+        }
+    }
+
+    &.succes {
+        border: 1px solid var(--save-redesign);
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+    &.error {
+        border: 1px solid var(--cancel-redesign);
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+    .Button:focus,
+    .Button:focus-visible {
+        outline: none;
+    }
+
+    .filled {
+        border: none;
+        outline: none;
+        background: var(--light-bg-redesign);
+        border-radius: 34px;
+    }
+
+    .square {
+        padding: 0;
+    }
+
+    .square.m {
+        width: var(--font-m-redesign);
+        height: var(--font-m-redesign);
+    }
+
+    .square.l {
+        width: var(--font-l-redesign);
+        height: var(--font-l-redesign);
+    }
+
+    .square.xl {
+        width: var(--font-xl-redesign);
+        height: var(--font-xl-redesign);
+    }
+
+    .m {
+        font: var(--font-m-redesign);
+    }
+
+    .l {
+        font: var(--font-l-redesign);
+    }
+
+    .xl {
+        font: var(--font-xl-redesign);
+    }
+}

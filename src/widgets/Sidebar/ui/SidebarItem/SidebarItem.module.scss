@@ -1,0 +1,45 @@
+.item {
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.link {
+    opacity: 1;
+    margin-left: 10px;
+}
+
+.icon {
+    fill: var(--inverted-primary-color);
+}
+
+.collapsed {
+    .link {
+        opacity: 0;
+        transition: 0.3s opacity;
+        width: 0;
+    }
+}
+
+.itemRedesign {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0 16px;
+}
+
+.collapsedRedesign {
+    padding: 0 8px;
+
+    .link {
+        opacity: 0;
+        width: 0;
+        margin: 0;
+    }
+}
+
+.active {
+    background: linear-gradient(90deg, rgb(91 204 235 / 30%) 1.15%, rgb(92 205 236 / 0%) 99.97%);
+    border-left: 2px solid var(--ccent, #5ed3f3);
+}
