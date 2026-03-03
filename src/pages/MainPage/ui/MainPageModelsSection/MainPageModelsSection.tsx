@@ -23,27 +23,36 @@ export const MainPageModelsSection = memo((props: MainPageModelsSectionProps) =>
             <Text title={t('Построенные модели')} />
             {modelsSections.map((section, index) => {
                 return (
-                    <Card
-                        max
-                        key={index}
-                        border="partial_round"
-                        className={cls.modelCard}
-                        padding="24"
-                    >
-                        <HStack
+                    <HStack>
+                        <Card
+                            variant="outlined"
                             max
-                            justify="between"
+                            key={index}
+                            border="partial_round"
+                            className={cls.modelCard}
+                            padding="24"
                         >
-                            <VStack>
-                                <Text title={section.title} />
-                                <Text text={section.description} />
+                            <HStack
+                                max
+                                justify="between"
+                            >
+                                <VStack>
+                                    <Text title={section.title} />
+                                    <Text text={section.description} />
 
-                                {section.stats.map((stat) => (
-                                    <Text text={`${stat.label} - ${stat.value}`} />
-                                ))}
-                            </VStack>
-                        </HStack>
-                    </Card>
+                                    {section.stats.map((stat) => (
+                                        <Text text={`${stat.label} - ${stat.value}`} />
+                                    ))}
+                                </VStack>
+                            </HStack>
+                        </Card>
+                        <AppImage
+                            className={cls.image}
+                            src={section.img}
+                            width={300}
+                            height={300}
+                        />
+                    </HStack>
                 );
             })}
         </VStack>

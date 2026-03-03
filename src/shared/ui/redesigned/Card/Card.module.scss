@@ -7,16 +7,16 @@
 }
 
 .outlined {
-    border: 1px solid var(--accent-redesign);
+    border: 1px solid var(--color-border);
 }
 
 .light {
-    background: var(--light-bg-redesign);
+    background: var(--color-bg-secondary);
 }
 
 .normal {
     border-radius: 12px;
-    background: var(--dark-bg-redesign);
+    background: var(--color-bg-primary);
 }
 
 .partial_round {
