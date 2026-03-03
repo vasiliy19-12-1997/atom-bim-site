@@ -2,13 +2,13 @@
 @import 'variables/global';
 @import 'themes/normal';
 @import 'themes/dark';
-@import 'themes/yellow';
+@import 'themes/teal';
 
 .app {
-    background: var(--color-bg-primary);
+    background: var(--bg-color);
     min-height: 100vh;
     font: var(--font-m);
-    color: var(--color-text-primary);
+    color: var(--primary-color);
 }
 
 .app_redesign {
@@ -28,11 +28,11 @@
 }
 
 *::-webkit-scrollbar-track {
-    background: var(--color-bg-primary); /* цвет дорожки */
+    background: var(--primary-color); /* цвет дорожки */
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: var(--color-accent); /* цвет плашки */
+    background-color: var(--accent-redesign); /* цвет плашки */
     border-radius: 20px; /* закругления плашки */
-    border: 2px solid var(--color-bg-secondary); /* padding вокруг плашки */
+    border: 2px solid var(--inverted-bg-color); /* padding вокруг плашки */
 }

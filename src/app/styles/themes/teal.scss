@@ -1,49 +1,49 @@
-.app_dark_theme {
+.app_teal_theme {
     /* =======================================================
        BASE BACKGROUNDS
     ======================================================== */
-    --bg-color: #121212;
-    --inverted-bg-color: #f5f5f5;
+    --bg-color: #f4f8f9;
+    --inverted-bg-color: #102a2e;
 
     /* =======================================================
        TEXT COLORS
     ======================================================== */
-    --primary-color: #e8ebe9;
-    --secondary-color: #b4b5b7;
-    --inverted-primary-color: #1a1a1a;
-    --inverted-secondary-color: #4d4c4c;
+    --primary-color: #1a1a1a;
+    --secondary-color: #5a6b6e;
+    --inverted-primary-color: #ffffff;
+    --inverted-secondary-color: #b4c4c6;
 
     /* =======================================================
        UI ELEMENTS
     ======================================================== */
-    --card-bg: #1e1e1e;
-    --list-box-bg: #232323;
-    --code-btn: #2a2a2a;
+    --card-bg: #ffffff;
+    --list-box-bg: #e6f0f2;
+    --code-btn: #d9e7ea;
 
     /* =======================================================
        SKELETON
     ======================================================== */
-    --skeleton-color: #2a2a2a;
-    --skeleton-shadow: rgba(255 255 255 / 5%);
+    --skeleton-color: #e1ecee;
+    --skeleton-shadow: rgba(0 0 0 / 10%);
 
     /* =======================================================
        REDESIGN COLORS
     ======================================================== */
-    --dark-bg-redesign: #1a1f1d;
-    --bg-redesign: #005f45;
-    --light-bg-redesign: #1f3d35;
+    --dark-bg-redesign: #cfe3e7;
+    --bg-redesign: #0e7c86;
+    --light-bg-redesign: #a9d3d8;
 
-    --text-redesign: #e8ebe9;
-    --hint-redesign: #939598;
+    --text-redesign: #1a1a1a;
+    --hint-redesign: #7a8b8d;
 
-    --cancel-redesign: #ff6b6b;
-    --save-redesign: #00a876;
+    --cancel-redesign: #f15b5b;
+    --save-redesign: #0e7c86;
 
-    --icon-redesign: #7c8dd6;
-    --accent-redesign: #00a876;
+    --icon-redesign: #3a8fb7;
+    --accent-redesign: #0e7c86;
 
     /* =======================================================
        FOOTER
     ======================================================== */
-    --color-footer-bg: #1a1a1a;
+    --color-footer-bg: #d9e7ea;
 }
