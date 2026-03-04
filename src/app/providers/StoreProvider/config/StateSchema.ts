@@ -10,6 +10,7 @@ import { ArticlePageSchema } from '@/pages/ArticlePage';
 import { ArticlePageDetailsSchema } from '@/pages/ArticlePageDetails';
 import { rtqApi } from '@/shared/config/api/rtqApi';
 import { StateSchemaKeys } from './store';
+import { VideosPageSchema } from '@/pages/VideosPage';
 
 export interface StateSchema {
     counter: CounterSchema;
@@ -23,6 +24,7 @@ export interface StateSchema {
     articlesDetails?: ArticleDetailsSchema;
     articlePageDetails?: ArticlePageDetailsSchema;
     addCommentForm?: AddCommentFormTypes;
+    videosPage?: VideosPageSchema;
 }
 export type MountedReducers = OptionalRecord<StateSchemaKeys, boolean>;
 export interface ReducerManagerProps {

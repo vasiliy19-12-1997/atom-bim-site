@@ -1,17 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { VideosPageSchema } from '../types/VideosPageSchema';
 
-const initialState: VideosPageSchema = {
-    
-};
+const videosAdapter = createEntityAdapter<>
 
 export const VideosPageSlice = createSlice({
-    name: 'VideosPage',
-    initialState,
+    name: 'VideosPageSlice',
+    initialState:,
     reducers: {
-        template: (state, action: PayloadAction<string>) => {
-           
-        },
+        template: (state, action: PayloadAction<string>) => {},
     },
     // extraReducers: (builder) => {
     //     builder
