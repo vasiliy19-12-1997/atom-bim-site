@@ -17,7 +17,6 @@ const ArticlePage = memo(() => {
     const reducers: ReducersList = {
         videosPage: 
     };
-
     const onNextLoad = useCallback(() => {
         dispatch(fetchNextArticlePage());
     }, [dispatch]);
