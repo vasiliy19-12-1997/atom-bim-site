@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Article } from '@/entities/Article';
 import { ThunkConfig } from '@/shared/config/state';
 import { addQueryParams } from '@/shared/lib/url/addQueryParams/addQueryParams';
 import { SortOrder } from '@/shared/types/sort';
@@ -56,7 +55,7 @@ export const fetchVideos = createAsyncThunk<Video[], fetchVideosProps, ThunkConf
                 search,
                 type,
             });
-            const response = await extra.api.get<Article[]>('/videos', {
+            const response = await extra.api.get<Video[]>('/videos', {
                 params,
             });
             if (!response) {
