@@ -1,13 +1,11 @@
-import { StateSchema } from '@/app/providers/StoreProvider';
-import { Article, ArticleSortField, ArticleType, ArticleViews } from '@/entities/Article';
 import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
-
+import { StateSchema } from '@/app/providers/StoreProvider';
+import { Video, VideoSortField, VideoType } from '@/entities/Video';
 import { ARTICLE_VIEWS_LOCALSTORAGE_KEY } from '@/shared/const/localstorage';
 import { View } from '@/shared/types';
 import { SortOrder } from '@/shared/types/sort';
-import { fetchArticles } from '../../model/services/fetchArticles/fetchArticles';
-import { ArticlePageSchema } from '../types/articlePageSchema';
-import { Video } from '@/entities/Video';
+import { VideosPageSchema } from '../types/VideosPageSchema';
+import { fetchVideos } from '../services/fetchVideos/fetchVideos';
 
 // Since we don't provide `selectId`, it defaults to assuming `entity.id` is the right field
 const videoAdapter = createEntityAdapter<Video>({
@@ -18,7 +16,7 @@ export const getArticles = videoAdapter.getSelectors<StateSchema>(
 );
 const VideosPageSlice = createSlice({
     name: 'VideosPageSlice',
-    initialState: videoAdapter.getInitialState<ArticlePageSchema>({
+    initialState: videoAdapter.getInitialState<VideosPageSchema>({
         isLoading: false,
         error: undefined,
         view: View.SMALL,
@@ -30,11 +28,11 @@ const VideosPageSlice = createSlice({
         limit: 1,
         order: 'asc',
         search: '',
-        sort: ArticleSortField.VIEWS,
-        type: ArticleType.ALL,
+        sort: VideoSortField.RELEVATION,
+        type: VideoType.ALL,
     }),
     reducers: {
-        setView: (state, action: PayloadAction<ArticleViews>) => {
+        setView: (state, action: PayloadAction<View>) => {
             state.view = action.payload;
             localStorage.setItem(ARTICLE_VIEWS_LOCALSTORAGE_KEY, action.payload);
         },
@@ -44,32 +42,32 @@ const VideosPageSlice = createSlice({
         setOrder: (state, action: PayloadAction<SortOrder>) => {
             state.order = action.payload;
         },
-        setSort: (state, action: PayloadAction<ArticleSortField>) => {
+        setSort: (state, action: PayloadAction<VideoSortField>) => {
             state.sort = action.payload;
         },
         setSearch: (state, action: PayloadAction<string>) => {
             state.search = action.payload;
         },
-        setType: (state, action: PayloadAction<ArticleType>) => {
+        setType: (state, action: PayloadAction<VideoType>) => {
             state.type = action.payload;
         },
         initState: (state) => {
-            const view = localStorage.getItem(ARTICLE_VIEWS_LOCALSTORAGE_KEY) as ArticleViews;
+            const view = localStorage.getItem(ARTICLE_VIEWS_LOCALSTORAGE_KEY) as View;
             state.view = view;
-            state.limit = view === ArticleViews.BIG ? 4 : 9;
+            state.limit = view === View.BIG ? 4 : 9;
             state._inited = true;
         },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchArticles.pending, (state, action) => {
+            .addCase(fetchVideos.pending, (state, action) => {
                 state.error = undefined;
                 state.isLoading = true;
                 if (action.meta.arg.replace) {
                     videoAdapter.removeAll(state);
                 }
             })
-            .addCase(fetchArticles.fulfilled, (state, action) => {
+            .addCase(fetchVideos.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.hasMore = action.payload.length >= state.limit;
                 if (action.meta.arg.replace) {
@@ -78,10 +76,12 @@ const VideosPageSlice = createSlice({
                     videoAdapter.addMany(state, action.payload);
                 }
             })
-            .addCase(fetchArticles.rejected, (state, action) => {
+            .addCase(fetchVideos.rejected, (state, action) => {
                 state.isLoading = false;
-                state.error = action.payload;
+                if (typeof action.payload === 'string' || action.payload === undefined) {
+                    state.error = action.payload;
+                }
             });
     },
 });
-export const { reducer: articlesReducer, actions: articlePageActions } = VideosPageSlice;
+export const { reducer: videoReducer, actions: videoPageActions } = VideosPageSlice;

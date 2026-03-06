@@ -1,17 +1,17 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+// import React from 'react';
+// import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import VideosPage from './VideosPage';
+// import VideosPage from './VideosPage';
 
-export default {
-    title: 'pages/VideosPage',
-    component: VideosPage,
-    argTypes: {
-        backgroundColor: { control: 'color' },
-    },
-} as ComponentMeta<typeof VideosPage>;
+// export default {
+//     title: 'pages/VideosPage',
+//     component: VideosPage,
+//     argTypes: {
+//         backgroundColor: { control: 'color' },
+//     },
+// } as ComponentMeta<typeof VideosPage>;
 
-const Template: ComponentStory<typeof VideosPage> = (args) => <VideosPage {...args} />;
+// const Template: ComponentStory<typeof VideosPage> = (args) => <VideosPage {...args} />;
 
-export const Normal = Template.bind({});
-Normal.args = {};
+// export const Normal = Template.bind({});
+// Normal.args = {};

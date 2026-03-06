@@ -1,11 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { VideoSchema } from '../types/video';
-
-const initialState: VideoSchema = {};
 
 export const VideoSlice = createSlice({
     name: 'Video',
-    initialState,
+    initialState: {},
     reducers: {
         template: (state, action: PayloadAction<string>) => {},
     },

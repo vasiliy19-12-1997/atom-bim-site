@@ -23,6 +23,7 @@ export enum VideoType {
     VIDEO_INSTRUCTION = 'VIDEO_INSTRUCTION',
     WEBINARS = 'WEBINARS',
     PLUGINS = 'PLUGINS',
+    ALL = 'ALL',
 }
 
 export interface Video {

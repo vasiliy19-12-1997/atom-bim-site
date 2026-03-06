@@ -5,20 +5,21 @@ import { StickyContentLayout } from '@/shared/layouts/StickyContentLayout';
 import { DynamicModuleLoader, ReducersList } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch';
 import { Page } from '@/shared/ui/deprecated/Page';
-import { fetchNextArticlePage } from '../../model/services/fetchNextArticlePage/fetchNextArticlePage';
-import { ArticleInfiniteList } from '../ArticleInfiniteList/ArticleInfiniteList';
-import { ViewSelectorContainer } from '../ViewSelectorContainer/ViewSelectorContainer';
+import { videoReducer } from '../../model/slices/VideosPageSlice';
 import cls from './ArticlePage.module.scss';
-import { FiltersContainer } from '../FiltersContainer/FiltersContainer';
+import { fetchNextVideoPage } from '../../model/services/fetchNextVideoPage/fetchNextVideoPage';
+import { ViewSelectorContainer } from '@/pages/ArticlePage/ui/ViewSelectorContainer/ViewSelectorContainer';
+import { FiltersContainer } from '@/pages/ArticlePage/ui/FiltersContainer/FiltersContainer';
+import { ArticleInfiniteList } from '@/pages/ArticlePage/ui/ArticleInfiniteList/ArticleInfiniteList';
 
 const ArticlePage = memo(() => {
     const { t } = useTranslation('');
     const dispatch = useAppDispatch();
     const reducers: ReducersList = {
-        videosPage: 
+        videosPage: videoReducer,
     };
     const onNextLoad = useCallback(() => {
-        dispatch(fetchNextArticlePage());
+        dispatch(fetchNextVideoPage());
     }, [dispatch]);
 
     const content = (
