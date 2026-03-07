@@ -1,56 +1,93 @@
 .SidebarRedesign {
-    border-radius: 32px;
-    background: var(--inverted-bg-color);
-    height: 100%;
-    width: 220px;
     position: relative;
-    transition: width 0.3s ease;
+    width: 248px;
+    height: 100%;
+    min-height: 100%;
+    border-radius: 32px;
+    border: 1px solid var(--color-border);
+    background: linear-gradient(180deg, var(--light-bg-redesign), transparent 35%), var(--inverted-bg-color);
+    box-shadow: 0 16px 40px rgb(0 0 0 / 10%);
+    transition: width 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    overflow: visible;
+}
 
-    .theme {
-        display: flex;
-    }
+.inner {
+    height: 100%;
+    padding: 20px 14px 18px;
+}
 
-    .appLogo {
-        padding-top: 20px;
-    }
+.logoWrapper {
+    min-height: 68px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--color-border);
+}
 
-    .switchers {
-        position: absolute;
-        bottom: 20px;
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        gap: 16px;
-    }
+.appLogo {
+    flex-shrink: 0;
+}
 
-    .items {
-        margin-top: 20px;
-        margin-left: 0;
-    }
+.items {
+    flex: 1;
+    margin-top: 8px;
+}
 
-    .collapsedBtn {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%) rotate(90deg);
-        z-index: 10;
-    }
+.footerControls {
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 1px solid var(--color-border);
+    align-items: center;
+}
+
+.theme,
+.lang {
+    display: flex;
+    justify-content: center;
+}
+
+.collapsedBtn {
+    position: absolute;
+    top: 28px;
+    right: -18px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    background: var(--card-bg);
+    color: var(--text-redesign);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgb(0 0 0 / 10%);
+    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.collapsedBtn:hover {
+    background: var(--light-bg-redesign);
+    border-color: var(--accent-redesign);
+}
+
+.collapsedBtn svg {
+    transform: rotate(-90deg);
+    transition: transform 0.25s ease;
 }
 
 .collapsedRedesign {
-    width: 50px;
+    width: 84px;
+}
 
-    .lang {
-        margin-left: 0;
-    }
+.collapsedRedesign .collapsedBtn svg {
+    transform: rotate(90deg);
+}
 
-    .collapsedBtn {
-        transform: rotate(-90deg);
-        right: -30px;
-    }
+.collapsedRedesign .inner {
+    padding: 20px 10px 18px;
+}
 
-    .switchers {
-        flex-direction: column;
-        align-items: center;
-    }
+.collapsedRedesign .footerControls {
+    align-items: center;
+}
+
+.collapsedRedesign .lang {
+    margin-left: 0;
 }
