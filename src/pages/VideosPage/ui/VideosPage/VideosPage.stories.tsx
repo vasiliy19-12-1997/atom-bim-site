@@ -11,7 +11,7 @@ export default {
     },
 } as ComponentMeta<typeof VideosPage>;
 
-const Template: ComponentStory<typeof VideosPage> = (args) => <VideosPage {...args} />;
+const Template: ComponentStory<typeof VideosPage> = (args) => <VideosPage />;
 
 export const Normal = Template.bind({});
 Normal.args = {};

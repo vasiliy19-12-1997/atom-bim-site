@@ -28,6 +28,8 @@ const VideosPageSlice = createSlice({
         search: '',
         sort: VideoSortField.RELEVATION,
         type: VideoType.ALL,
+        entities: {},
+        ids: [],
     }),
     reducers: {
         setView: (state, action: PayloadAction<View>) => {
