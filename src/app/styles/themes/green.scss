@@ -1,0 +1,49 @@
+.app_green_theme {
+    /* =======================================================
+       BASE BACKGROUNDS
+    ======================================================== */
+    --bg-color: #f3fbf6;
+    --inverted-bg-color: #11281c;
+
+    /* =======================================================
+       TEXT COLORS
+    ======================================================== */
+    --primary-color: #173222;
+    --secondary-color: #4d6b5a;
+    --inverted-primary-color: #ffffff;
+    --inverted-secondary-color: #b7c8be;
+
+    /* =======================================================
+       UI ELEMENTS
+    ======================================================== */
+    --card-bg: #ffffff;
+    --list-box-bg: #e6f4ea;
+    --code-btn: #d7ebdd;
+
+    /* =======================================================
+       SKELETON
+    ======================================================== */
+    --skeleton-color: #dceee2;
+    --skeleton-shadow: rgba(0 0 0 / 10%);
+
+    /* =======================================================
+       REDESIGN COLORS
+    ======================================================== */
+    --dark-bg-redesign: #d6ecdd;
+    --bg-redesign: #2f8f5b;
+    --light-bg-redesign: #b9dfc7;
+
+    --text-redesign: #173222;
+    --hint-redesign: #6f8a7a;
+
+    --cancel-redesign: #e85d5d;
+    --save-redesign: #2f8f5b;
+
+    --icon-redesign: #3d7a5c;
+    --accent-redesign: #3aa76d;
+
+    /* =======================================================
+       FOOTER
+    ======================================================== */
+    --color-footer-bg: #dceee2;
+}

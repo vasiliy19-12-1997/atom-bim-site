@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Card } from '@/shared/ui/redesigned/Card';
 import { HStack, VStack } from '@/shared/ui/redesigned/Stack';
 import { Text } from '@/shared/ui/redesigned/Text';
+import { classNames } from '@/shared/lib/classNames/classNames';
 import cls from './MainPageVideoSection.module.scss';
 
 interface MainPageVideoSectionProps {
@@ -17,13 +18,16 @@ export const MainPageVideoSection = memo((props: MainPageVideoSectionProps) => {
         <Card
             padding="24"
             border="round"
-            className={cls.videoSection}
+            className={classNames(cls.videoSection, {}, [className])}
         >
             <VStack
                 max
                 gap={24}
             >
-                <Text title={t('Видео о ТИМ департаменте')} />
+                <VStack gap={8}>
+                    <Text title={t('Видео о ТИМ департаменте')} size="l" bold />
+                    <Text text={t('Короткий обзор подхода, инструментов и стандартов BIM-команды.')} size="s" />
+                </VStack>
                 <HStack
                     max
                     justify="center"
@@ -35,7 +39,7 @@ export const MainPageVideoSection = memo((props: MainPageVideoSectionProps) => {
                         allow="autoplay"
                         allowFullScreen
                         width="100%"
-                        height={600}
+                        height={620}
                         loading="lazy"
                     />
                 </HStack>
