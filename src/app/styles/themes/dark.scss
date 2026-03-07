@@ -1,34 +1,49 @@
 .app_dark_theme {
-    /* === BACKGROUND === */
-    --color-bg-primary: #090f11;
-    --color-bg-secondary: #0c1214;
-    --color-bg-tertiary: #151c1f;
-    --color-surface: #151c1f;
-    --color-surface-hover: #1f262a;
+    /* =======================================================
+       BASE BACKGROUNDS
+    ======================================================== */
+    --bg-color: #121212;
+    --inverted-bg-color: #f5f5f5;
 
-    /* === TEXT === */
-    --color-text-primary: #dbdbdb;
-    --color-text-secondary: #adbcc0;
-    --color-text-muted: #777;
-    --color-text-inverted: #090f11;
+    /* =======================================================
+       TEXT COLORS
+    ======================================================== */
+    --primary-color: #e8ebe9;
+    --secondary-color: #b4b5b7;
+    --inverted-primary-color: #1a1a1a;
+    --inverted-secondary-color: #4d4c4c;
 
-    /* === BORDER === */
-    --color-border: #2b2b2b;
+    /* =======================================================
+       UI ELEMENTS
+    ======================================================== */
+    --card-bg: #1e1e1e;
+    --list-box-bg: #232323;
+    --code-btn: #2a2a2a;
 
-    /* === ACCENT / PRIMARY === */
-    --color-accent: #5ed3f3;
-    --color-accent-hover: #74a2b2;
+    /* =======================================================
+       SKELETON
+    ======================================================== */
+    --skeleton-color: #2a2a2a;
+    --skeleton-shadow: rgba(255 255 255 / 5%);
 
-    /* === STATUS COLORS === */
-    --color-success: #6cd98b;
-    --color-warning: #e6c56a;
-    --color-danger: #d95757;
-    --color-info: #5c74b8;
+    /* =======================================================
+       REDESIGN COLORS
+    ======================================================== */
+    --dark-bg-redesign: #1a1f1d;
+    --bg-redesign: #005f45;
+    --light-bg-redesign: #1f3d35;
 
-    /* === SKELETON === */
-    --color-skeleton-bg: #151c1f;
-    --color-skeleton-highlight: #2b2b2b;
+    --text-redesign: #e8ebe9;
+    --hint-redesign: #939598;
 
-    /* === SKELETON === */
-    --color-footer-bg: #0f172a;
+    --cancel-redesign: #ff6b6b;
+    --save-redesign: #00a876;
+
+    --icon-redesign: #7c8dd6;
+    --accent-redesign: #00a876;
+
+    /* =======================================================
+       FOOTER
+    ======================================================== */
+    --color-footer-bg: #1a1a1a;
 }

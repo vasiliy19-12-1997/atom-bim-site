@@ -1,0 +1,49 @@
+.app_teal_theme {
+    /* =======================================================
+       BASE BACKGROUNDS
+    ======================================================== */
+    --bg-color: #f4f8f9;
+    --inverted-bg-color: #102a2e;
+
+    /* =======================================================
+       TEXT COLORS
+    ======================================================== */
+    --primary-color: #1a1a1a;
+    --secondary-color: #5a6b6e;
+    --inverted-primary-color: #ffffff;
+    --inverted-secondary-color: #b4c4c6;
+
+    /* =======================================================
+       UI ELEMENTS
+    ======================================================== */
+    --card-bg: #ffffff;
+    --list-box-bg: #e6f0f2;
+    --code-btn: #d9e7ea;
+
+    /* =======================================================
+       SKELETON
+    ======================================================== */
+    --skeleton-color: #e1ecee;
+    --skeleton-shadow: rgba(0 0 0 / 10%);
+
+    /* =======================================================
+       REDESIGN COLORS
+    ======================================================== */
+    --dark-bg-redesign: #cfe3e7;
+    --bg-redesign: #0e7c86;
+    --light-bg-redesign: #a9d3d8;
+
+    --text-redesign: #1a1a1a;
+    --hint-redesign: #7a8b8d;
+
+    --cancel-redesign: #f15b5b;
+    --save-redesign: #0e7c86;
+
+    --icon-redesign: #3a8fb7;
+    --accent-redesign: #0e7c86;
+
+    /* =======================================================
+       FOOTER
+    ======================================================== */
+    --color-footer-bg: #d9e7ea;
+}

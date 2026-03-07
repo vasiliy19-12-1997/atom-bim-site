@@ -18,10 +18,7 @@ interface PageProps extends TestProps {
     onScrollEnd?: () => void;
 }
 export const PAGE_ID = 'page_id';
-/**
- * Компонент устарел, пожалуйста используйте ui библиотеку из папки redesign
- * @deprecated
- */
+
 export const Page = memo((props: PageProps) => {
     const { className, children, onScrollEnd } = props;
     const wrapperRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -55,7 +52,12 @@ export const Page = memo((props: PageProps) => {
             className={classNames(cls.PageRedesigned, {}, [className])}
         >
             {children}
-            {onScrollEnd ? <div className={cls.trigger} ref={triggerRef} /> : null}
+            {onScrollEnd ? (
+                <div
+                    className={cls.trigger}
+                    ref={triggerRef}
+                />
+            ) : null}
         </section>
     );
 });

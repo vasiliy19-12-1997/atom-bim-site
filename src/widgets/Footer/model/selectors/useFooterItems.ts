@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { getAuthUserData } from '@/entities/User';
-import EIRIcon from '@/shared/assets/icons/new/Information 24px.svg';
 import {
     getRouteEir,
     getRouteInstruction,

@@ -1,3 +1,24 @@
 .MainPage {
-    margin-top: 60px;
+    margin-top: 48px;
+    padding: 0 20px 88px;
+    background: radial-gradient(circle at 12% 0%, var(--page-decor-primary), transparent 28%),
+        radial-gradient(circle at 88% 24%, var(--page-decor-secondary), transparent 34%),
+        linear-gradient(180deg, transparent, var(--page-overlay)), var(--bg-redesign);
+}
+
+.content {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+}
+
+.divider {
+    margin-top: 8px;
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-redesign), transparent);
+    opacity: 0.35;
 }

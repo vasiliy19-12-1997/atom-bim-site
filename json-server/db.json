@@ -679,7 +679,7 @@
       "username": "admin",
       "password": "123",
       "jsonSettings": {
-        "theme": "app_light_theme",
+        "theme": "app_dark_theme",
         "isFirstVisit": false,
         "isPageHasBeenOpen": true
       },
@@ -746,12 +746,12 @@
     {
       "id": "1",
       "first": "fdfdfdfdfdfававав",
-      "lastname": "fdfdfdfgfgfg",
+      "lastname": "fdfdfdfgfgfgававав",
       "age": 12,
       "currency": "USD",
       "country": "Irish",
       "city": "ekb",
-      "username": "fdfdfdfdfdfdfdfdfdfd",
+      "username": "fdfdfdfdfdfdfdfdfававаdfd",
       "avatar": "https://xakep.ru/wp-content/uploads/2018/05/171485/KuroiSH-hacker.jpg"
     },
     {
@@ -905,6 +905,360 @@
       "rate": 3,
       "userId": "2",
       "id": "7LeMEmD"
+    }
+  ],
+  "videos": [
+    {
+      "id": "1",
+      "title": "Знакомство со ссылками (работа с подложками) в AutoCad",
+      "type": "WEBINARS",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "AUTOCAD"
+    },
+    {
+      "id": "2",
+      "title": "Работа с наборами характеристик в Civil3D",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "CIVIL3D"
+    },
+    {
+      "id": "3",
+      "title": "Площадь штриховок в Civil3D",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "CIVIL3D"
+    },
+    {
+      "id": "4",
+      "title": "Работа с заданиями от инженерных разделов",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "5",
+      "title": "Подключение библиотеки семейств",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "6",
+      "title": "Печать листов в PDF плагином ModPlus",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "7",
+      "title": "Обновление связей",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "8",
+      "title": "Фильтры",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "9",
+      "title": "Горячие клавиши",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "10",
+      "title": "Интерфейс: кнопки на нижней панели управления",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "11",
+      "title": "Привязка к уровням",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "12",
+      "title": "Размещение вентиляционных каналов",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "AR",
+      "software": "REVIT"
+    },
+    {
+      "id": "13",
+      "title": "Построение ограждения по системной лестнице",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "AR",
+      "software": "REVIT"
+    },
+    {
+      "id": "14",
+      "title": "Построение ограждения на основе уровня",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "AR",
+      "software": "REVIT"
+    },
+    {
+      "id": "15",
+      "title": "Моделирование уклонов кровли",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "AR",
+      "software": "REVIT"
+    },
+    {
+      "id": "16",
+      "title": "Определение габаритных размеров машино-мест",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "AR",
+      "software": "REVIT"
+    },
+    {
+      "id": "17",
+      "title": "AP – Таблица идентификации",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "AR",
+      "software": "REVIT"
+    },
+    {
+      "id": "18",
+      "title": "AP – Рабочие наборы",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "AR",
+      "software": "REVIT"
+    },
+    {
+      "id": "19",
+      "title": "AP – Фасонные элементы по сложному контуру",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "AR",
+      "software": "REVIT"
+    },
+    {
+      "id": "20",
+      "title": "КР/КЖ - Армирование: Проверка параметров арматуры",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "KR",
+      "software": "REVIT"
+    },
+    {
+      "id": "21",
+      "title": "КР/КЖ - Армирование: Параметры арматуры",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "KR",
+      "software": "REVIT"
+    },
+    {
+      "id": "22",
+      "title": "Армирование колонн плагином ModPlus",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "KR",
+      "software": "REVIT"
+    },
+    {
+      "id": "23",
+      "title": "КР/КЖ - Рабочие наборы",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "KR",
+      "software": "REVIT"
+    },
+    {
+      "id": "24",
+      "title": "КР/КЖ - Таблица идентификации",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "KR",
+      "software": "REVIT"
+    },
+    {
+      "id": "25",
+      "title": "КР/КЖ - Армирование: плиты",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "KR",
+      "software": "REVIT"
+    },
+    {
+      "id": "26",
+      "title": "КР/КЖ - Армирование: круглые колонны",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "KR",
+      "software": "REVIT"
+    },
+    {
+      "id": "27",
+      "title": "КР/КЖ - Армирование: наклонные конструкции (рампы)",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "KR",
+      "software": "REVIT"
+    },
+    {
+      "id": "28",
+      "title": "КР/КЖ - Армирование: лестницы",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "KR",
+      "software": "REVIT"
+    },
+    {
+      "id": "29",
+      "title": "КР/КЖ - Армирование: зависимости стержней",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "KR",
+      "software": "REVIT"
+    },
+    {
+      "id": "30",
+      "title": "КР/КЖ - Армирование: Оформление ИЗ",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "KR",
+      "software": "REVIT"
+    },
+    {
+      "id": "31",
+      "title": "КР/КЖ - Модель в контексте: Срез и полый элемент выдавливания",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "KR",
+      "software": "REVIT"
+    },
+    {
+      "id": "32",
+      "title": "КР/КЖ - Модель в контексте: Выдавливание",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "KR",
+      "software": "REVIT"
+    },
+    {
+      "id": "33",
+      "title": "04.12.2025 Мастер-класс. Расстановка заданий. Плагин",
+      "type": "WEBINARS",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "OV",
+      "software": "REVIT"
+    },
+    {
+      "id": "34",
+      "title": "Плагин \"Задание на отверстия\"",
+      "type": "PLUGINS",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "OV",
+      "software": "REVIT"
+    },
+    {
+      "id": "35",
+      "title": "01.11.2025 Мастер-класс. Выдача заданий разделу ЭЛ/СС в модели Revit",
+      "type": "WEBINARS",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "EL",
+      "software": "REVIT"
+    },
+    {
+      "id": "36",
+      "title": "Экспорт модели для Dialux Evo",
+      "type": "VIDEO_INSTRUCTION",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "EL",
+      "software": "REVIT"
+    },
+    {
+      "id": "37",
+      "title": "04.12.2025 Мастер-класс. Расстановка заданий. Плагин",
+      "type": "PLUGINS",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "38",
+      "title": "Копирование элементов в ModPlus",
+      "type": "PLUGINS",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "39",
+      "title": "Плагин \"Диспетчер отделки\"",
+      "type": "PLUGINS",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "40",
+      "title": "Плагин \"Задание на отверстия\"",
+      "type": "PLUGINS",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "41",
+      "title": "Плагин \"Диспетчер отверстий\"",
+      "type": "PLUGINS",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "42",
+      "title": "Расстановка торцеобразователей",
+      "type": "PLUGINS",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "43",
+      "title": "Диспетчер семейств",
+      "type": "PLUGINS",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
+    },
+    {
+      "id": "44",
+      "title": "Диспетчер связей",
+      "type": "PLUGINS",
+      "link": "https://rutube.ru/play/embed/8736091992becc0799d81b0d5f184dd0",
+      "section": "COMMON",
+      "software": "REVIT"
     }
   ]
 }

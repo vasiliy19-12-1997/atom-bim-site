@@ -1,0 +1,11 @@
+.VideosFilters {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 16px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--inverted-primary-color);
+    background: var(--bg-color);
+}

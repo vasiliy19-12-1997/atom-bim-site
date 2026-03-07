@@ -1,7 +1,21 @@
-.videoWrapper {
+.videoSection {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    background: radial-gradient(circle at top right, var(--light-bg-redesign), transparent 30%),
+        linear-gradient(180deg, var(--dark-bg-redesign), transparent 40%), var(--card-bg);
+    box-shadow: 0 16px 36px rgb(0 0 0 / 7%);
 }
 
-.videoSection {
-    margin-top: 40px;
-    margin-bottom: 40px;
+.videoWrapper {
+    overflow: hidden;
+    border-radius: 28px;
+    border: 1px solid var(--color-border);
+    background: var(--dark-bg-redesign);
+    box-shadow: 0 14px 32px rgb(0 0 0 / 8%);
+
+    iframe {
+        display: block;
+        border: none;
+        min-height: 360px;
+    }
 }
