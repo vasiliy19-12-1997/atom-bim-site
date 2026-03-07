@@ -14,18 +14,42 @@
     "BIM — веб-ресурс, который содержит требования к процессу информационного моделирования,\n             кадровому составу и ресурсам, задействованным в BIM-проекте, а также конечной BIM-модели": "BIM — веб-ресурс, который содержит требования к процессу информационного моделирования,\n             кадровому составу и ресурсам, задействованным в BIM-проекте, а также конечной BIM-модели"
   },
   "AdminPanelPage": "AdminPanelPage",
+  "All types": "All types",
   "Article Details": "Article Details",
   "Article Page": "Article Page",
   "Article Page Details": "Article Page Details",
+  "Asc": "Asc",
+  "By publish order": "By publish order",
+  "By title": "By title",
   "Create Articles": "Create Articles",
+  "Desc": "Desc",
   "Error": "Error",
+  "Failed to load videos": "Failed to load videos",
   "ForbiddenPage": "ForbiddenPage",
+  "Instructions": "Instructions",
   "Javascript - язык программирования": "",
+  "Learning materials, webinars and plugin overviews": "Learning materials, webinars and plugin overviews",
   "LibraryPage": "LibraryPage",
+  "Loading videos": {
+    "": {
+      "": {
+        "": ""
+      }
+    }
+  },
+  "No videos found": "No videos found",
+  "Open video": "Open video",
+  "Order": "Order",
+  "Plugins": "Plugins",
   "Profile page": "Profile page",
+  "Search by title": "Search by title",
+  "Sort": "Sort",
   "Toggle": "Toggle",
+  "Type": "Type",
   "Vasiliy App": "Vasiliy App",
   "Vasya": "Vasya",
+  "Videos": "Videos",
+  "Webinars": "Webinars",
   "add": "",
   "avatar": "avatar",
   "decrement": "",

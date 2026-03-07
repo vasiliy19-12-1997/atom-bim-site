@@ -15,8 +15,8 @@ export enum VideoSoftware {
 }
 
 export enum VideoSortField {
-    RELEVATION = 'RELEVATION',
-    SORT_LEARN = 'SORT_LEARN',
+    RELEVATION = 'title',
+    SORT_LEARN = 'id',
 }
 
 export enum VideoType {

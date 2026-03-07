@@ -1,19 +1,18 @@
 import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ArticlePageGreeting } from '@/features/articlePageGreeting';
 import { StickyContentLayout } from '@/shared/layouts/StickyContentLayout';
 import { DynamicModuleLoader, ReducersList } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch';
 import { Page } from '@/shared/ui/deprecated/Page';
+import { Text, TextSize } from '@/shared/ui/deprecated/Text';
 import { videoReducer } from '../../model/slices/VideosPageSlice';
-import cls from './ArticlePage.module.scss';
+import cls from './VideosPage.module.scss';
 import { fetchNextVideoPage } from '../../model/services/fetchNextVideoPage/fetchNextVideoPage';
-import { ViewSelectorContainer } from '@/pages/ArticlePage/ui/ViewSelectorContainer/ViewSelectorContainer';
-import { FiltersContainer } from '@/pages/ArticlePage/ui/FiltersContainer/FiltersContainer';
-import { ArticleInfiniteList } from '@/pages/ArticlePage/ui/ArticleInfiniteList/ArticleInfiniteList';
+import { VideosInfiniteList } from '../VideosInfiniteList/VideosInfiniteList';
+import { VideosFilters } from '../VideosFilters/VideosFilters';
 
-const ArticlePage = memo(() => {
-    const { t } = useTranslation('');
+const VideosPage = memo(() => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const reducers: ReducersList = {
         videosPage: videoReducer,
@@ -24,16 +23,18 @@ const ArticlePage = memo(() => {
 
     const content = (
         <StickyContentLayout
-            left={<ViewSelectorContainer />}
-            right={<FiltersContainer />}
+            left={<VideosFilters />}
             content={
                 <Page
-                    data-testid="ArticlePageRedesign"
+                    data-testid="VideosPage"
                     onScrollEnd={onNextLoad}
                 >
-                    {t('Article Page')}
-                    <ArticleInfiniteList className={cls.list} />
-                    <ArticlePageGreeting />
+                    <Text
+                        title={t('Videos')}
+                        text={t('Learning materials, webinars and plugin overviews')}
+                        size={TextSize.L}
+                    />
+                    <VideosInfiniteList className={cls.list} />
                 </Page>
             }
         />
@@ -49,4 +50,4 @@ const ArticlePage = memo(() => {
     );
 });
 
-export default ArticlePage;
+export default VideosPage;

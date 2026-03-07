@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Article } from '@/entities/Article';
 import { ThunkConfig } from '@/shared/config/state';
 import { addQueryParams } from '@/shared/lib/url/addQueryParams/addQueryParams';
 import { SortOrder } from '@/shared/types/sort';
@@ -56,15 +55,16 @@ export const fetchVideos = createAsyncThunk<Video[], fetchVideosProps, ThunkConf
                 search,
                 type,
             });
-            const response = await extra.api.get<Article[]>('/videos', {
+            const response = await extra.api.get<Video[]>('/videos', {
                 params,
             });
-            if (!response) {
+            if (!response.data) {
                 throw new Error();
             }
             return response.data;
-        } catch (error) {
-            return rejectWithValue(error as string);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to fetch videos';
+            return rejectWithValue(errorMessage);
         }
     },
 );
