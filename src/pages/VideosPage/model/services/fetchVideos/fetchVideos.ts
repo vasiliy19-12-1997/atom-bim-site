@@ -17,7 +17,6 @@ interface fetchVideosProps {
     replace?: boolean;
 }
 type VideosQuery = {
-    _expand?: 'user';
     _page?: number;
     _limit?: number;
     _sort: VideoSortField;
@@ -39,7 +38,6 @@ export const fetchVideos = createAsyncThunk<Video[], fetchVideosProps, ThunkConf
         const type = getVideosPageType(getState());
 
         const params: VideosQuery = {
-            _expand: 'user',
             _page: page,
             _limit: limit,
             _sort: sort,
@@ -53,7 +51,7 @@ export const fetchVideos = createAsyncThunk<Video[], fetchVideosProps, ThunkConf
                 sort,
                 order,
                 search,
-                type,
+                type: type === VideoType.ALL ? undefined : type,
             });
             const response = await extra.api.get<Video[]>('/videos', {
                 params,

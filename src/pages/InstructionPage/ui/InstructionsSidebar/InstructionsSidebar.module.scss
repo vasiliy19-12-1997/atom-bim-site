@@ -1,0 +1,49 @@
+.InstructionsSidebar {
+    background: var(--card-bg);
+    border: 1px solid var(--list-box-bg);
+    border-radius: 12px;
+    padding: 16px;
+    max-height: calc(100vh - 110px);
+    overflow: auto;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.title {
+    margin: 0;
+    font: var(--font-m);
+    color: var(--primary-color);
+}
+
+.close {
+    display: none;
+    border: none;
+    background: transparent;
+    color: var(--secondary-color);
+    cursor: pointer;
+}
+
+@media (max-width: 767px) {
+    .InstructionsSidebar {
+        position: fixed;
+        top: 56px;
+        left: 12px;
+        right: 12px;
+        max-height: calc(100vh - 80px);
+        z-index: 20;
+        display: none;
+    }
+
+    .mobileOpened {
+        display: block;
+    }
+
+    .close {
+        display: inline-flex;
+    }
+}

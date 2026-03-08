@@ -679,7 +679,7 @@
       "username": "admin",
       "password": "123",
       "jsonSettings": {
-        "theme": "app_dark_theme",
+        "theme": "app_teal_theme",
         "isFirstVisit": false,
         "isPageHasBeenOpen": true
       },
@@ -745,13 +745,13 @@
   "profile": [
     {
       "id": "1",
-      "first": "fdfdfdfdfdfававав",
-      "lastname": "fdfdfdfgfgfgававав",
-      "age": 12,
-      "currency": "USD",
-      "country": "Irish",
+      "first": "Вася",
+      "lastname": "Кон",
+      "age": 13,
+      "currency": "EUR",
+      "country": "Russia",
       "city": "ekb",
-      "username": "fdfdfdfdfdfdfdfdfававаdfd",
+      "username": "nfidnfid",
       "avatar": "https://xakep.ru/wp-content/uploads/2018/05/171485/KuroiSH-hacker.jpg"
     },
     {

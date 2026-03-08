@@ -5,6 +5,8 @@ import EIRIcon from '@/shared/assets/icons/new/Information 24px.svg';
 import ProfileIcon from '@/shared/assets/icons/old/avatar.svg';
 import MainIcon from '@/shared/assets/icons/old/home.svg';
 import AboutIcon from '@/shared/assets/icons/old/Info.svg';
+import InstructionIcon from '@/shared/assets/icons/new/instruction.svg';
+
 import {
     getRouteAbout,
     getRouteArticle,
@@ -54,7 +56,7 @@ export const useSidebarItems = () => {
             },
             {
                 path: getRouteInstruction(),
-                Icon: EIRIcon,
+                Icon: InstructionIcon,
                 text: 'Инструкции',
                 authOnly: true,
             },

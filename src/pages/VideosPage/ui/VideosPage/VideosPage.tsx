@@ -9,7 +9,7 @@ import { videoReducer } from '../../model/slices/VideosPageSlice';
 import cls from './VideosPage.module.scss';
 import { fetchNextVideoPage } from '../../model/services/fetchNextVideoPage/fetchNextVideoPage';
 import { VideosInfiniteList } from '../VideosInfiniteList/VideosInfiniteList';
-import { VideosFilters } from '../VideosFilters/VideosFilters';
+import { FiltersContainer } from '../FiltersContainer/FiltersContainer';
 
 const VideosPage = memo(() => {
     const { t } = useTranslation();
@@ -23,7 +23,7 @@ const VideosPage = memo(() => {
 
     const content = (
         <StickyContentLayout
-            left={<VideosFilters />}
+            right={<FiltersContainer />}
             content={
                 <Page
                     data-testid="VideosPage"

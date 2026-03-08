@@ -2,15 +2,13 @@ import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { VideoCard } from '@/entities/Video';
-import { classNames } from '@/shared/lib/classNames/classNames';
+import { VideoList } from '@/entities/Video';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch';
 import { useInitialEffect } from '@/shared/lib/hooks/useInitialEffect/useInitialEffect';
 import { Text, TextTheme } from '@/shared/ui/deprecated/Text';
 import { initVideosPage } from '../../model/services/initVideosPage/initVideosPage';
 import { getVideos } from '../../model/slices/VideosPageSlice';
 import { getVideosError, getVideosIsLoading } from '../../model/selectors/videos';
-import cls from './VideosInfiniteList.module.scss';
 
 interface VideosInfiniteListProps {
     className?: string;
@@ -51,14 +49,9 @@ export const VideosInfiniteList = memo((props: VideosInfiniteListProps) => {
     }
 
     return (
-        <div className={classNames(cls.VideosInfiniteList, {}, [className])}>
-            {videos.map((video) => (
-                <VideoCard
-                    key={video.id}
-                    video={video}
-                />
-            ))}
+        <>
+            <VideoList className={className} videos={videos} />
             {isLoading && <Text title={t('Loading videos...')} />}
-        </div>
+        </>
     );
 });

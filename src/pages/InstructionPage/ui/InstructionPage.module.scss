@@ -1,3 +1,74 @@
 .InstructionPage {
-  /* Ваши стили */
+    width: 100%;
+    padding: 22px 20px 24px;
+    background: var(--bg-color);
+}
+
+.layout {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr) minmax(220px, 280px);
+    gap: 16px;
+    align-items: start;
+}
+
+.sidebar {
+    position: sticky;
+    top: 16px;
+}
+
+.articleColumn {
+    min-width: 0;
+}
+
+.toc {
+    position: sticky;
+    top: 16px;
+}
+
+.mobileSidebarToggleRow {
+    display: none;
+}
+
+.mobileSidebarToggle {
+    border: 1px solid var(--list-box-bg);
+    background: var(--card-bg);
+    color: var(--primary-color);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font: var(--font-s);
+}
+
+.loadingState {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+@media (max-width: 1100px) {
+    .layout {
+        grid-template-columns: minmax(230px, 280px) minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .InstructionPage {
+        padding: 12px 10px 16px;
+    }
+
+    .layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sidebar {
+        position: static;
+    }
+
+    .mobileSidebarToggleRow {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 8px;
+    }
 }

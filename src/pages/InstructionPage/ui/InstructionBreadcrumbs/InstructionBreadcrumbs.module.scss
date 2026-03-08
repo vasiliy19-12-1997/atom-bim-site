@@ -1,0 +1,39 @@
+.InstructionBreadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font: var(--font-s);
+    color: var(--secondary-color);
+    margin-bottom: 14px;
+}
+
+.item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.separator {
+    display: inline-block;
+    width: 10px;
+    height: 1px;
+    opacity: 0.7;
+    position: relative;
+
+    &::before {
+        content: '/';
+        position: absolute;
+        top: -10px;
+        left: 0;
+    }
+}
+
+.link {
+    color: var(--secondary-color);
+    text-decoration: none;
+
+    &:hover {
+        color: var(--primary-color);
+        text-decoration: underline;
+    }
+}

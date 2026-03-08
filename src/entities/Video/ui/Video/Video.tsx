@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Video as VideoModel } from '../../model/types/video';
 import { classNames } from '@/shared/lib/classNames/classNames';
@@ -12,6 +12,11 @@ interface VideoProps {
 export const Video = memo((props: VideoProps) => {
     const { className, video } = props;
     const { t } = useTranslation();
+    const [isPlayerOpened, setIsPlayerOpened] = useState(false);
+
+    const onOpenPlayer = useCallback(() => {
+        setIsPlayerOpened(true);
+    }, []);
 
     return (
         <article className={classNames(cls.Video, {}, [className])}>
@@ -22,12 +27,22 @@ export const Video = memo((props: VideoProps) => {
                 <span>{video.software}</span>
             </div>
             <div className={cls.player}>
-                <iframe
-                    src={video.link}
-                    title={video.title}
-                    loading="lazy"
-                    allowFullScreen
-                />
+                {isPlayerOpened ? (
+                    <iframe
+                        src={video.link}
+                        title={video.title}
+                        loading="lazy"
+                        allowFullScreen
+                    />
+                ) : (
+                    <button
+                        type="button"
+                        className={cls.preview}
+                        onClick={onOpenPlayer}
+                    >
+                        {t('Play video')}
+                    </button>
+                )}
             </div>
             <a
                 className={cls.link}

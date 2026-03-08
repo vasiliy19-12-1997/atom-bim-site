@@ -41,19 +41,24 @@
   "No videos found": "No videos found",
   "Open video": "Open video",
   "Order": "Order",
+  "Play video": "Play video",
   "Plugins": "Plugins",
   "Profile page": "Profile page",
   "Search by title": "Search by title",
   "Sort": "Sort",
+  "Sort by": "Sort by",
   "Toggle": "Toggle",
   "Type": "Type",
   "Vasiliy App": "Vasiliy App",
   "Vasya": "Vasya",
+  "Videos": "Videos",
+  "Webinars": "Webinars",
   "add": "",
   "atom-bim": {
     "ru": "ru"
   },
   "avatar": "avatar",
+  "breadcrumbs": "breadcrumbs",
   "decrement": "",
   "feedback": "",
   "increment": "",
@@ -105,6 +110,7 @@
   "Закрыть": "",
   "Здесь вы можете посмотреть профили, статьи": "Здесь вы можете посмотреть профили, статьи",
   "Имя": "Имя",
+  "Инструкции": "Инструкции",
   "Ключевые материалы, регламенты и BIM-инструменты в одном месте": {
     "": ""
   },
@@ -126,6 +132,7 @@
   "Любые материалы, файлы и сервисы, содержащиеся на сайте, не могут быть воспроизведены полностью или частично без предварительного письменного разрешения компании, за исключением случаев, предусмотренных правилами использования сайта": {
     "": ""
   },
+  "На этой странице": "На этой странице",
   "Настройки": "Настройки",
   "Наука": "Наука",
   "Некооректное имя": "Некооректное имя",

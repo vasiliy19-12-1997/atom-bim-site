@@ -1,0 +1,61 @@
+.InstructionsSidebarTree {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.groupButton {
+    border: none;
+    background: transparent;
+    color: var(--primary-color);
+    text-align: left;
+    padding: 0;
+    font: var(--font-m);
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chevron {
+    color: var(--secondary-color);
+    font-size: 20px;
+    line-height: 1;
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--secondary-color);
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        background: var(--list-box-bg);
+        color: var(--primary-color);
+    }
+}
+
+.active {
+    background: var(--list-box-bg);
+    color: var(--primary-color);
+    font-weight: 700;
+}

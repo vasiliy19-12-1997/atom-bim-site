@@ -1,0 +1,139 @@
+﻿.AboutPage {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+}
+
+.hero {
+    padding: 24px;
+    border-radius: 20px;
+    border: 1px solid var(--inverted-primary-color);
+    background:
+        radial-gradient(circle at top right, rgb(255 255 255 / 8%), transparent 45%),
+        linear-gradient(135deg, var(--card-bg), var(--bg-color));
+}
+
+.kicker {
+    margin: 0 0 8px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.title {
+    margin: 0;
+    font-size: 34px;
+    line-height: 1.1;
+}
+
+.subtitle {
+    margin: 14px 0 0;
+    max-width: 760px;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+.gridSection {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.card {
+    padding: 18px;
+    border-radius: 14px;
+    border: 1px solid var(--inverted-primary-color);
+    background: var(--card-bg);
+
+    h2 {
+        margin: 0 0 10px;
+        font-size: 20px;
+    }
+
+    p {
+        margin: 0;
+        line-height: 1.45;
+    }
+}
+
+.infoBlock,
+.cta {
+    padding: 20px;
+    border-radius: 14px;
+    border: 1px solid var(--inverted-primary-color);
+    background: var(--card-bg);
+}
+
+.infoHeader {
+    h2 {
+        margin: 0 0 8px;
+    }
+
+    p {
+        margin: 0;
+        opacity: 0.9;
+    }
+}
+
+.featuresList {
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 10px;
+}
+
+.featureItem {
+    position: relative;
+    padding-left: 20px;
+    line-height: 1.4;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.56em;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--primary-color);
+    }
+}
+
+.cta {
+    h2 {
+        margin: 0 0 8px;
+    }
+
+    p {
+        margin: 0;
+        line-height: 1.45;
+        opacity: 0.9;
+    }
+}
+
+@media (width <= 1024px) {
+    .gridSection {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (width <= 768px) {
+    .AboutPage {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .hero,
+    .infoBlock,
+    .cta,
+    .card {
+        padding: 16px;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+}

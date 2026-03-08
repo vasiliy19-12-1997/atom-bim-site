@@ -1,3 +1,20 @@
-{
-  "О сайте": "About us"
+﻿{
+    "О сайте":  "About site",
+    "about_title":  "About site",
+    "about_subtitle":  "This is an internal learning and workflow platform for BIM teams. It brings together materials that help teams adopt standards faster and keep project quality consistent.",
+    "about_values_practical_title":  "Practical",
+    "about_values_practical_text":  "Content and tools for daily work of designers and BIM teams without unnecessary theory.",
+    "about_values_transparent_title":  "Transparent",
+    "about_values_transparent_text":  "Unified content structure, clear scenarios, and consistent logic across all project pages.",
+    "about_values_growth_title":  "Growth",
+    "about_values_growth_text":  "The platform is continuously updated with new videos, instructions, templates, and learning collections.",
+    "about_available_title":  "What is already available",
+    "about_available_text":  "All key tools and knowledge are collected in one place to speed up training and day-to-day workflows.",
+    "about_features_1":  "Video tutorials and webinars for Revit, Civil 3D, and AutoCAD",
+    "about_features_2":  "Navigation by sections: EIR, Instructions, Videos, Library, Tests",
+    "about_features_3":  "Filtering and quick search for needed materials",
+    "about_features_4":  "Single workspace for engineers, BIM managers, and administrators",
+    "about_cta_title":  "Where to start",
+    "about_cta_text":  "Start in the Videos section for onboarding, then open Instructions and Library to apply practices in your project.",
+    "about_kicker":  "Atom BIM Platform"
 }

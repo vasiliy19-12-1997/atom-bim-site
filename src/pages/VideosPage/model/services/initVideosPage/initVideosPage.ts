@@ -32,7 +32,7 @@ export const initVideosPage = createAsyncThunk<void, URLSearchParams, ThunkConfi
 
         if (!inited) {
             dispatch(videoPageActions.initState());
-            dispatch(fetchVideos({ replace: true }));
+            dispatch(fetchVideos({ replace: false }));
         }
     },
 );
