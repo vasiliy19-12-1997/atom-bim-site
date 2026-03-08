@@ -93,7 +93,7 @@ export const routeConfig: Record<AppRoutes, AppRouteProps> = {
         authOnly: true,
     },
     [AppRoutes.INSTRUCTION]: {
-        path: getRouteInstruction(),
+        path: `${getRouteInstruction()}/*`,
         element: <InstructionPage />,
         authOnly: true,
     },

@@ -28,7 +28,17 @@ export const getRouteAdmin = () => '/admin';
 export const getRouteForbidden = () => '/forbidden';
 export const getRouteSettings = () => '/settings';
 export const getRouteEir = () => '/eir';
-export const getRouteInstruction = () => '/instruction';
+export const getRouteInstruction = (slug?: string, category?: string) => {
+    if (category && slug) {
+        return `/instruction/${category}/${slug}`;
+    }
+
+    if (slug) {
+        return `/instruction/${slug}`;
+    }
+
+    return '/instruction';
+};
 export const getRouteVideos = () => '/videos';
 export const getRouteLibrary = () => 'library';
 export const getRouteTests = () => 'tests';
@@ -45,7 +55,7 @@ export const AppRouteByPathPattern: Record<string, AppRoutes> = {
     [getRouteForbidden()]: AppRoutes.FORBIDDEN,
     [getRouteSettings()]: AppRoutes.SETTINGS,
     [getRouteEir()]: AppRoutes.EIR,
-    [getRouteInstruction()]: AppRoutes.INSTRUCTION,
+    [`${getRouteInstruction()}/*`]: AppRoutes.INSTRUCTION,
     [getRouteVideos()]: AppRoutes.VIDEOS,
     [getRouteLibrary()]: AppRoutes.LIBRARY,
     [getRouteTests()]: AppRoutes.TESTS,

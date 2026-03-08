@@ -1,8 +1,10 @@
 const fs = require('fs');
+require('ts-node/register/transpile-only');
 const jsonServer = require('json-server');
 const path = require('path');
 const https = require('https');
 const http = require('http');
+const { registerInstructionRoutes } = require('./instructions/instructions.routes');
 
 const options = {
     key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
@@ -54,6 +56,7 @@ server.use((req, res, next) => {
     next();
 });
 
+registerInstructionRoutes(server);
 server.use(router);
 
 // запуск сервера

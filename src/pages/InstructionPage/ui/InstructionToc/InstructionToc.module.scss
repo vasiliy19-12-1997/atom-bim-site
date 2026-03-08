@@ -1,0 +1,56 @@
+.InstructionToc {
+    background: var(--card-bg);
+    border: 1px solid var(--list-box-bg);
+    border-radius: 12px;
+    padding: 14px 14px 10px;
+    width: 260px;
+    max-height: calc(100vh - 110px);
+    overflow: auto;
+}
+
+.title {
+    margin: 0 0 10px;
+    font: var(--font-m);
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.item {
+    border-left: 2px solid transparent;
+}
+
+.link {
+    display: block;
+    text-decoration: none;
+    color: var(--secondary-color);
+    font: var(--font-s);
+    padding: 4px 0 4px 8px;
+}
+
+.level3 .link {
+    padding-left: 18px;
+}
+
+.active {
+    border-left-color: var(--accent-redesign);
+
+    .link {
+        color: var(--primary-color);
+        font-weight: 700;
+    }
+}
+
+@media (max-width: 1100px) {
+    .InstructionToc {
+        display: none;
+    }
+}
