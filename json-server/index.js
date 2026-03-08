@@ -5,6 +5,7 @@ const path = require('path');
 const https = require('https');
 const http = require('http');
 const { registerInstructionRoutes } = require('./instructions/instructions.routes');
+const { registerEirRoutes } = require('./eir/eir.routes');
 
 const options = {
     key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
@@ -57,6 +58,7 @@ server.use((req, res, next) => {
 });
 
 registerInstructionRoutes(server);
+registerEirRoutes(server);
 server.use(router);
 
 // запуск сервера
