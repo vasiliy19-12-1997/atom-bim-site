@@ -1,118 +1,58 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { VideoSortField, VideoType } from '@/entities/Video';
-import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch';
-import { useDebounce } from '@/shared/lib/hooks/useDebounce/useDebounce';
-import { Input } from '@/shared/ui/deprecated/Input';
-import { Select, SelectOptions } from '@/shared/ui/deprecated/Select';
+import { classNames } from '@/shared/lib/classNames/classNames';
 import { SortOrder } from '@/shared/types/sort';
-import {
-    getFilterSelectorOrder,
-    getFilterSelectorSearch,
-    getFilterSelectorSort,
-    getVideosPageType,
-} from '../../model/selectors/videos';
-import { fetchVideos } from '../../model/services/fetchVideos/fetchVideos';
-import { videoPageActions } from '../../model/slices/VideosPageSlice';
+import SearchIcon from '@/shared/assets/icons/old/search.svg';
+import { Card } from '@/shared/ui/redesigned/Card';
+import { Icon } from '@/shared/ui/redesigned/Icon';
+import { Input } from '@/shared/ui/redesigned/Input';
+import { VStack } from '@/shared/ui/redesigned/Stack';
 import cls from './VideosFilters.module.scss';
+import { VideoPageTabs } from '../VideoPageTabs/VideoPageTabs';
+import { VideoSortSelector } from '../VideoSortSelector/VideoSortSelector';
 
-export const VideosFilters = memo(() => {
+interface VideosFiltersProps {
+    className?: string;
+    sort: VideoSortField;
+    order: SortOrder;
+    type: VideoType;
+    search: string;
+    onChangeSort: (newSort: VideoSortField) => void;
+    onChangeOrder: (newOrder: SortOrder) => void;
+    onChangeType: (newType: VideoType) => void;
+    onChangeSearch: (value: string) => void;
+}
+
+export const VideosFilters = memo((props: VideosFiltersProps) => {
     const { t } = useTranslation();
-    const dispatch = useAppDispatch();
-
-    const search = useSelector(getFilterSelectorSearch);
-    const sort = useSelector(getFilterSelectorSort);
-    const order = useSelector(getFilterSelectorOrder);
-    const type = useSelector(getVideosPageType);
-    const typeOptions: SelectOptions<VideoType>[] = useMemo(
-        () => [
-            { value: VideoType.ALL, content: t('All types') },
-            { value: VideoType.VIDEO_INSTRUCTION, content: t('Instructions') },
-            { value: VideoType.WEBINARS, content: t('Webinars') },
-            { value: VideoType.PLUGINS, content: t('Plugins') },
-        ],
-        [t],
-    );
-    const sortOptions: SelectOptions<VideoSortField>[] = useMemo(
-        () => [
-            { value: VideoSortField.RELEVATION, content: t('By title') },
-            { value: VideoSortField.SORT_LEARN, content: t('By publish order') },
-        ],
-        [t],
-    );
-    const orderOptions: SelectOptions<SortOrder>[] = useMemo(
-        () => [
-            { value: 'asc', content: t('Asc') },
-            { value: 'desc', content: t('Desc') },
-        ],
-        [t],
-    );
-
-    const refetch = useCallback(() => {
-        dispatch(videoPageActions.setPage(1));
-        dispatch(fetchVideos({ replace: true }));
-    }, [dispatch]);
-    const debouncedRefetch = useDebounce(refetch, 500);
-
-    const onChangeSearch = useCallback(
-        (value: string) => {
-            dispatch(videoPageActions.setSearch(value));
-            dispatch(videoPageActions.setPage(1));
-            debouncedRefetch();
-        },
-        [debouncedRefetch, dispatch],
-    );
-
-    const onChangeSort = useCallback(
-        (value: VideoSortField) => {
-            dispatch(videoPageActions.setSort(value));
-            refetch();
-        },
-        [dispatch, refetch],
-    );
-
-    const onChangeOrder = useCallback(
-        (value: SortOrder) => {
-            dispatch(videoPageActions.setOrder(value));
-            refetch();
-        },
-        [dispatch, refetch],
-    );
-
-    const onChangeType = useCallback(
-        (value: VideoType) => {
-            dispatch(videoPageActions.setType(value));
-            refetch();
-        },
-        [dispatch, refetch],
-    );
+    const { className, sort, order, type, search, onChangeSort, onChangeOrder, onChangeType, onChangeSearch } = props;
 
     return (
-        <div className={cls.VideosFilters}>
-            <Input
-                value={search}
-                onChange={onChangeSearch}
-                placeholder={t('Search by title')}
-            />
-            <Select
-                label={t('Sort')}
-                value={sort}
-                options={sortOptions}
-                onChange={onChangeSort}
-            />
-            <Select
-                label={t('Order')}
-                value={order}
-                options={orderOptions}
-                onChange={onChangeOrder}
-            />
-            <Select
-                label={t('Type')}
-                value={type}
-                options={typeOptions}
-                onChange={onChangeType}
-            />
-        </div>
+        <Card
+            className={classNames(cls.VideosFilters, {}, [className])}
+            padding="24"
+        >
+            <VStack gap={32}>
+                <Input
+                    size="s"
+                    addonLeft={<Icon Svg={SearchIcon} />}
+                    placeholder={t('Search by title')}
+                    value={search}
+                    onChange={onChangeSearch}
+                />
+                <VideoPageTabs
+                    className={cls.tabs}
+                    value={type}
+                    onChangeType={onChangeType}
+                />
+                <VideoSortSelector
+                    sort={sort}
+                    order={order}
+                    onChangeSort={onChangeSort}
+                    onChangeOrder={onChangeOrder}
+                />
+            </VStack>
+        </Card>
     );
 });

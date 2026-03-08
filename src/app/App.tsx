@@ -11,6 +11,7 @@ import { useAppToolbar } from './lib/useAppToolbar';
 import { AppRouter } from './providers/router';
 import { withTheme } from './providers/ThemeProvider/ui/withTheme';
 import { Footer } from '@/widgets/Footer';
+import { useTheme } from './providers/ThemeProvider/lib/useTheme';
 
 const App = memo(() => {
     const auth = useSelector(getAuthUserMounted);
@@ -25,7 +26,6 @@ const App = memo(() => {
     if (!auth) {
         return <PageLoader />;
     }
-
     return (
         <div
             id="app"
