@@ -2,6 +2,7 @@
 import { EIRDocumentSource } from './types';
 
 const DEFAULT_EIR_DOCX_PATH = 'D:\\Job\\atom\\standarts\\test\\EIR_КАСК_2025.1.docx';
+const DEFAULT_EIR_DOCX_PATH2 = `D:KonovalovVasiliyBIM\\10_TemplatesEIR_КАСК_2025.1.docx`;
 
 export const getEirDocxPath = (): string => {
     const configuredPath = process.env.EIR_DOCX_PATH?.trim();
@@ -9,7 +10,7 @@ export const getEirDocxPath = (): string => {
         return configuredPath;
     }
 
-    return DEFAULT_EIR_DOCX_PATH;
+    return DEFAULT_EIR_DOCX_PATH || DEFAULT_EIR_DOCX_PATH2;
 };
 
 export const eirDocumentSource: EIRDocumentSource = {
