@@ -1,6 +1,6 @@
 ﻿import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EIRTocItem, useGetEirDocumentQuery } from '@/entities/EIR';
+import { EIRSection, EIRTocItem, useGetEirDocumentQuery } from '@/entities/EIR';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { PAGE_ID, Page } from '@/shared/ui/deprecated/Page';
 import { Sceleton } from '@/shared/ui/Sceleton/Sceleton';
@@ -27,6 +27,47 @@ const EIRPage = memo((props: EIRPageProps) => {
         isLoading,
         isError,
     } = useGetEirDocumentQuery();
+
+    const buildSectionsFromToc = (items: EIRTocItem[]): EIRSection[] => {
+        const roots: EIRSection[] = [];
+        const stack: EIRSection[] = [];
+
+        items.forEach((item) => {
+            const section: EIRSection = {
+                id: item.id,
+                title: item.title,
+                level: item.level,
+                html: '',
+                children: [],
+            };
+
+            while (stack.length && stack[stack.length - 1].level >= section.level) {
+                stack.pop();
+            }
+
+            const parent = stack[stack.length - 1];
+            if (parent) {
+                if (!parent.children) {
+                    parent.children = [];
+                }
+                parent.children.push(section);
+            } else {
+                roots.push(section);
+            }
+
+            stack.push(section);
+        });
+
+        return roots;
+    };
+
+    const sidebarSections = eirDocument?.sections?.length
+        ? eirDocument.sections
+        : buildSectionsFromToc(toc);
+
+    useEffect(() => {
+        setToc(eirDocument?.toc ?? []);
+    }, [eirDocument]);
 
     useEffect(() => {
         if (!toc.length) {
@@ -78,7 +119,7 @@ const EIRPage = memo((props: EIRPageProps) => {
             <div className={cls.layout}>
                 <EIRSidebar
                     className={cls.sidebar}
-                    sections={eirDocument?.sections || []}
+                    sections={sidebarSections}
                     activeId={activeTocId}
                     mobileOpened={mobileSidebarOpened}
                     onCloseMobile={() => setMobileSidebarOpened(false)}

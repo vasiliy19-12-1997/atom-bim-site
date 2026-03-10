@@ -1,4 +1,5 @@
-﻿import fs from 'fs';
+import fs from 'fs';
+import { buildFallbackEirDocument } from './eir.fallback';
 import { parseEirDocxDocument } from './eir.parser';
 import { eirDocumentSource } from './eir.source';
 import { EIRDocumentResponse } from './types';
@@ -15,7 +16,12 @@ export class EIRRepository {
         const source = eirDocumentSource;
 
         if (!fs.existsSync(source.filePath)) {
-            throw new Error(`EIR document not found at path: ${source.filePath}`);
+            return buildFallbackEirDocument({
+                id: source.id,
+                slug: source.slug,
+                title: source.title,
+                breadcrumbs: source.breadcrumbs,
+            });
         }
 
         const stat = fs.statSync(source.filePath);
@@ -25,14 +31,25 @@ export class EIRRepository {
             return this.cache.document;
         }
 
-        const document = await parseEirDocxDocument({
-            filePath: source.filePath,
-            id: source.id,
-            slug: source.slug,
-            title: source.title,
-            breadcrumbs: source.breadcrumbs,
-            updatedAt: stat.mtime.toISOString(),
-        });
+        let document: EIRDocumentResponse;
+
+        try {
+            document = await parseEirDocxDocument({
+                filePath: source.filePath,
+                id: source.id,
+                slug: source.slug,
+                title: source.title,
+                breadcrumbs: source.breadcrumbs,
+                updatedAt: stat.mtime.toISOString(),
+            });
+        } catch {
+            document = buildFallbackEirDocument({
+                id: source.id,
+                slug: source.slug,
+                title: source.title,
+                breadcrumbs: source.breadcrumbs,
+            });
+        }
 
         this.cache = {
             cacheKey,
