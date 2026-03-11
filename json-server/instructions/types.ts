@@ -41,8 +41,23 @@ export interface JsonServerResponse {
 
 export interface JsonServerRequest {
     params: Record<string, string | undefined>;
+    query?: Record<string, string | undefined>;
+    headers?: Record<string, string | undefined>;
 }
 
 export interface JsonServerApp {
-    get: (path: string, handler: (req: JsonServerRequest, res: JsonServerResponse) => void) => void;
+    get: (path: string, handler: (req: JsonServerRequest, res: JsonServerResponse) => void | Promise<void>) => void;
+}
+
+export interface WikiPageDto {
+    id?: string | number;
+    slug?: string;
+    title?: string;
+    html?: string;
+    body?: {
+        html?: string;
+    };
+    path?: string;
+    updatedAt?: string;
+    modifiedAt?: string;
 }

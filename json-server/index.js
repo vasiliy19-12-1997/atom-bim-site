@@ -1,4 +1,5 @@
 const fs = require('fs');
+require('./loadEnv');
 require('ts-node/register/transpile-only');
 const jsonServer = require('json-server');
 const path = require('path');
