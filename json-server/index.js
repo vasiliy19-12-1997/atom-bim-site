@@ -1,4 +1,5 @@
 const fs = require('fs');
+require('./loadEnv');
 require('ts-node/register/transpile-only');
 const jsonServer = require('json-server');
 const path = require('path');
@@ -50,11 +51,17 @@ server.post('/login', (req, res) => {
 // проверяем, авторизован ли пользователь
 // eslint-disable-next-line
 server.use((req, res, next) => {
+    const publicInstructionRoute = req.path.startsWith('/api/instructions') || req.path.startsWith('/instructions');
+
+    if (publicInstructionRoute) {
+        return next();
+    }
+
     if (!req.headers.authorization) {
         return res.status(403).json({ message: 'AUTH ERROR' });
     }
 
-    next();
+    return next();
 });
 
 registerInstructionRoutes(server);

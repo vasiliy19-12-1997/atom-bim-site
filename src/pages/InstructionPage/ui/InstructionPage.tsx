@@ -10,6 +10,7 @@ import { getRouteInstruction } from '@/shared/const/router';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { PAGE_ID, Page } from '@/shared/ui/deprecated/Page';
 import { Sceleton } from '@/shared/ui/Sceleton/Sceleton';
+import { Text, TextTheme } from '@/shared/ui/Text/Text';
 import { InstructionArticleView } from './InstructionArticleView/InstructionArticleView';
 import { InstructionBreadcrumbs } from './InstructionBreadcrumbs/InstructionBreadcrumbs';
 import { InstructionsSidebar } from './InstructionsSidebar/InstructionsSidebar';
@@ -18,6 +19,13 @@ import cls from './InstructionPage.module.scss';
 
 interface InstructionPageProps {
     className?: string;
+}
+
+interface ApiErrorPayload {
+    status?: number;
+    data?: {
+        message?: string;
+    };
 }
 
 const getPathParts = (pathname: string) => pathname.split('/').filter(Boolean);
@@ -45,6 +53,15 @@ const findFirstArticle = (tree: Array<{ children?: Array<{ slug: string }> }>) =
 const findCategoryBySlug = (slug: string, tree: Array<{ slug: string; children?: Array<{ slug: string }> }>) =>
     tree.find((node) => node.children?.some((item) => item.slug === slug))?.slug;
 
+const getErrorText = (error: unknown, fallback: string) => {
+    if (!error || typeof error !== 'object') {
+        return fallback;
+    }
+
+    const payload = error as ApiErrorPayload;
+    return payload.data?.message || (payload.status ? `${fallback} (${payload.status})` : fallback);
+};
+
 const InstructionPage = memo((props: InstructionPageProps) => {
     const { className } = props;
     const { t } = useTranslation();
@@ -57,13 +74,18 @@ const InstructionPage = memo((props: InstructionPageProps) => {
 
     const routeSlug = useMemo(() => getSlugFromPath(location.pathname), [location.pathname]);
 
-    const { data: tree = [], isLoading: isTreeLoading } = useGetInstructionTreeQuery();
+    const {
+        data: tree = [],
+        isLoading: isTreeLoading,
+        error: treeError,
+    } = useGetInstructionTreeQuery();
     const firstArticleSlug = useMemo(() => findFirstArticle(tree), [tree]);
     const requestedSlug = routeSlug ?? firstArticleSlug;
 
     const {
         data: article,
         isLoading: isArticleLoading,
+        error: articleError,
     } = useGetInstructionArticleQuery(requestedSlug || '', {
         skip: !requestedSlug,
     });
@@ -112,6 +134,9 @@ const InstructionPage = memo((props: InstructionPageProps) => {
     }, [toc]);
 
     const isLoading = isTreeLoading || isArticleLoading;
+    const errorMessage = getErrorText(treeError || articleError, t('Не удалось загрузить инструкции'));
+    const hasError = Boolean(treeError || articleError);
+    const isEmpty = !isLoading && !hasError && !tree.length;
 
     return (
         <Page className={classNames(cls.InstructionPage, {}, [className])}>
@@ -149,7 +174,20 @@ const InstructionPage = memo((props: InstructionPageProps) => {
                             />
                         </div>
                     )}
-                    {!isLoading && article && (
+                    {hasError && (
+                        <Text
+                            theme={TextTheme.ERROR}
+                            title={t('Ошибка загрузки инструкций')}
+                            text={errorMessage}
+                        />
+                    )}
+                    {isEmpty && (
+                        <Text
+                            title={t('Инструкции не найдены')}
+                            text={t('В Yandex Wiki пока нет доступных страниц для отображения.')}
+                        />
+                    )}
+                    {!isLoading && !hasError && article && (
                         <>
                             <InstructionBreadcrumbs breadcrumbs={article.breadcrumbs} />
                             <InstructionArticleView
