@@ -35,49 +35,69 @@ const pickPage = (payload: WikiPageDto | YandexWikiPageResponse): WikiPageDto | 
     return wrapped.data || wrapped.page || wrapped.result || (payload as WikiPageDto);
 };
 
-const logApiError = (context: string, axiosError: AxiosError) => {
-    const requestUrl = `${axiosError.config?.baseURL || ''}${axiosError.config?.url || ''}`;
-    const params = axiosError.config?.params;
-    const status = axiosError.response?.status;
-    const statusText = axiosError.response?.statusText;
-    const body = axiosError.response?.data;
-
+const logWikiError = (
+    context: string,
+    requestMeta: { method: string; url: string; params?: unknown },
+    errorMeta: {
+        message?: string;
+        code?: string;
+        cause?: unknown;
+        status?: number;
+        statusText?: string;
+        responseData?: unknown;
+    },
+) => {
     // eslint-disable-next-line no-console
     console.error(`[wiki] ${context}`, {
-        url: requestUrl,
-        params,
-        status,
-        statusText,
-        response: body,
+        request: requestMeta,
+        error: errorMeta,
     });
 };
 
-const mapApiError = (error: unknown, fallbackMessage: string, context: string): WikiApiError => {
+const mapApiError = (error: unknown, fallbackMessage: string, requestMeta: { method: string; url: string; params?: unknown }): WikiApiError => {
     if (!axios.isAxiosError(error)) {
-        // eslint-disable-next-line no-console
-        console.error(`[wiki] ${context}: non-axios error`, error);
-        return new WikiApiError(fallbackMessage, 500);
+        const nonAxiosError = error as Error & { code?: string; cause?: unknown };
+
+        logWikiError('local backend error', requestMeta, {
+            message: nonAxiosError?.message || fallbackMessage,
+            code: nonAxiosError?.code,
+            cause: nonAxiosError?.cause,
+        });
+
+        return new WikiApiError(nonAxiosError?.message || fallbackMessage, 500);
     }
 
     const axiosError = error as AxiosError<{ message?: string; error?: string }>;
-    logApiError(context, axiosError);
 
-    const status = axiosError.response?.status || 500;
-    const apiMessage = axiosError.response?.data?.message || axiosError.response?.data?.error;
+    logWikiError('axios request failed', requestMeta, {
+        message: axiosError.message,
+        code: axiosError.code,
+        cause: axiosError.cause,
+        status: axiosError.response?.status,
+        statusText: axiosError.response?.statusText,
+        responseData: axiosError.response?.data,
+    });
 
-    if (status === 401) {
-        return new WikiApiError('Yandex Wiki authorization failed (401). Check OAuth token.', 401);
+    if (axiosError.response) {
+        const { status, data } = axiosError.response;
+        const apiMessage = data?.message || data?.error;
+
+        if (status === 401) {
+            return new WikiApiError('Yandex Wiki authorization failed (401). Check OAuth token.', 401);
+        }
+
+        if (status === 403) {
+            return new WikiApiError('Yandex Wiki access denied (403). Check org access and token scope.', 403);
+        }
+
+        if (status === 404) {
+            return new WikiApiError('Requested Yandex Wiki resource was not found (404).', 404);
+        }
+
+        return new WikiApiError(apiMessage || fallbackMessage, status);
     }
 
-    if (status === 403) {
-        return new WikiApiError('Yandex Wiki access denied (403). Check org access and token scope.', 403);
-    }
-
-    if (status === 404) {
-        return new WikiApiError('Requested Yandex Wiki resource was not found (404).', 404);
-    }
-
-    return new WikiApiError(apiMessage || fallbackMessage, status);
+    return new WikiApiError('Yandex Wiki network error. Unable to get response from API.', 502);
 };
 
 export class YandexWikiClient {
@@ -105,6 +125,12 @@ export class YandexWikiClient {
     }
 
     public async getPageBySlug(slug: string): Promise<WikiPageDto | null> {
+        const requestMeta = {
+            method: 'GET',
+            url: `${this.http.defaults.baseURL || ''}${PAGES_PATH}`,
+            params: { slug },
+        };
+
         try {
             const response = await this.http.get<YandexWikiPageResponse | WikiPageDto>(PAGES_PATH, {
                 params: { slug },
@@ -112,7 +138,7 @@ export class YandexWikiClient {
 
             return pickPage(response.data);
         } catch (error) {
-            const mappedError = mapApiError(error, `Failed to load wiki page "${slug}"`, `GET ${PAGES_PATH}?slug=${slug}`);
+            const mappedError = mapApiError(error, `Failed to load wiki page "${slug}"`, requestMeta);
 
             if (mappedError.status === 404) {
                 return null;
@@ -128,11 +154,16 @@ export class YandexWikiClient {
     }
 
     public async getPages(): Promise<WikiPageDto[]> {
+        const requestMeta = {
+            method: 'GET',
+            url: `${this.http.defaults.baseURL || ''}${PAGES_PATH}`,
+        };
+
         try {
             const response = await this.http.get<YandexWikiListResponse | WikiPageDto[]>(PAGES_PATH);
             return pickPageList(response.data);
         } catch (error) {
-            throw mapApiError(error, 'Failed to load Yandex Wiki pages list', `GET ${PAGES_PATH}`);
+            throw mapApiError(error, 'Failed to load Yandex Wiki pages list', requestMeta);
         }
     }
 }

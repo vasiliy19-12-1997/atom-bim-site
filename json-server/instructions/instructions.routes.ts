@@ -57,6 +57,18 @@ export const registerInstructionRoutes = (app: JsonServerApp) => {
         console.error(`[instructions] startup: ${message}`);
     }
 
+
+    app.get('/api/instructions', async (req, res) => {
+        try {
+            await getController().getTree(req, res);
+        } catch (error) {
+            const { status, message } = resolveError(error);
+            // eslint-disable-next-line no-console
+            console.error(`[instructions] ${message}`);
+            res.status(status).json({ message });
+        }
+    });
+
     app.get('/api/instructions/tree', async (req, res) => {
         try {
             await getController().getTree(req, res);
