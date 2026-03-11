@@ -52,12 +52,15 @@ export interface JsonServerApp {
 export interface WikiPageDto {
     id?: string | number;
     slug?: string;
+    supertag?: string;
     title?: string;
+    heading?: string;
     html?: string;
     body?: {
         html?: string;
-    };
+    } | string;
     path?: string;
     updatedAt?: string;
     modifiedAt?: string;
+    updated_at?: string;
 }

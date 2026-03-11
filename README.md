@@ -253,3 +253,8 @@ curl -k -H "Authorization: Bearer test" https://localhost:8443/api/instructions/
 ```
 
 > `Authorization: Bearer test` здесь нужен только для прохождения middleware json-server. Токен Yandex Wiki подставляется на backend из `.env`.
+
+
+> Для Yandex Wiki используется `https://api.wiki.yandex.net/v1` и запросы к `/pages` (для статьи — `/pages?slug=<slug>`).
+>
+> Для построения дерева можно указать `YANDEX_WIKI_TREE_SLUGS` (через запятую). Если не задано, backend пытается запросить общий список `/pages`.

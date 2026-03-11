@@ -37,49 +37,63 @@ const getController = () => {
     }
 };
 
-const withController = (action: (resolved: InstructionsController) => Promise<void> | void) => async () => {
-    const resolved = getController();
-    await action(resolved);
+const resolveError = (error: unknown): { status: number; message: string } => {
+    if (error instanceof WikiApiError) {
+        return { status: error.status, message: error.message };
+    }
+
+    return {
+        status: 500,
+        message: error instanceof Error ? error.message : 'Instructions module init error',
+    };
 };
 
 export const registerInstructionRoutes = (app: JsonServerApp) => {
+    try {
+        getController();
+    } catch (error) {
+        const { message } = resolveError(error);
+        // eslint-disable-next-line no-console
+        console.error(`[instructions] startup: ${message}`);
+    }
+
     app.get('/api/instructions/tree', async (req, res) => {
         try {
-            await withController((resolved) => resolved.getTree(req, res))();
+            await getController().getTree(req, res);
         } catch (error) {
-            const message = error instanceof Error ? error.message : 'Instructions module init error';
+            const { status, message } = resolveError(error);
             // eslint-disable-next-line no-console
             console.error(`[instructions] ${message}`);
-            res.status(500).json({ message });
+            res.status(status).json({ message });
         }
     });
 
     app.get('/api/instructions/article/:slug', async (req, res) => {
         try {
-            await withController((resolved) => resolved.getArticleBySlug(req, res))();
+            await getController().getArticleBySlug(req, res);
         } catch (error) {
-            const message = error instanceof Error ? error.message : 'Instructions module init error';
+            const { status, message } = resolveError(error);
             // eslint-disable-next-line no-console
             console.error(`[instructions] ${message}`);
-            res.status(500).json({ message });
+            res.status(status).json({ message });
         }
     });
 
     app.get('/instructions/tree', async (req, res) => {
         try {
-            await withController((resolved) => resolved.getTree(req, res))();
+            await getController().getTree(req, res);
         } catch (error) {
-            const message = error instanceof Error ? error.message : 'Instructions module init error';
-            res.status(500).json({ message });
+            const { status, message } = resolveError(error);
+            res.status(status).json({ message });
         }
     });
 
     app.get('/instructions/article/:slug', async (req, res) => {
         try {
-            await withController((resolved) => resolved.getArticleBySlug(req, res))();
+            await getController().getArticleBySlug(req, res);
         } catch (error) {
-            const message = error instanceof Error ? error.message : 'Instructions module init error';
-            res.status(500).json({ message });
+            const { status, message } = resolveError(error);
+            res.status(status).json({ message });
         }
     });
 };
