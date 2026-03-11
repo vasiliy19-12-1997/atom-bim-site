@@ -40,8 +40,8 @@ export const getRouteInstruction = (slug?: string, category?: string) => {
     return '/instruction';
 };
 export const getRouteVideos = () => '/videos';
-export const getRouteLibrary = () => 'library';
-export const getRouteTests = () => 'tests';
+export const getRouteLibrary = () => '/library';
+export const getRouteTests = () => '/tests';
 
 export const AppRouteByPathPattern: Record<string, AppRoutes> = {
     [getRouteMain()]: AppRoutes.MAIN,

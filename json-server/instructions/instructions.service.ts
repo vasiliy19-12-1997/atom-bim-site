@@ -8,11 +8,11 @@ export class InstructionsService {
         this.repository = repository;
     }
 
-    public getTree(): InstructionNavNode[] {
+    public async getTree(): Promise<InstructionNavNode[]> {
         return this.repository.getTree();
     }
 
-    public getArticleBySlug(slug: string): InstructionArticle | null {
+    public async getArticleBySlug(slug: string): Promise<InstructionArticle | null> {
         return this.repository.getArticleBySlug(slug);
     }
 }

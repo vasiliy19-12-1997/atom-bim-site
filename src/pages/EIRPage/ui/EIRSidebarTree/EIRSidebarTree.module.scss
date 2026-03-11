@@ -1,0 +1,66 @@
+﻿.EIRSidebarTree {
+    display: flex;
+    flex-direction: column;
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.node {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--secondary-color);
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    line-height: 1.35;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        background: var(--list-box-bg);
+        color: var(--primary-color);
+    }
+}
+
+.level2 {
+    padding-left: 16px;
+}
+
+.level3 {
+    padding-left: 24px;
+}
+
+.toggle {
+    border: none;
+    background: transparent;
+    color: var(--secondary-color);
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    line-height: 1;
+}
+
+.active {
+    background: var(--list-box-bg);
+    color: var(--primary-color);
+    font-weight: 700;
+}

@@ -7,3 +7,4 @@ node_modules
 /reports/unit
 .history
 npm-debug.txt 
+.env
