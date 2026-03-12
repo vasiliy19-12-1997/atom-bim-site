@@ -28,13 +28,16 @@ export const getRouteAdmin = () => '/admin';
 export const getRouteForbidden = () => '/forbidden';
 export const getRouteSettings = () => '/settings';
 export const getRouteEir = () => '/eir';
+
+const encodeRouteSegment = (value: string) => encodeURIComponent(value);
+
 export const getRouteInstruction = (slug?: string, category?: string) => {
     if (category && slug) {
-        return `/instruction/${category}/${slug}`;
+        return `/instruction/${encodeRouteSegment(category)}/${encodeRouteSegment(slug)}`;
     }
 
     if (slug) {
-        return `/instruction/${slug}`;
+        return `/instruction/${encodeRouteSegment(slug)}`;
     }
 
     return '/instruction';

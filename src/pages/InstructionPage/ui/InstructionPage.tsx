@@ -30,6 +30,14 @@ interface ApiErrorPayload {
 
 const getPathParts = (pathname: string) => pathname.split('/').filter(Boolean);
 
+const decodePathPart = (value: string) => {
+    try {
+        return decodeURIComponent(value);
+    } catch {
+        return value;
+    }
+};
+
 const getSlugFromPath = (pathname: string) => {
     const pathParts = getPathParts(pathname);
     if (pathParts[0] !== 'instruction') {
@@ -37,21 +45,31 @@ const getSlugFromPath = (pathname: string) => {
     }
 
     if (pathParts.length === 2) {
-        return pathParts[1];
+        return decodePathPart(pathParts[1]);
     }
 
     if (pathParts.length >= 3) {
-        return pathParts[2];
+        return decodePathPart(pathParts[pathParts.length - 1]);
     }
 
     return undefined;
 };
 
-const findFirstArticle = (tree: Array<{ children?: Array<{ slug: string }> }>) =>
-    tree.map((section) => section.children?.[0]?.slug).find(Boolean);
+const findFirstSection = (tree: Array<{ slug: string }>) => tree[0]?.slug;
 
 const findCategoryBySlug = (slug: string, tree: Array<{ slug: string; children?: Array<{ slug: string }> }>) =>
-    tree.find((node) => node.children?.some((item) => item.slug === slug))?.slug;
+    tree.find((node) => node.slug === slug || node.children?.some((item) => item.slug === slug))?.slug;
+
+const collectKnownSlugs = (tree: Array<{ slug: string; children?: Array<{ slug: string }> }>) => {
+    const slugs = new Set<string>();
+
+    tree.forEach((node) => {
+        slugs.add(node.slug);
+        node.children?.forEach((item) => slugs.add(item.slug));
+    });
+
+    return slugs;
+};
 
 const getErrorText = (error: unknown, fallback: string) => {
     if (!error || typeof error !== 'object') {
@@ -79,8 +97,10 @@ const InstructionPage = memo((props: InstructionPageProps) => {
         isLoading: isTreeLoading,
         error: treeError,
     } = useGetInstructionTreeQuery();
-    const firstArticleSlug = useMemo(() => findFirstArticle(tree), [tree]);
-    const requestedSlug = routeSlug ?? firstArticleSlug;
+    const firstSectionSlug = useMemo(() => findFirstSection(tree), [tree]);
+    const knownSlugs = useMemo(() => collectKnownSlugs(tree), [tree]);
+    const hasKnownRouteSlug = routeSlug ? knownSlugs.has(routeSlug) : false;
+    const requestedSlug = hasKnownRouteSlug ? routeSlug : firstSectionSlug;
 
     const {
         data: article,
@@ -91,11 +111,15 @@ const InstructionPage = memo((props: InstructionPageProps) => {
     });
 
     useEffect(() => {
-        if (!routeSlug && firstArticleSlug) {
-            const categorySlug = findCategoryBySlug(firstArticleSlug, tree);
-            navigate(getRouteInstruction(firstArticleSlug, categorySlug), { replace: true });
+        if (!firstSectionSlug) {
+            return;
         }
-    }, [routeSlug, firstArticleSlug, navigate, tree]);
+
+        if (!routeSlug || !hasKnownRouteSlug) {
+            const categorySlug = findCategoryBySlug(firstSectionSlug, tree);
+            navigate(getRouteInstruction(firstSectionSlug, categorySlug), { replace: true });
+        }
+    }, [routeSlug, hasKnownRouteSlug, firstSectionSlug, navigate, tree]);
 
     useEffect(() => {
         if (!toc.length) {
@@ -153,7 +177,7 @@ const InstructionPage = memo((props: InstructionPageProps) => {
                 <InstructionsSidebar
                     className={cls.sidebar}
                     tree={tree}
-                    activeSlug={article?.slug || routeSlug}
+                    activeSlug={article?.slug || requestedSlug}
                     mobileOpened={mobileSidebarOpened}
                     onCloseMobile={() => setMobileSidebarOpened(false)}
                 />
