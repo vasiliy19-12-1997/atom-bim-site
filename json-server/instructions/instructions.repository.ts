@@ -1,18 +1,20 @@
 import { InstructionArticle, InstructionNavNode, WikiFileDto, WikiPageDto } from './types';
-import { SECTION_CHILDREN_CONFIG } from './section-children.config';
+import {
+    buildInstructionsTree,
+    fetchInstructionsIndex,
+    fetchInstructionsIndexSlug,
+    parseInstructionsIndex,
+} from './instructions.index';
 import { YandexWikiClient } from './wiki.client';
 import { WikiApiError } from './wiki.errors';
 import {
-    collectEmbeddedPages,
-    extractWikiLinkSlugsFromMarkdown,
     getNormalizedContent,
     getResolvedSlug,
-    mapInstructionSectionSlugToTitle,
     mapWikiPageToInstructionArticle,
-    mapWikiPageToInstructionNode,
 } from './wiki.mapper';
 
 const getRootSlug = (): string => String(process.env.YANDEX_WIKI_ROOT_SLUG || '').trim();
+const TREE_CACHE_TTL_MS = 30_000;
 
 const logInstructionsStage = (context: string, payload: unknown) => {
     // eslint-disable-next-line no-console
@@ -25,39 +27,16 @@ const logInstructionsWarning = (context: string, payload: unknown) => {
 };
 
 const isAccessDeniedError = (error: unknown): error is WikiApiError => error instanceof WikiApiError && error.status === 403;
-const getConfiguredSectionChildren = (sectionSlug: string): string[] => SECTION_CHILDREN_CONFIG[sectionSlug] || [];
-const getConfiguredSectionSlugs = (): string[] => Object.keys(SECTION_CHILDREN_CONFIG);
-
-const getDuplicateValues = (values: string[]): string[] => {
-    const counts = new Map<string, number>();
-
-    values.forEach((value) => {
-        counts.set(value, (counts.get(value) || 0) + 1);
-    });
-
-    return Array.from(counts.entries())
-        .filter(([, count]) => count > 1)
-        .map(([value]) => value);
-};
-
-const validateSectionChildrenConfig = (sectionSlugs: string[]) => {
-    const configuredSectionSlugs = getConfiguredSectionSlugs();
-    const unknownSectionSlugs = configuredSectionSlugs.filter((slug) => !sectionSlugs.includes(slug));
-    const duplicateChildSlugs = getDuplicateValues(
-        configuredSectionSlugs.flatMap((sectionSlug) => getConfiguredSectionChildren(sectionSlug)),
-    );
-
-    if (unknownSectionSlugs.length || duplicateChildSlugs.length) {
-        throw new WikiApiError(
-            `Invalid SECTION_CHILDREN_CONFIG. Unknown sections: ${unknownSectionSlugs.join(', ') || 'none'}. `
-            + `Duplicate child slugs: ${duplicateChildSlugs.join(', ') || 'none'}.`,
-            500,
-        );
-    }
-};
+const isMissingError = (error: unknown): error is WikiApiError => error instanceof WikiApiError && error.status === 404;
 
 export class InstructionsRepository {
     private readonly client: YandexWikiClient;
+
+    private readonly pageCache = new Map<string, Promise<WikiPageDto | null>>();
+
+    private readonly articleCache = new Map<string, Promise<WikiPageDto | null>>();
+
+    private treeCache: { expiresAt: number; value: Promise<InstructionNavNode[]> } | null = null;
 
     constructor(client: YandexWikiClient) {
         this.client = client;
@@ -70,213 +49,138 @@ export class InstructionsRepository {
             throw new WikiApiError('Yandex Wiki root slug is not configured', 500);
         }
 
-        return this.client.getArticlePageBySlug(rootSlug);
+        return this.getCachedArticlePage(rootSlug);
     }
 
-    private async loadAccessiblePagesBySlugs(
-        slugs: string[],
-        context: { parentSlug: string; type: 'section' | 'child' },
-    ): Promise<{ pages: WikiPageDto[]; loadedSlugs: string[]; skippedSlugs: string[] }> {
-        const settledPages = await Promise.allSettled(slugs.map((slug) => this.client.getPageBySlug(slug)));
-        const loadedSlugs: string[] = [];
-        const skippedSlugs: string[] = [];
-        const pages = settledPages.flatMap((result, index) => {
-            const slug = slugs[index];
+    private getCachedPage(slug: string): Promise<WikiPageDto | null> {
+        const normalizedSlug = slug.trim();
 
-            if (result.status === 'fulfilled') {
-                if (result.value) {
-                    loadedSlugs.push(slug);
-                    return [result.value];
-                }
+        if (!this.pageCache.has(normalizedSlug)) {
+            this.pageCache.set(normalizedSlug, this.client.getPageBySlug(normalizedSlug));
+        }
 
-                skippedSlugs.push(slug);
-                return [];
-            }
+        return this.pageCache.get(normalizedSlug) as Promise<WikiPageDto | null>;
+    }
 
-            if (isAccessDeniedError(result.reason)) {
-                skippedSlugs.push(slug);
-                logInstructionsWarning(`skipped ${context.type} page due to 403`, {
-                    parentSlug: context.parentSlug,
+    private getCachedArticlePage(slug: string): Promise<WikiPageDto | null> {
+        const normalizedSlug = slug.trim();
+
+        if (!this.articleCache.has(normalizedSlug)) {
+            this.articleCache.set(normalizedSlug, this.client.getArticlePageBySlug(normalizedSlug));
+        }
+
+        return this.articleCache.get(normalizedSlug) as Promise<WikiPageDto | null>;
+    }
+
+    private async resolveAccessiblePage(slug: string): Promise<WikiPageDto | null> {
+        try {
+            return await this.getCachedPage(slug);
+        } catch (error) {
+            if (isAccessDeniedError(error) || isMissingError(error)) {
+                logInstructionsWarning('skipped inaccessible wiki node', {
                     slug,
-                    message: result.reason.message,
+                    status: error.status,
+                    message: error.message,
                 });
-                return [];
-            }
-
-            throw result.reason;
-        });
-
-        return {
-            pages,
-            loadedSlugs,
-            skippedSlugs,
-        };
-    }
-
-    private async resolveSectionChildren(sectionPage: WikiPageDto, rootPage: WikiPageDto): Promise<InstructionNavNode[]> {
-        const sectionSlug = getResolvedSlug(sectionPage);
-        const configuredChildren = getConfiguredSectionChildren(sectionSlug);
-
-        if (configuredChildren.length) {
-            const { pages, loadedSlugs, skippedSlugs } = await this.loadAccessiblePagesBySlugs(configuredChildren, {
-                parentSlug: sectionSlug,
-                type: 'child',
-            });
-            const children = pages
-                .map((page) => mapWikiPageToInstructionNode(page))
-                .sort((left, right) => left.title.localeCompare(right.title, 'ru'));
-
-            logInstructionsStage('section tree load result', {
-                sectionSlug,
-                strategy: 'config',
-                childSlugs: configuredChildren,
-                loadedChildSlugs: loadedSlugs,
-                skippedChildSlugs: skippedSlugs,
-            });
-
-            return children;
-        }
-
-        const embeddedPages = collectEmbeddedPages(sectionPage)
-            .filter((page) => {
-                const slug = getResolvedSlug(page);
-                return slug.startsWith(`${sectionSlug}/`);
-            });
-        const uniqueEmbeddedPages = Array.from(new Map(
-            embeddedPages.map((page) => [getResolvedSlug(page), page]),
-        ).values());
-
-        if (uniqueEmbeddedPages.length) {
-            logInstructionsStage('resolved section children from API payload', {
-                sectionSlug,
-                strategy: 'api-embedded-fallback',
-                loadedChildSlugs: uniqueEmbeddedPages.map((page) => getResolvedSlug(page)),
-            });
-
-            return uniqueEmbeddedPages
-                .map((page) => mapWikiPageToInstructionNode(page))
-                .sort((left, right) => left.title.localeCompare(right.title, 'ru'));
-        }
-
-        const sectionArticle = mapWikiPageToInstructionArticle(sectionPage, rootPage);
-        const discoveredChildSlugs = extractWikiLinkSlugsFromMarkdown(sectionArticle.content, sectionSlug)
-            .filter((slug) => slug.startsWith(`${sectionSlug}/`) && slug !== sectionSlug);
-
-        if (!discoveredChildSlugs.length) {
-            logInstructionsStage('section has no resolved children', {
-                sectionSlug,
-                strategy: 'config',
-            });
-            return [];
-        }
-
-        const { pages, loadedSlugs, skippedSlugs } = await this.loadAccessiblePagesBySlugs(discoveredChildSlugs, {
-            parentSlug: sectionSlug,
-            type: 'child',
-        });
-        const children = pages
-            .map((page) => mapWikiPageToInstructionNode(page))
-            .sort((left, right) => left.title.localeCompare(right.title, 'ru'));
-
-        logInstructionsStage('section tree load result', {
-            sectionSlug,
-            strategy: 'markdown-fallback',
-            childSlugs: discoveredChildSlugs,
-            loadedChildSlugs: loadedSlugs,
-            skippedChildSlugs: skippedSlugs,
-        });
-
-        return children;
-    }
-
-    private async buildTreeFromRoot(rootPage: WikiPageDto): Promise<InstructionNavNode[]> {
-        const rootSlug = getResolvedSlug(rootPage);
-        const rootContent = getNormalizedContent(rootPage);
-        const sectionSlugs = extractWikiLinkSlugsFromMarkdown(rootContent, rootSlug)
-            .filter((slug) => slug.startsWith(`${rootSlug}/`) && slug !== rootSlug);
-
-        logInstructionsStage('parsed section slugs from root markdown', {
-            rootSlug,
-            rootContent,
-            sectionSlugs,
-        });
-
-        if (!sectionSlugs.length) {
-            return [];
-        }
-
-        validateSectionChildrenConfig(sectionSlugs);
-
-        const skippedSectionSlugs: string[] = [];
-        const loadedSectionSlugs: string[] = [];
-        const settledSections = await Promise.allSettled(sectionSlugs.map(async (sectionSlug) => {
-            const sectionPage = await this.client.getArticlePageBySlug(sectionSlug);
-
-            if (!sectionPage) {
                 return null;
             }
 
-            const children = await this.resolveSectionChildren(sectionPage, rootPage);
-
-            return {
-                id: String(sectionPage.id || getResolvedSlug(sectionPage)),
-                title: mapInstructionSectionSlugToTitle(sectionSlug),
-                slug: getResolvedSlug(sectionPage),
-                children,
-            } as InstructionNavNode;
-        }));
-
-        const sections = settledSections.flatMap((result, index) => {
-            const sectionSlug = sectionSlugs[index];
-
-            if (result.status === 'fulfilled') {
-                if (result.value) {
-                    loadedSectionSlugs.push(sectionSlug);
-                    return [result.value];
-                }
-
-                skippedSectionSlugs.push(sectionSlug);
-                return [];
-            }
-
-            if (isAccessDeniedError(result.reason)) {
-                skippedSectionSlugs.push(sectionSlug);
-                logInstructionsWarning('skipped section due to 403', {
-                    sectionSlug,
-                    message: result.reason.message,
-                });
-                return [];
-            }
-
-            throw result.reason;
-        });
-
-        logInstructionsStage('tree section load summary', {
-            parsedSectionSlugs: sectionSlugs,
-            loadedSectionSlugs,
-            skippedSectionSlugs,
-        });
-
-        return sections;
+            throw error;
+        }
     }
 
-    public async getTree(): Promise<InstructionNavNode[]> {
-        const rootPage = await this.getRootPage();
+    private async buildTreeFromIndex(rootPage: WikiPageDto): Promise<InstructionNavNode[]> {
+        const indexPage = await fetchInstructionsIndex((slug) => this.getCachedArticlePage(slug));
 
-        if (!rootPage) {
+        if (!indexPage) {
+            logInstructionsWarning('instructions index page not found', {
+                indexSlug: fetchInstructionsIndexSlug(),
+            });
             return [];
         }
 
-        logInstructionsStage('raw Yandex response for /tree', rootPage);
+        const rootSlug = getResolvedSlug(rootPage);
+        const indexSlug = getResolvedSlug(indexPage);
+        const indexContent = getNormalizedContent(indexPage);
+        const parsedIndexNodes = parseInstructionsIndex(indexContent, rootSlug);
 
-        const mappedTree = await this.buildTreeFromRoot(rootPage);
+        logInstructionsStage('parsed instructions index', {
+            rootSlug,
+            indexSlug,
+            parsedIndexNodes,
+        });
 
-        logInstructionsStage('mapped /tree response', {
-            rootSlug: getResolvedSlug(rootPage),
+        if (!parsedIndexNodes.length) {
+            return [];
+        }
+
+        const mappedTree = await buildInstructionsTree(
+            parsedIndexNodes,
+            (slug) => this.resolveAccessiblePage(slug),
+            logInstructionsWarning,
+        );
+
+        logInstructionsStage('tree build summary', {
+            rootSlug,
+            indexSlug,
             mappedTree,
         });
 
         return mappedTree;
+    }
+
+    private async getOrBuildTree(): Promise<InstructionNavNode[]> {
+        const now = Date.now();
+
+        if (this.treeCache && this.treeCache.expiresAt > now) {
+            return this.treeCache.value;
+        }
+
+        const nextTreePromise = (async () => {
+            const rootPage = await this.getRootPage();
+
+            if (!rootPage) {
+                return [];
+            }
+
+            logInstructionsStage('raw Yandex response for /tree root', rootPage);
+
+            return this.buildTreeFromIndex(rootPage);
+        })();
+
+        this.treeCache = {
+            expiresAt: now + TREE_CACHE_TTL_MS,
+            value: nextTreePromise,
+        };
+
+        try {
+            return await nextTreePromise;
+        } catch (error) {
+            this.treeCache = null;
+            throw error;
+        }
+    }
+
+    private findNodeBySlug(nodes: InstructionNavNode[], slug: string): InstructionNavNode | null {
+        return nodes.reduce<InstructionNavNode | null>((foundNode, node) => {
+            if (foundNode) {
+                return foundNode;
+            }
+
+            if (node.slug === slug) {
+                return node;
+            }
+
+            return node.children?.length ? this.findNodeBySlug(node.children, slug) : null;
+        }, null);
+    }
+
+    public async getTree(): Promise<InstructionNavNode[]> {
+        const tree = await this.getOrBuildTree();
+
+        logInstructionsStage('mapped /tree response', tree);
+
+        return tree;
     }
 
     public async getArticleBySlug(slug: string): Promise<InstructionArticle | null> {
@@ -286,7 +190,7 @@ export class InstructionsRepository {
             return null;
         }
 
-        const page = await this.client.getArticlePageBySlug(slug);
+        const page = await this.getCachedArticlePage(slug);
 
         if (!page) {
             return null;
@@ -294,17 +198,17 @@ export class InstructionsRepository {
 
         logInstructionsStage('raw Yandex response for /article', page);
 
-        const tree = await this.buildTreeFromRoot(rootPage);
-        const sectionNode = tree.find((node) => node.slug === slug);
+        const tree = await this.getOrBuildTree();
+        const node = this.findNodeBySlug(tree, slug);
         const article = mapWikiPageToInstructionArticle(page, rootPage);
 
-        if (sectionNode) {
-            const sectionArticle = {
+        if (node?.type === 'section') {
+            const sectionArticle: InstructionArticle = {
                 ...article,
-                kind: 'section' as const,
+                kind: 'section',
                 content: article.content === 'Content is missing' ? '' : article.content,
                 toc: article.content === 'Content is missing' ? [] : article.toc,
-                items: sectionNode.children || [],
+                items: node.children || [],
             };
 
             logInstructionsStage('mapped /article response', sectionArticle);

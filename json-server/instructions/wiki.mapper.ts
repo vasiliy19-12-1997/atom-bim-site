@@ -289,6 +289,7 @@ export const mapWikiPageToInstructionNode = (page: WikiPageDto): InstructionNavN
     id: String(page.id || getResolvedSlug(page)),
     title: getResolvedTitle(page),
     slug: getResolvedSlug(page),
+    type: 'article',
     children: [],
 });
 
@@ -296,6 +297,7 @@ const createLeafNode = (page: WikiPageDto): InstructionNavNode => ({
     id: String(page.id || getResolvedSlug(page)),
     title: getResolvedTitle(page),
     slug: getResolvedSlug(page),
+    type: 'article',
 });
 
 export const mapWikiPagesToInstructionTree = (rootPage: WikiPageDto, pages: WikiPageDto[]): InstructionNavNode[] => {
@@ -342,6 +344,7 @@ export const mapWikiPagesToInstructionTree = (rootPage: WikiPageDto, pages: Wiki
                 id: categorySlug,
                 slug: categorySlug,
                 title: categoryTitle,
+                type: 'section',
                 children: [],
             });
         }

@@ -2,6 +2,7 @@ export interface InstructionNavNode {
     id: string;
     title: string;
     slug: string;
+    type: 'section' | 'article';
     children?: InstructionNavNode[];
 }
 
