@@ -1,4 +1,7 @@
-﻿.EIRSidebar {
+.EIRSidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     background: var(--card-bg);
     border: 1px solid var(--list-box-bg);
     border-radius: 12px;
@@ -11,7 +14,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
 }
 
 .title {
@@ -26,6 +28,19 @@
     background: transparent;
     color: var(--secondary-color);
     cursor: pointer;
+
+    &:focus-visible {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+        border-radius: 6px;
+    }
+}
+
+.empty {
+    margin: 0;
+    color: var(--secondary-color);
+    font: var(--font-s);
+    line-height: 1.4;
 }
 
 @media (max-width: 767px) {
@@ -37,10 +52,11 @@
         max-height: calc(100vh - 80px);
         z-index: 20;
         display: none;
+        box-shadow: 0 16px 40px rgb(0 0 0 / 12%);
     }
 
     .mobileOpened {
-        display: block;
+        display: flex;
     }
 
     .close {

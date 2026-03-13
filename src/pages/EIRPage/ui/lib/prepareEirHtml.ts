@@ -149,6 +149,11 @@ export const prepareEirHtml = (content: string, apiToc: EIRTocItem[]): PreparedE
     });
 
     doc.querySelectorAll('*').forEach(sanitizeNodeAttributes);
+    doc.querySelectorAll('img').forEach((image) => {
+        if (!image.getAttribute('loading')) {
+            image.setAttribute('loading', 'lazy');
+        }
+    });
 
     const seenIds = new Set<string>();
     let toc: EIRTocItem[] = [];

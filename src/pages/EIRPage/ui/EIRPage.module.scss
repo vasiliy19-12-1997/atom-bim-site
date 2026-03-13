@@ -1,4 +1,4 @@
-﻿.EIRPage {
+.EIRPage {
     width: 100%;
     padding: 22px 20px 24px;
     background: var(--bg-color);
@@ -6,10 +6,10 @@
 
 .layout {
     width: 100%;
-    max-width: 1440px;
+    max-width: 1360px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr) minmax(220px, 280px);
+    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
     gap: 16px;
     align-items: start;
 }
@@ -23,9 +23,10 @@
     min-width: 0;
 }
 
-.toc {
-    position: sticky;
-    top: 16px;
+.contentColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 .mobileSidebarToggleRow {
@@ -39,6 +40,11 @@
     border-radius: 8px;
     padding: 8px 10px;
     font: var(--font-s);
+
+    &:focus-visible {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+    }
 }
 
 .loadingState {
@@ -56,7 +62,7 @@
     font: var(--font-m);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 960px) {
     .layout {
         grid-template-columns: minmax(230px, 280px) minmax(0, 1fr);
     }
