@@ -8,6 +8,7 @@ import { EIRBreadcrumbs } from './EIRBreadcrumbs/EIRBreadcrumbs';
 import { EIRSectionContent } from './EIRSectionContent/EIRSectionContent';
 import { EIRSectionPagination } from './EIRSectionPagination/EIRSectionPagination';
 import { EIRSidebar } from './EIRSidebar/EIRSidebar';
+import { EIRSidebarTree } from './EIRSidebarTree/EIRSidebarTree';
 import { useEirNavigation } from './lib/useEirNavigation';
 import { useEirSections } from './lib/useEirSections';
 import cls from './EIRPage.module.scss';
@@ -58,6 +59,10 @@ const EIRPage = memo((props: EIRPageProps) => {
     const currentSectionFragment = activeSection
         ? activeSection.fragmentHtml || preparedHtml.slice(activeSection.startIndex, activeSection.endIndex)
         : '';
+    const sidebarSections = tree.length === 1 && tree[0].isContainer
+        ? tree[0].children
+        : tree;
+    const mobileMenuTitle = activeSection?.title || eirDocument?.title || t('Contents');
 
     return (
         <Page className={classNames(cls.EIRPage, {}, [className])}>
@@ -67,18 +72,33 @@ const EIRPage = memo((props: EIRPageProps) => {
                     className={cls.mobileSidebarToggle}
                     onClick={() => setMobileSidebarOpened((prev) => !prev)}
                     aria-expanded={mobileSidebarOpened}
-                    aria-controls="eir-sidebar"
+                    aria-controls="eir-mobile-toc"
                 >
-                    {t('Разделы')}
+                    <span className={cls.mobileSidebarToggleLabel}>{t('Contents')}</span>
+                    <span className={cls.mobileSidebarToggleValue}>{mobileMenuTitle}</span>
                 </button>
+                {mobileSidebarOpened && (
+                    <div id="eir-mobile-toc" className={cls.mobileSidebarPanel}>
+                        {sidebarSections.length ? (
+                            <EIRSidebarTree
+                                nodes={sidebarSections}
+                                activeSlug={activeSection?.slug}
+                                expandedSet={expandedSet}
+                                onToggle={toggleExpanded}
+                                onSelect={handleSelectSection}
+                            />
+                        ) : (
+                            <p className={cls.mobileSidebarEmpty}>{t('No sections found')}</p>
+                        )}
+                    </div>
+                )}
             </div>
             <div className={cls.layout}>
                 <EIRSidebar
                     className={cls.sidebar}
-                    sections={tree}
+                    sections={sidebarSections}
                     activeSlug={activeSection?.slug}
                     expandedSet={expandedSet}
-                    mobileOpened={mobileSidebarOpened}
                     onCloseMobile={() => setMobileSidebarOpened(false)}
                     onToggle={toggleExpanded}
                     onSelect={handleSelectSection}
@@ -93,12 +113,12 @@ const EIRPage = memo((props: EIRPageProps) => {
                     )}
                     {!isLoading && isError && (
                         <div className={cls.emptyState}>
-                            {t('Не удалось загрузить EIR документ.')}
+                            {t('РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ EIR РґРѕРєСѓРјРµРЅС‚.')}
                         </div>
                     )}
                     {!isLoading && !isError && !eirDocument && (
                         <div className={cls.emptyState}>
-                            {t('EIR документ пуст.')}
+                            {t('EIR РґРѕРєСѓРјРµРЅС‚ РїСѓСЃС‚.')}
                         </div>
                     )}
                     {!isLoading && eirDocument && activeSection && (

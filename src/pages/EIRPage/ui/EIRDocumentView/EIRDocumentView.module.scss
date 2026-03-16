@@ -56,11 +56,18 @@
         margin-bottom: 7px;
     }
 
+    [class="eir-table-wrapper"] {
+        width: 100%;
+        margin: 18px 0;
+        overflow-x: auto;
+    }
+
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 18px 0;
+        border: 1px solid var(--list-box-bg);
         font: var(--font-s);
+        table-layout: fixed;
     }
 
     th,
@@ -68,6 +75,7 @@
         border: 1px solid var(--list-box-bg);
         padding: 8px 10px;
         vertical-align: top;
+        word-break: break-word;
     }
 
     th {
@@ -111,9 +119,7 @@
 
     .content {
         table {
-            display: block;
-            overflow-x: auto;
-            white-space: nowrap;
+            min-width: 640px;
         }
     }
 }
