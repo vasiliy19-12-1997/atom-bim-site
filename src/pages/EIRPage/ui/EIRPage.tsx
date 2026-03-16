@@ -56,7 +56,7 @@ const EIRPage = memo((props: EIRPageProps) => {
     };
 
     const currentSectionFragment = activeSection
-        ? preparedHtml.slice(activeSection.startIndex, activeSection.endIndex)
+        ? activeSection.fragmentHtml || preparedHtml.slice(activeSection.startIndex, activeSection.endIndex)
         : '';
 
     return (

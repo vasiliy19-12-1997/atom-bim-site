@@ -10,5 +10,6 @@ export interface EIRSectionBoundary {
 
 export interface EIRNavigationSection extends EIRSectionBoundary {
     isContainer?: boolean;
+    fragmentHtml?: string;
     children: EIRNavigationSection[];
 }
