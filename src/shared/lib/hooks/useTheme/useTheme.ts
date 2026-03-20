@@ -17,9 +17,9 @@ export function useTheme(): UseThemeResult {
                 newTheme = Theme.DARK;
                 break;
             case Theme.DARK:
-                newTheme = Theme.YELLOW;
+                newTheme = Theme.CORPORATE;
                 break;
-            case Theme.YELLOW:
+            case Theme.CORPORATE:
                 newTheme = Theme.LIGHT;
                 break;
 
@@ -27,7 +27,6 @@ export function useTheme(): UseThemeResult {
                 newTheme = Theme.LIGHT;
                 break;
         }
-        // document.body.className = newTheme;
         setTheme?.(newTheme);
         saveAction?.(newTheme);
     };

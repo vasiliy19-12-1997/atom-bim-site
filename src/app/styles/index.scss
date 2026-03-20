@@ -1,9 +1,8 @@
-@import 'reset';
-@import 'variables/global';
-@import 'themes/normal';
-@import 'themes/dark';
-@import 'themes/teal';
-@import 'themes/green';
+@import "reset";
+@import "variables/global";
+@import "themes/normal";
+@import "themes/dark";
+@import "themes/corporate";
 
 .app {
     background: var(--bg-color);
