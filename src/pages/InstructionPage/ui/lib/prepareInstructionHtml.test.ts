@@ -11,7 +11,7 @@ describe('prepareInstructionHtml', () => {
                 '',
                 '| Система координат | Точка | Изображение |',
                 '| :--- | :--- | :--- |',
-                '| Координаты съёмки | Точка съёмки | ![image.png](./.files/image.png) |',
+                '| Координаты съёмки | Точка съёмки | ![image.png](image.png) |',
             ].join('\n'),
         };
 
@@ -27,7 +27,7 @@ describe('prepareInstructionHtml', () => {
         expect(container.querySelectorAll('tbody tr')).toHaveLength(1);
         expect(image).toHaveAttribute(
             'src',
-            '/api/instructions/file?slug=bim%2Fobshhie%2Fsistemy-koordinat&path=.%2F.files%2Fimage.png',
+            '/api/instructions/file?slug=bim%2Fobshhie%2Fsistemy-koordinat&path=image.png',
         );
     });
 

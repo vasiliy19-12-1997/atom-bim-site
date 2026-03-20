@@ -20,7 +20,7 @@ const DEFAULT_WIKI_WEB_HOST = 'https://wiki.yandex.ru';
 const PAGES_PATH = '/pages';
 const DEFAULT_PAGE_FIELDS = ['breadcrumbs'];
 const ARTICLE_PAGE_FIELDS = ['content', 'breadcrumbs', 'attributes'];
-const IMAGE_CONTENT_TYPE_BY_EXT: Record<string, string> = {
+export const IMAGE_CONTENT_TYPE_BY_EXT: Record<string, string> = {
     '.png': 'image/png',
     '.jpg': 'image/jpeg',
     '.jpeg': 'image/jpeg',
@@ -130,7 +130,7 @@ const decodeSegment = (segment: string) => {
     }
 };
 
-const extractMarkdownTarget = (rawPath: string) => {
+export const extractMarkdownTarget = (rawPath: string) => {
     const trimmed = rawPath.trim();
     const sizeMatch = trimmed.match(/\s+=\s*(\d*)x(\d*)\s*$/i);
     const cleanPath = sizeMatch ? trimmed.slice(0, sizeMatch.index).trim() : trimmed;
@@ -138,7 +138,7 @@ const extractMarkdownTarget = (rawPath: string) => {
     return cleanPath;
 };
 
-const encodeWikiPath = (rawPath: string) => {
+export const encodeWikiPath = (rawPath: string) => {
     const normalizedPath = rawPath
         .split('/')
         .filter(Boolean)
@@ -148,7 +148,21 @@ const encodeWikiPath = (rawPath: string) => {
     return `/${normalizedPath}`;
 };
 
-const resolveFilePath = (slug: string, rawPath: string) => {
+const normalizeRelativeFilePath = (relativePath: string) => {
+    const normalizedRelativePath = relativePath.replace(/^\.\//, '');
+
+    if (normalizedRelativePath.startsWith('.files/') || normalizedRelativePath.includes('/')) {
+        return normalizedRelativePath;
+    }
+
+    if (IMAGE_CONTENT_TYPE_BY_EXT[path.extname(normalizedRelativePath).toLowerCase()]) {
+        return `.files/${normalizedRelativePath}`;
+    }
+
+    return normalizedRelativePath;
+};
+
+export const resolveFilePath = (slug: string, rawPath: string) => {
     const cleanedPath = extractMarkdownTarget(rawPath);
 
     if (!cleanedPath) {
@@ -159,7 +173,7 @@ const resolveFilePath = (slug: string, rawPath: string) => {
         return encodeWikiPath(cleanedPath);
     }
 
-    const normalizedRelativePath = cleanedPath.replace(/^\.\//, '');
+    const normalizedRelativePath = normalizeRelativeFilePath(cleanedPath);
     const slugPath = slug
         .split('/')
         .filter(Boolean)
