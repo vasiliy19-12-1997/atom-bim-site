@@ -21,6 +21,21 @@ const mapDocumentSectionsToNavigation = (
     children: mapDocumentSectionsToNavigation(section.children || [], section.id),
 }));
 
+const getNavigationNodeCount = (sections: EIRNavigationSection[]): number => sections
+    .reduce((count, section) => count + 1 + getNavigationNodeCount(section.children), 0);
+
+const markContainerRootIfNeeded = (sections: EIRNavigationSection[]): boolean => {
+    const hasSingleRootContainer = sections.length === 1
+        && sections[0].level === 1
+        && sections[0].children.length > 0;
+
+    if (hasSingleRootContainer) {
+        sections[0].isContainer = true;
+    }
+
+    return hasSingleRootContainer;
+};
+
 export const useEirSections = (document?: EIRDocumentResponse) => useMemo(() => {
     if (!document) {
         return {
@@ -37,7 +52,7 @@ export const useEirSections = (document?: EIRDocumentResponse) => useMemo(() => 
     const boundaries = buildSectionBoundaries(prepared.html, prepared.toc);
     const sectionsTree = document.sections?.length
         ? mapDocumentSectionsToNavigation(document.sections)
-        : undefined;
+        : [];
     const effectiveBoundaries = boundaries.length
         ? boundaries
         : [{
@@ -49,13 +64,11 @@ export const useEirSections = (document?: EIRDocumentResponse) => useMemo(() => 
             endIndex: prepared.html.length,
         }];
 
-    const tree = sectionsTree?.length ? sectionsTree : buildEirTree(effectiveBoundaries);
+    const derivedTree = buildEirTree(effectiveBoundaries);
+    const shouldUseDerivedTree = getNavigationNodeCount(derivedTree) > getNavigationNodeCount(sectionsTree);
+    const tree = shouldUseDerivedTree ? derivedTree : sectionsTree;
+    const hasSingleRootContainer = markContainerRootIfNeeded(tree);
     const flatSections = flattenEirTree(tree);
-    const hasSingleRootContainer = tree.length === 1 && tree[0].level === 1 && tree[0].children.length > 0;
-
-    if (hasSingleRootContainer) {
-        tree[0].isContainer = true;
-    }
 
     const navigableFlatSections = hasSingleRootContainer
         ? flatSections.filter((section) => section.id !== tree[0].id)
