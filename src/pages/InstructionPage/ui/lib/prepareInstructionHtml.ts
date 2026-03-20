@@ -116,11 +116,47 @@ const applyInlineMarkdown = (value: string, slug: string): string => {
     return result;
 };
 
+const TABLE_SEPARATOR_PATTERN = /^\|?(?:\s*:?-{3,}:?\s*\|)+\s*:?-{3,}:?\s*\|?$/;
+
+const isMarkdownTableRow = (line: string) => /\|/.test(line.trim());
+
+const parseMarkdownTableRow = (line: string): string[] => line
+    .trim()
+    .replace(/^\|/, '')
+    .replace(/\|$/, '')
+    .split('|')
+    .map((cell) => cell.trim());
+
+const renderMarkdownTable = (tableLines: string[], slug: string): string => {
+    const [headerLine, , ...bodyLines] = tableLines;
+    const headers = parseMarkdownTableRow(headerLine);
+    const rows = bodyLines
+        .map(parseMarkdownTableRow)
+        .filter((cells) => cells.some(Boolean));
+
+    const headerHtml = headers
+        .map((cell) => `<th>${applyInlineMarkdown(cell, slug)}</th>`)
+        .join('');
+    const bodyHtml = rows
+        .map((cells) => {
+            const normalizedCells = Array.from(
+                { length: Math.max(cells.length, headers.length) },
+                (_value, index) => cells[index] || '',
+            );
+
+            return `<tr>${normalizedCells.map((cell) => `<td>${applyInlineMarkdown(cell, slug)}</td>`).join('')}</tr>`;
+        })
+        .join('');
+
+    return `<div class="instruction-table-wrapper"><table><thead><tr>${headerHtml}</tr></thead><tbody>${bodyHtml}</tbody></table></div>`;
+};
+
 const renderMarkdownToHtml = (content: string, slug: string): string => {
     const lines = content.replace(/\r\n/g, '\n').split('\n');
     const html: string[] = [];
     let paragraphBuffer: string[] = [];
     let listItems: string[] = [];
+    let tableBuffer: string[] = [];
 
     const flushParagraph = () => {
         if (paragraphBuffer.length) {
@@ -136,19 +172,33 @@ const renderMarkdownToHtml = (content: string, slug: string): string => {
         }
     };
 
+    const flushTable = () => {
+        if (tableBuffer.length >= 2 && TABLE_SEPARATOR_PATTERN.test(tableBuffer[1].trim())) {
+            html.push(renderMarkdownTable(tableBuffer, slug));
+        } else if (tableBuffer.length) {
+            paragraphBuffer.push(...tableBuffer.map((line) => line.trim()));
+        }
+
+        tableBuffer = [];
+    };
+
+    const flushAll = () => {
+        flushTable();
+        flushParagraph();
+        flushList();
+    };
+
     lines.forEach((line) => {
         const trimmed = line.trim();
 
         if (!trimmed) {
-            flushParagraph();
-            flushList();
+            flushAll();
             return;
         }
 
         const headingMatch = trimmed.match(/^(#{1,3})\s+(.+)$/);
         if (headingMatch) {
-            flushParagraph();
-            flushList();
+            flushAll();
             const level = Math.min(headingMatch[1].length, 3);
             const title = headingMatch[2].replace(/\s+#+\s*$/, '').trim();
             html.push(`<h${level}>${applyInlineMarkdown(title, slug)}</h${level}>`);
@@ -156,22 +206,31 @@ const renderMarkdownToHtml = (content: string, slug: string): string => {
         }
 
         if (/^(-{3,}|\*{3,}|_{3,})$/.test(trimmed)) {
+            flushAll();
+            html.push('<hr />');
+            return;
+        }
+
+        if (tableBuffer.length || isMarkdownTableRow(trimmed)) {
             flushParagraph();
             flushList();
-            html.push('<hr />');
+            tableBuffer.push(line);
             return;
         }
 
         const listMatch = trimmed.match(/^[-*]\s+(.+)$/);
         if (listMatch) {
+            flushTable();
             flushParagraph();
             listItems.push(`<li>${applyInlineMarkdown(listMatch[1], slug)}</li>`);
             return;
         }
 
+        flushTable();
         paragraphBuffer.push(trimmed);
     });
 
+    flushTable();
     flushParagraph();
     flushList();
 
@@ -230,10 +289,29 @@ export const prepareInstructionHtml = (
 
     doc.querySelectorAll('*').forEach(sanitizeNodeAttributes);
 
+    doc.querySelectorAll('table').forEach((table) => {
+        if (!table.querySelector('tbody')) {
+            const rows = Array.from(table.querySelectorAll(':scope > tr'));
+
+            if (rows.length) {
+                const tbody = doc.createElement('tbody');
+                rows.forEach((row) => tbody.appendChild(row));
+                table.appendChild(tbody);
+            }
+        }
+
+        if (!table.parentElement || !table.parentElement.classList.contains('instruction-table-wrapper')) {
+            const wrapper = doc.createElement('div');
+            wrapper.className = 'instruction-table-wrapper';
+            table.parentElement?.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        }
+    });
+
     doc.querySelectorAll('img').forEach((image) => {
         const src = image.getAttribute('src');
 
-        if (src) {
+        if (src && !src.startsWith('/api/instructions/file?')) {
             image.setAttribute('src', buildImageProxyUrl(src, slug));
         }
     });

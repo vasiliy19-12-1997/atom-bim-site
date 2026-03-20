@@ -98,4 +98,36 @@
         color: var(--secondary-color);
         text-align: center;
     }
+
+    [class="instruction-table-wrapper"] {
+        width: 100%;
+        overflow-x: auto;
+        margin: 0 0 18px;
+    }
+
+    table {
+        width: 100%;
+        min-width: 520px;
+        border-collapse: collapse;
+        border: 1px solid var(--list-box-bg);
+        border-radius: 10px;
+        overflow: hidden;
+        background: var(--bg-color);
+    }
+
+    thead {
+        background: var(--list-box-bg);
+    }
+
+    th,
+    td {
+        padding: 12px 14px;
+        border: 1px solid var(--list-box-bg);
+        vertical-align: top;
+        text-align: left;
+    }
+
+    th {
+        font-weight: 600;
+    }
 }
