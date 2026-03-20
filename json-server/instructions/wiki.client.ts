@@ -148,21 +148,15 @@ export const encodeWikiPath = (rawPath: string) => {
     return `/${normalizedPath}`;
 };
 
-const normalizeRelativeFilePath = (relativePath: string) => {
-    const normalizedRelativePath = relativePath.replace(/^\.\//, '');
+const getSlugPath = (slug: string) => slug
+    .split('/')
+    .filter(Boolean)
+    .map((segment) => decodeSegment(segment))
+    .join('/');
 
-    if (normalizedRelativePath.startsWith('.files/') || normalizedRelativePath.includes('/')) {
-        return normalizedRelativePath;
-    }
+const normalizeRelativeFilePath = (relativePath: string) => relativePath.replace(/^\.\//, '');
 
-    if (IMAGE_CONTENT_TYPE_BY_EXT[path.extname(normalizedRelativePath).toLowerCase()]) {
-        return `.files/${normalizedRelativePath}`;
-    }
-
-    return normalizedRelativePath;
-};
-
-export const resolveFilePath = (slug: string, rawPath: string) => {
+export const resolveFilePathCandidates = (slug: string, rawPath: string) => {
     const cleanedPath = extractMarkdownTarget(rawPath);
 
     if (!cleanedPath) {
@@ -170,18 +164,27 @@ export const resolveFilePath = (slug: string, rawPath: string) => {
     }
 
     if (cleanedPath.startsWith('/')) {
-        return encodeWikiPath(cleanedPath);
+        return [encodeWikiPath(cleanedPath)];
     }
 
     const normalizedRelativePath = normalizeRelativeFilePath(cleanedPath);
-    const slugPath = slug
-        .split('/')
-        .filter(Boolean)
-        .map((segment) => decodeSegment(segment))
-        .join('/');
 
-    return encodeWikiPath(`${slugPath}/${normalizedRelativePath}`);
+    if (normalizedRelativePath.startsWith('.files/') || normalizedRelativePath.includes('/')) {
+        return [encodeWikiPath(`${getSlugPath(slug)}/${normalizedRelativePath}`)];
+    }
+
+    const slugPath = getSlugPath(slug);
+    const directPath = encodeWikiPath(`${slugPath}/${normalizedRelativePath}`);
+
+    if (IMAGE_CONTENT_TYPE_BY_EXT[path.extname(normalizedRelativePath).toLowerCase()]) {
+        const fileStoragePath = encodeWikiPath(`${slugPath}/.files/${normalizedRelativePath}`);
+        return Array.from(new Set([directPath, fileStoragePath]));
+    }
+
+    return [directPath];
 };
+
+export const resolveFilePath = (slug: string, rawPath: string) => resolveFilePathCandidates(slug, rawPath)[0];
 
 const inferContentType = (filePath: string, contentType?: string) => {
     if (contentType && contentType !== 'application/octet-stream') {
@@ -310,42 +313,55 @@ export class YandexWikiClient {
     }
 
     public async getFileByPath(slug: string, rawPath: string): Promise<WikiFileDto> {
-        const resolvedPath = resolveFilePath(slug, rawPath);
-        const requestMeta: WikiRequestMeta = {
-            method: 'GET',
-            url: `${this.fileHttp.defaults.baseURL || ''}${resolvedPath}`,
+        const resolvedPaths = resolveFilePathCandidates(slug, rawPath);
+
+        const tryResolvedPath = async (index: number): Promise<WikiFileDto> => {
+            const resolvedPath = resolvedPaths[index];
+            const requestMeta: WikiRequestMeta = {
+                method: 'GET',
+                url: `${this.fileHttp.defaults.baseURL || ''}${resolvedPath}`,
+            };
+
+            try {
+                const response = await this.fileHttp.get<ArrayBuffer>(resolvedPath);
+                const contentTypeHeader = String(response.headers['content-type'] || '');
+
+                logWikiResponse('file request completed', requestMeta, {
+                    status: response.status,
+                    statusText: response.statusText,
+                    responseBody: {
+                        contentType: contentTypeHeader,
+                        contentLength: response.headers['content-length'],
+                    },
+                });
+
+                if (contentTypeHeader.includes('application/json')) {
+                    throw new WikiApiError('Yandex Wiki file request returned JSON instead of binary asset', 502);
+                }
+
+                return {
+                    body: Buffer.from(response.data),
+                    contentType: inferContentType(resolvedPath, contentTypeHeader),
+                    contentLength: response.headers['content-length'],
+                    cacheControl: response.headers['cache-control'],
+                    fileName: path.basename(resolvedPath),
+                };
+            } catch (error) {
+                if (error instanceof WikiApiError) {
+                    throw error;
+                }
+
+                const mappedError = mapApiError(error, `Failed to load wiki file "${resolvedPath}"`, requestMeta);
+                const hasNextCandidate = index < resolvedPaths.length - 1;
+
+                if (mappedError.status === 404 && hasNextCandidate) {
+                    return tryResolvedPath(index + 1);
+                }
+
+                throw mappedError;
+            }
         };
 
-        try {
-            const response = await this.fileHttp.get<ArrayBuffer>(resolvedPath);
-            const contentTypeHeader = String(response.headers['content-type'] || '');
-
-            logWikiResponse('file request completed', requestMeta, {
-                status: response.status,
-                statusText: response.statusText,
-                responseBody: {
-                    contentType: contentTypeHeader,
-                    contentLength: response.headers['content-length'],
-                },
-            });
-
-            if (contentTypeHeader.includes('application/json')) {
-                throw new WikiApiError('Yandex Wiki file request returned JSON instead of binary asset', 502);
-            }
-
-            return {
-                body: Buffer.from(response.data),
-                contentType: inferContentType(resolvedPath, contentTypeHeader),
-                contentLength: response.headers['content-length'],
-                cacheControl: response.headers['cache-control'],
-                fileName: path.basename(resolvedPath),
-            };
-        } catch (error) {
-            if (error instanceof WikiApiError) {
-                throw error;
-            }
-
-            throw mapApiError(error, `Failed to load wiki file "${resolvedPath}"`, requestMeta);
-        }
+        return tryResolvedPath(0);
     }
 }
