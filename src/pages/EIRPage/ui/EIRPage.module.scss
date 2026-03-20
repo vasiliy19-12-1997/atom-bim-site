@@ -11,12 +11,11 @@
     display: grid;
     grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
     gap: 16px;
-    align-items: start;
+    align-items: stretch;
 }
 
 .sidebar {
-    position: sticky;
-    top: 16px;
+    height: 100%;
 }
 
 .articleColumn {

@@ -25,7 +25,7 @@ export const EIRSidebarTreeItem = memo((props: EIRSidebarTreeItemProps) => {
     } = props;
     const { t } = useTranslation();
     const hasChildren = node.children.length > 0;
-    const isExpanded = node.level === 1 || expandedSet.has(node.slug);
+    const isExpanded = expandedSet.has(node.slug);
     const isContainer = Boolean(node.isContainer);
 
     const onLinkClick = (event: MouseEvent<HTMLAnchorElement>) => {
@@ -54,14 +54,9 @@ export const EIRSidebarTreeItem = memo((props: EIRSidebarTreeItemProps) => {
                     <button
                         type="button"
                         className={cls.toggle}
-                        onClick={() => {
-                            if (node.level > 1) {
-                                onToggle(node.slug);
-                            }
-                        }}
+                        onClick={() => onToggle(node.slug)}
                         aria-expanded={isExpanded}
                         aria-controls={`eir-tree-${node.slug}`}
-                        disabled={node.level === 1}
                         aria-label={isExpanded ? t('Свернуть раздел') : t('Раскрыть раздел')}
                     >
                         <Icon

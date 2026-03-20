@@ -6,8 +6,9 @@
     border: 1px solid var(--list-box-bg);
     border-radius: 12px;
     padding: 16px;
-    max-height: calc(100vh - 110px);
-    overflow: auto;
+    align-self: stretch;
+    min-height: 100%;
+    overflow: visible;
 }
 
 .header {
@@ -50,6 +51,7 @@
         left: 12px;
         right: 12px;
         max-height: calc(100vh - 80px);
+        overflow: auto;
         z-index: 20;
         display: none;
         box-shadow: 0 16px 40px rgb(0 0 0 / 12%);

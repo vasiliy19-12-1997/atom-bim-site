@@ -12,16 +12,6 @@ interface UseEirNavigationParams {
 
 const SECTION_QUERY_PARAM = 'section';
 
-const mergeExpandedIds = (current: string[], nextValues: string[]) => {
-    const merged = Array.from(new Set([...current, ...nextValues]));
-
-    if (merged.length === current.length && merged.every((value, index) => value === current[index])) {
-        return current;
-    }
-
-    return merged;
-};
-
 const getRequestedSectionSlug = (location: ReturnType<typeof useLocation>) => {
     const searchParams = new URLSearchParams(location.search);
     const querySection = searchParams.get(SECTION_QUERY_PARAM);
@@ -67,8 +57,6 @@ export const useEirNavigation = (params: UseEirNavigationParams) => {
 
         return path;
     }, [activeSection, sectionsBySlug]);
-    const activePathSet = useMemo(() => new Set(currentPath.map((section) => section.slug)), [currentPath]);
-
     const expandedSet = useMemo(() => new Set(expandedIds), [expandedIds]);
 
     const selectSection = useCallback((slug: string, replace = false) => {
@@ -77,6 +65,16 @@ export const useEirNavigation = (params: UseEirNavigationParams) => {
         if (!section) {
             return;
         }
+
+        const parentIds: string[] = [];
+        let cursor = section.parentId ? sectionsBySlug[section.parentId] : undefined;
+
+        while (cursor) {
+            parentIds.unshift(cursor.slug);
+            cursor = cursor.parentId ? sectionsBySlug[cursor.parentId] : undefined;
+        }
+
+        setExpandedIds((current) => Array.from(new Set([...current, ...parentIds])));
 
         const searchParams = new URLSearchParams(location.search);
         searchParams.set(SECTION_QUERY_PARAM, slug);
@@ -94,18 +92,12 @@ export const useEirNavigation = (params: UseEirNavigationParams) => {
     }, [location.pathname, location.search, navigate, sectionsBySlug]);
 
     const toggleExpanded = useCallback((slug: string) => {
-        setExpandedIds((current) => {
-            if (!current.includes(slug)) {
-                return [...current, slug];
-            }
-
-            if (activePathSet.has(slug)) {
-                return current;
-            }
-
-            return current.filter((id) => id !== slug);
-        });
-    }, [activePathSet]);
+        setExpandedIds((current) => (
+            current.includes(slug)
+                ? current.filter((id) => id !== slug)
+                : [...current, slug]
+        ));
+    }, []);
 
     useEffect(() => {
         if (!defaultSectionSlug) {
@@ -117,12 +109,6 @@ export const useEirNavigation = (params: UseEirNavigationParams) => {
         }
     }, [activeSection, defaultSectionSlug, selectSection]);
 
-    useEffect(() => {
-        const rootIds = tree.map((section) => section.slug);
-        const activePathIds = currentPath.map((section) => section.slug);
-
-        setExpandedIds((current) => mergeExpandedIds(current, [...rootIds, ...activePathIds]));
-    }, [currentPath, tree]);
 
     const currentIndex = activeSection ? flatSections.findIndex((section) => section.slug === activeSection.slug) : -1;
     const previousSection = currentIndex > 0 ? flatSections[currentIndex - 1] : undefined;
