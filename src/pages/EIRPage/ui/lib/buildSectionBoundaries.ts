@@ -1,7 +1,7 @@
 import { EIRTocItem } from '@/entities/EIR';
 import { EIRSectionBoundary } from './types';
 
-interface HeadingMatch {
+interface SectionMarker {
     id: string;
     title: string;
     level: number;
@@ -9,6 +9,7 @@ interface HeadingMatch {
 }
 
 const HEADING_REGEX = /<h([1-6])\b([^>]*)id=(['"])(.*?)\3[^>]*>([\s\S]*?)<\/h\1>/gi;
+const ID_ATTRIBUTE_REGEX = /<([a-z0-9]+)\b[^>]*\sid=(['"])(.*?)\2[^>]*>/gi;
 const STRIP_TAGS_REGEX = /<[^>]+>/g;
 
 const normalizeText = (value: string) => value
@@ -23,12 +24,12 @@ const fallbackSlug = (value: string) => value
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-');
 
-const collectHeadings = (html: string, toc: EIRTocItem[]): HeadingMatch[] => {
+const collectHeadingMarkers = (html: string, toc: EIRTocItem[]): SectionMarker[] => {
     const tocById = toc.reduce<Record<string, EIRTocItem>>((acc, item) => {
         acc[item.id] = item;
         return acc;
     }, {});
-    const headings: HeadingMatch[] = [];
+    const headings: SectionMarker[] = [];
     let match = HEADING_REGEX.exec(html);
 
     while (match) {
@@ -48,27 +49,87 @@ const collectHeadings = (html: string, toc: EIRTocItem[]): HeadingMatch[] => {
     return headings;
 };
 
-export const buildSectionBoundaries = (html: string, toc: EIRTocItem[]): EIRSectionBoundary[] => {
-    const headings = collectHeadings(html, toc);
+const collectAnchorMarkers = (html: string, toc: EIRTocItem[]): SectionMarker[] => {
+    const positionsById = toc.reduce<Record<string, number[]>>((acc, item) => {
+        acc[item.id] = [];
+        return acc;
+    }, {});
+    let match = ID_ATTRIBUTE_REGEX.exec(html);
 
-    return headings.map((heading, index) => {
+    while (match) {
+        const [, , , id] = match;
+
+        if (positionsById[id]) {
+            positionsById[id].push(match.index);
+        }
+
+        match = ID_ATTRIBUTE_REGEX.exec(html);
+    }
+
+    return toc.reduce<SectionMarker[]>((acc, item) => {
+        const positions = positionsById[item.id];
+        const startIndex = positions?.length ? positions[positions.length - 1] : -1;
+
+        if (startIndex >= 0) {
+            acc.push({
+                id: item.id,
+                title: item.title,
+                level: item.level,
+                startIndex,
+            });
+        }
+
+        return acc;
+    }, []);
+};
+
+const collectMarkers = (html: string, toc: EIRTocItem[]): SectionMarker[] => {
+    const headingMarkers = collectHeadingMarkers(html, toc);
+
+    if (headingMarkers.length >= toc.length && headingMarkers.length > 1) {
+        return headingMarkers;
+    }
+
+    const anchorMarkers = collectAnchorMarkers(html, toc);
+
+    if (!anchorMarkers.length) {
+        return headingMarkers;
+    }
+
+    if (headingMarkers.length > 1) {
+        const headingIds = new Set(headingMarkers.map((item) => item.id));
+        const mergedMarkers = [
+            ...headingMarkers,
+            ...anchorMarkers.filter((item) => !headingIds.has(item.id)),
+        ];
+
+        return mergedMarkers.sort((left, right) => left.startIndex - right.startIndex);
+    }
+
+    return anchorMarkers;
+};
+
+export const buildSectionBoundaries = (html: string, toc: EIRTocItem[]): EIRSectionBoundary[] => {
+    const markers = collectMarkers(html, toc);
+
+    return markers.map((marker, index) => {
         let endIndex = html.length;
 
-        for (let nextIndex = index + 1; nextIndex < headings.length; nextIndex += 1) {
-            const nextHeading = headings[nextIndex];
+        for (let nextIndex = index + 1; nextIndex < markers.length; nextIndex += 1) {
+            const nextMarker = markers[nextIndex];
 
-            if (nextHeading.level <= heading.level) {
-                endIndex = nextHeading.startIndex;
+            if (nextMarker.level <= marker.level) {
+                endIndex = nextMarker.startIndex;
                 break;
             }
         }
 
         return {
-            id: heading.id,
-            slug: heading.id || fallbackSlug(heading.title) || `section-${index + 1}`,
-            title: heading.title,
-            level: heading.level,
-            startIndex: heading.startIndex,
+            id: marker.id,
+            slug: marker.id || fallbackSlug(marker.title) || `section-${index + 1}`,
+            title: marker.title,
+            level: marker.level,
+            startIndex: marker.startIndex,
             endIndex,
         };
     });
