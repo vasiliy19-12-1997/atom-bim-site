@@ -16,6 +16,7 @@ const buildCategoryIndex = (tree: InstructionNavNode[]): Map<string, string> => 
     const map = new Map<string, string>();
 
     tree.forEach((category) => {
+        map.set(category.slug, category.slug);
         category.children?.forEach((article) => {
             map.set(article.slug, category.slug);
         });
@@ -42,21 +43,34 @@ export const InstructionsSidebarTree = memo((props: InstructionsSidebarTreeProps
             {nodes.map((node) => {
                 const hasChildren = Boolean(node.children?.length);
                 const isOpened = opened[node.id] ?? true;
+                const isActiveSection = activeSlug === node.slug;
 
                 return (
                     <section
                         key={node.id}
                         className={cls.group}
                     >
-                        <button
-                            type="button"
-                            onClick={() => toggleCategory(node.id)}
-                            className={cls.groupButton}
-                            aria-expanded={isOpened}
-                        >
-                            <span>{node.title}</span>
-                            {hasChildren && <span className={cls.chevron}>{isOpened ? '−' : '+'}</span>}
-                        </button>
+                        <div className={cls.groupRow}>
+                            <AppLink
+                                className={classNames(cls.groupLink, {
+                                    [cls.active]: isActiveSection,
+                                })}
+                                to={getRouteInstruction(node.slug)}
+                                onClick={onSelectArticle}
+                            >
+                                {node.title}
+                            </AppLink>
+                            {hasChildren && (
+                                <button
+                                    type="button"
+                                    onClick={() => toggleCategory(node.id)}
+                                    className={cls.groupToggle}
+                                    aria-expanded={isOpened}
+                                >
+                                    <span className={cls.chevron}>{isOpened ? '-' : '+'}</span>
+                                </button>
+                            )}
+                        </div>
                         {hasChildren && isOpened && (
                             <ul className={cls.list}>
                                 {node.children?.map((article) => {

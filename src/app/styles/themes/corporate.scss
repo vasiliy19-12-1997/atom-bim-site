@@ -1,49 +1,46 @@
-.app_teal_theme {
+.app_corporate_theme {
     /* =======================================================
        BASE BACKGROUNDS
     ======================================================== */
-    --bg-color: #f4f8f9;
-    --inverted-bg-color: #102a2e;
+    --bg-color: #f3f7f6;
+    --inverted-bg-color: #141a1a;
 
     /* =======================================================
        TEXT COLORS
     ======================================================== */
     --primary-color: #1a1a1a;
-    --secondary-color: #5a6b6e;
-    --inverted-primary-color: #ffffff;
-    --inverted-secondary-color: #b4c4c6;
+    --secondary-color: #4d4c4c;
+    --inverted-primary-color: #fff;
+    --inverted-secondary-color: #d1d3d4;
 
     /* =======================================================
        UI ELEMENTS
     ======================================================== */
-    --card-bg: #ffffff;
-    --list-box-bg: #e6f0f2;
-    --code-btn: #d9e7ea;
+    --card-bg: #fff;
+    --list-box-bg: #eff6f4;
+    --code-btn: #dfeceb;
 
     /* =======================================================
        SKELETON
     ======================================================== */
-    --skeleton-color: #e1ecee;
+    --skeleton-color: #dfeceb;
     --skeleton-shadow: rgba(0 0 0 / 10%);
 
     /* =======================================================
        REDESIGN COLORS
     ======================================================== */
-    --dark-bg-redesign: #cfe3e7;
-    --bg-redesign: #0e7c86;
-    --light-bg-redesign: #a9d3d8;
-
+    --dark-bg-redesign: #d6ecdd;
+    --bg-redesign: #008060;
+    --light-bg-redesign: #bfe4cc;
     --text-redesign: #1a1a1a;
-    --hint-redesign: #7a8b8d;
-
+    --hint-redesign: #808080;
     --cancel-redesign: #f15b5b;
-    --save-redesign: #0e7c86;
-
-    --icon-redesign: #3a8fb7;
-    --accent-redesign: #0e7c86;
+    --save-redesign: #008060;
+    --icon-redesign: #5c74b8;
+    --accent-redesign: #82ca9c;
 
     /* =======================================================
        FOOTER
     ======================================================== */
-    --color-footer-bg: #d9e7ea;
+    --color-footer-bg: #dfeceb;
 }

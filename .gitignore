@@ -1,10 +1,38 @@
-/build
+# build outputs
+build/
+storybook-static/
+
 node_modules
 .idea
-/storybook-static
-.loki/report.html
-.loki/report.json
-/reports/unit
 .history
-npm-debug.txt 
+
+# env
 .env
+.env.local
+.env.*.local
+
+
+# test / reports
+reports/
+.loki/
+cypress/screenshots/
+cypress/videos/
+
+# local https certs
+json-server/server.key
+json-server/server.cert
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json

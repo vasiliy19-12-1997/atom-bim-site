@@ -10,7 +10,7 @@ const instructionApi = rtqApi.injectEndpoints({
         }),
         getInstructionArticle: build.query<InstructionArticle, string>({
             query: (slug) => ({
-                url: `/api/instructions/article/${slug}`,
+                url: `/api/instructions/article/${encodeURIComponent(slug)}`,
             }),
         }),
     }),

@@ -1,4 +1,4 @@
-﻿import { memo, useEffect, useMemo } from 'react';
+import { RefObject, memo, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EIRDocumentResponse, EIRTocItem } from '@/entities/EIR';
 import { classNames } from '@/shared/lib/classNames/classNames';
@@ -9,10 +9,16 @@ interface EIRDocumentViewProps {
     className?: string;
     document: EIRDocumentResponse;
     onTocResolved?: (toc: EIRTocItem[]) => void;
+    contentRef?: RefObject<HTMLDivElement>;
 }
 
 export const EIRDocumentView = memo((props: EIRDocumentViewProps) => {
-    const { className, document, onTocResolved } = props;
+    const {
+        className,
+        document,
+        onTocResolved,
+        contentRef,
+    } = props;
     const { t } = useTranslation();
 
     const prepared = useMemo(
@@ -33,6 +39,7 @@ export const EIRDocumentView = memo((props: EIRDocumentViewProps) => {
                 </p>
             )}
             <div
+                ref={contentRef}
                 className={cls.content}
                 // Rendering sanitized HTML from backend document content.
                 // eslint-disable-next-line react/no-danger

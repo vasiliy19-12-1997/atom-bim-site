@@ -1,7 +1,9 @@
 import { memo, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InstructionArticle, InstructionTocItem } from '@/entities/Instruction';
+import { getRouteInstruction } from '@/shared/const/router';
 import { classNames } from '@/shared/lib/classNames/classNames';
+import { AppLink } from '@/shared/ui/AppLink/AppLink';
 import { prepareInstructionHtml } from '../lib/prepareInstructionHtml';
 import cls from './InstructionArticleView.module.scss';
 
@@ -15,7 +17,7 @@ export const InstructionArticleView = memo((props: InstructionArticleViewProps) 
     const { className, article, onTocResolved } = props;
     const { t } = useTranslation();
 
-    const prepared = useMemo(() => prepareInstructionHtml(article.content, article.toc), [article.content, article.toc]);
+    const prepared = useMemo(() => prepareInstructionHtml(article), [article]);
 
     useEffect(() => {
         onTocResolved?.(prepared.toc);
@@ -30,11 +32,36 @@ export const InstructionArticleView = memo((props: InstructionArticleViewProps) 
                     {new Date(article.updatedAt).toLocaleDateString('ru-RU')}
                 </p>
             )}
-            <div
-                className={cls.content}
-                // Rendering sanitized HTML from backend article content.
-                dangerouslySetInnerHTML={{ __html: prepared.html }}
-            />
+            {article.kind === 'section' && (
+                <section className={cls.sectionItems}>
+                    <h2 className={cls.sectionItemsTitle}>{t('Инструкции раздела')}</h2>
+                    {article.items.length ? (
+                        <ul className={cls.sectionItemsList}>
+                            {article.items.map((item) => (
+                                <li key={item.id}>
+                                    <AppLink
+                                        className={cls.sectionItemLink}
+                                        to={getRouteInstruction(item.slug, article.slug)}
+                                    >
+                                        {item.title}
+                                    </AppLink>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className={cls.sectionItemsEmpty}>
+                            {t('В этом разделе пока нет доступных инструкций.')}
+                        </p>
+                    )}
+                </section>
+            )}
+            {prepared.html && (
+                <div
+                    className={cls.content}
+                    // Rendering sanitized HTML from backend article content.
+                    dangerouslySetInnerHTML={{ __html: prepared.html }}
+                />
+            )}
         </article>
     );
 });

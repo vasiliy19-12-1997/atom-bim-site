@@ -2,7 +2,7 @@
     /* =======================================================
        BASE BACKGROUNDS
     ======================================================== */
-    --bg-color: #f8f9fa;
+    --bg-color: #fafafa;
     --inverted-bg-color: #1a1a1a;
 
     /* =======================================================
@@ -10,20 +10,20 @@
     ======================================================== */
     --primary-color: #1a1a1a;
     --secondary-color: #4d4c4c;
-    --inverted-primary-color: #ffffff;
+    --inverted-primary-color: #fff;
     --inverted-secondary-color: #b4b5b7;
 
     /* =======================================================
        UI ELEMENTS
     ======================================================== */
-    --card-bg: #ffffff;
-    --list-box-bg: #f2f4f3;
-    --code-btn: #e8ebe9;
+    --card-bg: #fff;
+    --list-box-bg: #f6f6f6;
+    --code-btn: #ebeeef;
 
     /* =======================================================
        SKELETON
     ======================================================== */
-    --skeleton-color: #e8ebe9;
+    --skeleton-color: #ebeeef;
     --skeleton-shadow: rgba(0 0 0 / 10%);
 
     /* =======================================================
@@ -32,18 +32,15 @@
     --dark-bg-redesign: #eef3f2;
     --bg-redesign: #008060;
     --light-bg-redesign: #bfe4cc;
-
     --text-redesign: #1a1a1a;
     --hint-redesign: #939598;
-
     --cancel-redesign: #f15b5b;
     --save-redesign: #008060;
-
-    --icon-redesign: #5c74bb;
+    --icon-redesign: #5c74b8;
     --accent-redesign: #008060;
 
     /* =======================================================
        FOOTER
     ======================================================== */
-    --color-footer-bg: #e8ebe9;
+    --color-footer-bg: #ebeeef;
 }

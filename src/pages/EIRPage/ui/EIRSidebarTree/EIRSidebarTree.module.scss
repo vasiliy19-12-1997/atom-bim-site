@@ -1,4 +1,4 @@
-﻿.EIRSidebarTree {
+.EIRSidebarTree {
     display: flex;
     flex-direction: column;
 }
@@ -12,6 +12,12 @@
     gap: 6px;
 }
 
+.nestedList {
+    margin-left: 12px;
+    padding-left: 12px;
+    border-left: 1px solid var(--list-box-bg);
+}
+
 .node {
     display: flex;
     flex-direction: column;
@@ -19,15 +25,51 @@
 }
 
 .row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    align-items: start;
+    gap: 6px;
+}
+
+.toggle {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+
+    &:hover {
+        background: var(--list-box-bg);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 1px;
+    }
+
+    &:disabled {
+        cursor: default;
+        opacity: 0.7;
+    }
+}
+
+.toggleIcon {
+    width: 18px;
+    height: 18px;
+}
+
+.toggleSpacer {
+    display: block;
+    width: 28px;
+    height: 28px;
 }
 
 .link {
-    display: inline-flex;
-    align-items: center;
+    display: block;
     color: var(--secondary-color);
     text-decoration: none;
     padding: 4px 8px;
@@ -39,6 +81,11 @@
         background: var(--list-box-bg);
         color: var(--primary-color);
     }
+
+    &:focus-visible {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 1px;
+    }
 }
 
 .level2 {
@@ -49,18 +96,17 @@
     padding-left: 24px;
 }
 
-.toggle {
-    border: none;
-    background: transparent;
-    color: var(--secondary-color);
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
-    line-height: 1;
+.level4 {
+    padding-left: 32px;
 }
 
 .active {
     background: var(--list-box-bg);
     color: var(--primary-color);
     font-weight: 700;
+}
+
+.container {
+    font-weight: 700;
+    color: var(--primary-color);
 }

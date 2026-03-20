@@ -66,6 +66,27 @@ const normalizeTextContent = (value: string): string => value
     .replace(PAGE_NUMBER_SUFFIX_REGEX, '')
     .trim();
 
+const normalizeTables = (doc: Document) => {
+    doc.querySelectorAll('table').forEach((table) => {
+        if (!table.querySelector('tbody')) {
+            const rows = Array.from(table.querySelectorAll(':scope > tr'));
+
+            if (rows.length) {
+                const tbody = doc.createElement('tbody');
+                rows.forEach((row) => tbody.appendChild(row));
+                table.appendChild(tbody);
+            }
+        }
+
+        if (!table.parentElement || !table.parentElement.classList.contains('eir-table-wrapper')) {
+            const wrapper = doc.createElement('div');
+            wrapper.className = 'eir-table-wrapper';
+            table.parentElement?.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        }
+    });
+};
+
 const getOwnTextContent = (element: Element): string => {
     const clone = element.cloneNode(true) as Element;
 
@@ -149,6 +170,12 @@ export const prepareEirHtml = (content: string, apiToc: EIRTocItem[]): PreparedE
     });
 
     doc.querySelectorAll('*').forEach(sanitizeNodeAttributes);
+    doc.querySelectorAll('img').forEach((image) => {
+        if (!image.getAttribute('loading')) {
+            image.setAttribute('loading', 'lazy');
+        }
+    });
+    normalizeTables(doc);
 
     const seenIds = new Set<string>();
     let toc: EIRTocItem[] = [];

@@ -1,0 +1,29 @@
+.EIRSectionPagination {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-height: 72px;
+    text-align: left;
+}
+
+.buttonLabel {
+    font: var(--font-s);
+}
+
+.buttonTitle {
+    font: var(--font-m);
+    white-space: normal;
+}
+
+@media (max-width: 767px) {
+    .EIRSectionPagination {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
