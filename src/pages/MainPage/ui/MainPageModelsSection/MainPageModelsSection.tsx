@@ -7,7 +7,6 @@ import { VStack, HStack } from '@/shared/ui/redesigned/Stack';
 import { modelsSections } from '../../lib/const/modelsSections';
 import { Text } from '@/shared/ui/redesigned/Text';
 import { classNames } from '@/shared/lib/classNames/classNames';
-import { AppLink } from '@/shared/ui/redesigned/AppLink';
 
 interface MainPageModelsSectionProps {
     className?: string;
@@ -86,17 +85,6 @@ export const MainPageModelsSection = memo((props: MainPageModelsSectionProps) =>
                                         ))}
                                     </HStack>
 
-                                    <AppLink
-                                        to={section.path}
-                                        className={cls.modelLink}
-                                    >
-                                        <Text
-                                            text={t(section.linkText)}
-                                            size="s"
-                                            bold
-                                            variant="accent"
-                                        />
-                                    </AppLink>
                                 </VStack>
                             </Card>
                             <AppImage

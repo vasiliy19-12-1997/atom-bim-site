@@ -1,4 +1,3 @@
-import { getRouteLibrary, getRouteVideos } from '@/shared/const/router';
 import prostorImage from '../assets/prostor_m.png';
 import liceyImage from '../assets/licey6.jpg';
 import bakinImage from '../assets/bakin2.png';
@@ -8,8 +7,6 @@ export const modelsSections = [
         title: '«Просторы» — микрорайон на берегу Исети близ Уктусских гор',
         description:
             'Модель содержит более 2 миллионов элементов. Детализация модели соответствует наивысшей категории.',
-        linkText: 'Открыть библиотеку BIM-материалов',
-        path: getRouteLibrary(),
         stats: [
             { label: 'Площадь застройки', value: '1354,4 м²' },
             { label: 'Этажность', value: '27 эт.' },
@@ -23,8 +20,6 @@ export const modelsSections = [
         title: 'ЖК на Бакинских Комиссаров',
         description:
             'Жилой дом на Бакинских Комиссаров, 101 — современное здание переменной этажности на месте расселенного частного сектора; настоящая «изюминка» микрорайона Уралмаш.',
-        linkText: 'Смотреть BIM-видео',
-        path: getRouteVideos(),
         stats: [
             { label: 'Площадь застройки', value: '11 280 м²' },
             { label: 'Этажность', value: '9–21–14–27–14–27–9 эт.' },
@@ -37,8 +32,6 @@ export const modelsSections = [
     {
         title: 'Губернаторский лицей',
         description: 'Проект выполнен полностью по BIM технологии.',
-        linkText: 'Перейти в библиотеку',
-        path: getRouteLibrary(),
         stats: [
             { label: 'Файлов моделей', value: '126' },
             { label: 'Комплектов рабочей документации', value: '160' },

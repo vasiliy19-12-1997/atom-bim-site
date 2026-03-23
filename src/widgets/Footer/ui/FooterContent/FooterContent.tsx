@@ -128,7 +128,6 @@ export const FooterContent = memo((props: FooterContentProps) => {
                                             text={t(companyLink.text)}
                                             size="s"
                                             bold
-                                            variant="accent"
                                         />
                                         {companyLink.Icon && (
                                             <Icon

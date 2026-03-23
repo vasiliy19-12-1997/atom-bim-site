@@ -42,7 +42,7 @@
     justify-content: center;
     border: 1px solid var(--color-border);
     border-radius: 18px;
-    background: var(--bg-redesign);
+    background: linear-gradient(180deg, rgb(12 134 112 / 100%), rgb(10 110 92 / 100%));
     box-shadow: 0 10px 24px rgb(0 0 0 / 6%);
     flex-shrink: 0;
 }
@@ -80,15 +80,15 @@
 .quickLinkText {
     padding: 10px 14px;
     border-radius: 999px;
-    border: 1px solid var(--color-border);
-    background: var(--bg-redesign);
+    border: 1px solid rgb(10 134 112 / 18%);
+    background: rgb(10 134 112 / 8%);
     transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
 }
 
 .quickLink:hover .quickLinkText {
     transform: translateY(-1px);
     border-color: var(--accent-redesign);
-    background: var(--light-bg-redesign);
+    background: rgb(10 134 112 / 14%);
 }
 
 .companyLink,
@@ -121,7 +121,7 @@
 
 .companyLink:hover p,
 .bottomLink:hover .bottomLinkText p {
-    color: var(--accent-redesign);
+    color: var(--text-redesign);
 }
 
 @media (max-width: 980px) {
