@@ -1,11 +1,12 @@
 .MainLayout {
     min-height: 100vh;
     display: grid;
-    grid-template-areas:
-        'sidebar content rightbar'
-        'sidebar footer rightbar';
-    grid-template-columns: min-content 1fr 100px;
-    grid-template-rows: 1fr auto;
+    /* stylelint-disable-next-line string-quotes */
+    grid-template:
+        "sidebar content rightbar" 1fr
+        "sidebar footer rightbar" auto
+        / minmax(84px, 248px) minmax(0, 1fr) 100px;
+    column-gap: 20px;
 }
 
 .header {
@@ -16,15 +17,16 @@
     grid-area: content;
     max-width: 1200px;
     justify-self: center;
-    padding: 32px;
+    padding: 32px 0;
     width: 100%;
+    min-width: 0;
 }
 
 .sidebar {
     grid-area: sidebar;
-    padding: 32px;
-    max-width: 280px;
+    padding: 24px 0 24px 24px;
     width: 100%;
+    align-self: start;
 }
 
 .rightbar {
@@ -32,6 +34,7 @@
     display: flex;
     flex-direction: column;
     align-items: end;
+    padding: 24px 24px 24px 0;
 }
 
 .sidebar,
@@ -51,4 +54,97 @@
     width: 100%;
     max-width: 1200px;
     justify-self: center;
+    padding-bottom: 24px;
+}
+
+@media (max-width: 1200px) {
+    .MainLayout {
+        grid-template-columns: minmax(84px, 220px) minmax(0, 1fr) 72px;
+        column-gap: 16px;
+    }
+
+    .sidebar {
+        padding-left: 16px;
+    }
+
+    .rightbar {
+        padding-right: 16px;
+    }
+}
+
+@media (max-width: 900px) {
+    .MainLayout {
+        /* stylelint-disable-next-line string-quotes */
+        grid-template:
+            "sidebar rightbar" auto
+            "content content" 1fr
+            "footer footer" auto
+            / minmax(0, 1fr) auto;
+        row-gap: 16px;
+    }
+
+    .content,
+    .footer {
+        max-width: none;
+        width: 100%;
+        padding-inline: 16px;
+    }
+
+    .content {
+        padding-top: 0;
+    }
+
+    .sidebar,
+    .rightbar {
+        position: static;
+        height: auto;
+    }
+
+    .sidebar {
+        padding: 16px 0 0 16px;
+        max-width: none;
+    }
+
+    .rightbar {
+        padding: 16px 16px 0 0;
+        align-items: flex-end;
+    }
+
+    .toolbar {
+        display: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .MainLayout {
+        /* stylelint-disable-next-line string-quotes */
+        grid-template:
+            "rightbar" auto
+            "sidebar" auto
+            "content" 1fr
+            "footer" auto
+            / minmax(0, 1fr);
+        row-gap: 12px;
+    }
+
+    .header {
+        justify-self: stretch;
+        width: 100%;
+    }
+
+    .sidebar,
+    .rightbar,
+    .content,
+    .footer {
+        padding-inline: 12px;
+    }
+
+    .rightbar,
+    .sidebar {
+        padding-top: 12px;
+    }
+
+    .footer {
+        padding-bottom: 16px;
+    }
 }

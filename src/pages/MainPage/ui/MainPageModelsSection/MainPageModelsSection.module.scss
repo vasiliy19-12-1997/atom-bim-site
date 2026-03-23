@@ -49,3 +49,14 @@
         height: 300px;
     }
 }
+
+@media (max-width: 680px) {
+    .title {
+        margin-bottom: 16px;
+    }
+
+    .image {
+        height: 220px;
+        border-radius: 22px;
+    }
+}

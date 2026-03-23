@@ -60,3 +60,21 @@
 .active .link {
     color: var(--text-redesign);
 }
+
+@media (max-width: 900px) {
+    .itemRedesign,
+    .collapsedRedesign {
+        justify-content: flex-start;
+        padding: 12px 14px;
+    }
+
+    .itemRedesign:hover,
+    .collapsedRedesign:hover {
+        transform: translateY(-2px);
+    }
+
+    .collapsedRedesign .link {
+        opacity: 1;
+        width: auto;
+    }
+}

@@ -1,8 +1,10 @@
 .videoSection {
     width: 100%;
     border: 1px solid var(--color-border);
-    background: radial-gradient(circle at top right, var(--light-bg-redesign), transparent 30%),
-        linear-gradient(180deg, var(--dark-bg-redesign), transparent 40%), var(--card-bg);
+    background:
+        radial-gradient(circle at top right, var(--light-bg-redesign), transparent 30%),
+        linear-gradient(180deg, var(--dark-bg-redesign), transparent 40%),
+        var(--card-bg);
     box-shadow: 0 16px 36px rgb(0 0 0 / 7%);
 }
 
@@ -12,10 +14,37 @@
     border: 1px solid var(--color-border);
     background: var(--dark-bg-redesign);
     box-shadow: 0 14px 32px rgb(0 0 0 / 8%);
+}
 
-    iframe {
-        display: block;
-        border: none;
-        min-height: 360px;
+.videoFrame {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    min-height: 360px;
+    border: none;
+}
+
+@media (max-width: 900px) {
+    .videoSection {
+        padding: 20px;
+    }
+
+    .videoFrame {
+        min-height: 280px;
+    }
+}
+
+@media (max-width: 640px) {
+    .videoSection {
+        padding: 16px;
+        border-radius: 24px;
+    }
+
+    .videoWrapper {
+        border-radius: 20px;
+    }
+
+    .videoFrame {
+        min-height: 200px;
     }
 }

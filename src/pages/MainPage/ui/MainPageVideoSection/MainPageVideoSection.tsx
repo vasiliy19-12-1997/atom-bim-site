@@ -38,9 +38,8 @@ export const MainPageVideoSection = memo((props: MainPageVideoSectionProps) => {
                         title="Тим департмамент"
                         allow="autoplay"
                         allowFullScreen
-                        width="100%"
-                        height={620}
                         loading="lazy"
+                        className={cls.videoFrame}
                     />
                 </HStack>
             </VStack>

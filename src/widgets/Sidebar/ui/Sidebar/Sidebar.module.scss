@@ -1,13 +1,14 @@
 .SidebarRedesign {
     position: relative;
-    width: 248px;
+    width: 100%;
+    max-width: 248px;
     height: 100%;
     min-height: 100%;
     border-radius: 32px;
     border: 1px solid var(--color-border);
     background: linear-gradient(180deg, var(--light-bg-redesign), transparent 35%), var(--inverted-bg-color);
     box-shadow: 0 16px 40px rgb(0 0 0 / 10%);
-    transition: width 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    transition: width 0.3s ease, max-width 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     overflow: visible;
 }
 
@@ -73,7 +74,7 @@
 }
 
 .collapsedRedesign {
-    width: 84px;
+    max-width: 84px;
 }
 
 .collapsedRedesign .collapsedBtn svg {
@@ -90,4 +91,82 @@
 
 .collapsedRedesign .lang {
     margin-left: 0;
+}
+
+@media (max-width: 900px) {
+    .SidebarRedesign,
+    .collapsedRedesign {
+        max-width: none;
+        width: 100%;
+    }
+
+    .inner {
+        padding: 16px;
+    }
+
+    .logoWrapper {
+        justify-content: flex-start;
+        padding-right: 48px;
+        margin-bottom: 16px;
+    }
+
+    .items {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 10px;
+    }
+
+    .footerControls {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .collapsedBtn {
+        top: 18px;
+        right: 18px;
+    }
+
+    .collapsedRedesign .items {
+        grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .SidebarRedesign,
+    .collapsedRedesign {
+        border-radius: 24px;
+    }
+
+    .inner,
+    .collapsedRedesign .inner {
+        padding: 14px;
+    }
+
+    .logoWrapper {
+        min-height: 56px;
+        margin-bottom: 14px;
+    }
+
+    .items,
+    .collapsedRedesign .items {
+        grid-template-columns: 1fr;
+    }
+
+    .footerControls {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .collapsedRedesign .footerControls {
+        align-items: center;
+    }
+
+    .collapsedBtn {
+        width: 34px;
+        height: 34px;
+        top: 14px;
+        right: 14px;
+    }
 }
