@@ -11,12 +11,17 @@ import { Icon } from '@/shared/ui/redesigned/Icon';
 interface SidebarItemProps {
     item: SidebarItemType;
     collapsed: boolean;
+    onClick?: () => void;
 }
 
 export const SidebarItem = memo((props: SidebarItemProps) => {
     const { t } = useTranslation();
     const isAuth = useSelector(getAuthUserData);
-    const { item, collapsed } = props;
+    const {
+        item,
+        collapsed,
+        onClick,
+    } = props;
 
     if (item.authOnly && !isAuth) {
         return null;
@@ -30,6 +35,7 @@ export const SidebarItem = memo((props: SidebarItemProps) => {
                 [cls.collapsedRedesign]: collapsed,
             })}
             activeClassName={cls.active}
+            onClick={onClick}
         >
             <span className={cls.iconWrapper}>
                 <Icon

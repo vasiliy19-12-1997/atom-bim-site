@@ -8,8 +8,15 @@
     border: 1px solid var(--color-border);
     background: linear-gradient(180deg, var(--light-bg-redesign), transparent 35%), var(--inverted-bg-color);
     box-shadow: 0 16px 40px rgb(0 0 0 / 10%);
-    transition: width 0.3s ease, max-width 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        width 0.3s ease,
+        max-width 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.3s ease,
+        opacity 0.3s ease;
     overflow: visible;
+    z-index: 30;
 }
 
 .inner {
@@ -18,6 +25,7 @@
 }
 
 .logoWrapper {
+    position: relative;
     min-height: 68px;
     margin-bottom: 20px;
     border-bottom: 1px solid var(--color-border);
@@ -93,6 +101,12 @@
     margin-left: 0;
 }
 
+.mobileMenuButton,
+.mobileOverlay,
+.mobileCloseButton {
+    display: none;
+}
+
 @media (max-width: 900px) {
     .SidebarRedesign,
     .collapsedRedesign {
@@ -134,39 +148,120 @@
 }
 
 @media (max-width: 640px) {
+    .mobileMenuButton {
+        position: fixed;
+        left: 16px;
+        top: 16px;
+        z-index: 60;
+        width: 48px;
+        height: 48px;
+        border: 1px solid rgb(255 255 255 / 28%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgb(15 23 24 / 84%);
+        backdrop-filter: blur(14px);
+        color: var(--text-redesign);
+        box-shadow: 0 14px 30px rgb(0 0 0 / 18%);
+    }
+
+    .mobileMenuButtonOpened {
+        background: var(--accent-redesign);
+        color: var(--bg-redesign);
+    }
+
+    .mobileOverlay {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        border: none;
+        opacity: 0;
+        pointer-events: none;
+        background: rgb(6 12 20 / 52%);
+        backdrop-filter: blur(6px);
+        transition: opacity 0.25s ease;
+    }
+
+    .mobileOverlayOpened {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
     .SidebarRedesign,
     .collapsedRedesign {
-        border-radius: 24px;
+        position: fixed;
+        left: 12px;
+        top: 12px;
+        bottom: 12px;
+        width: min(320px, calc(100vw - 24px));
+        max-width: none;
+        height: auto;
+        min-height: 0;
+        border-radius: 28px;
+        transform: translateX(calc(-100% - 20px));
+        opacity: 0;
+        pointer-events: none;
+        overflow: hidden;
+        background:
+            linear-gradient(180deg, rgb(212 246 231 / 88%), transparent 24%),
+            linear-gradient(180deg, rgb(19 28 28 / 98%), rgb(11 17 18 / 98%));
+        box-shadow: 0 24px 60px rgb(0 0 0 / 28%);
+    }
+
+    .mobileOpened {
+        transform: translateX(0);
+        opacity: 1;
+        pointer-events: auto;
     }
 
     .inner,
     .collapsedRedesign .inner {
-        padding: 14px;
+        padding: 18px 14px 14px;
     }
 
     .logoWrapper {
-        min-height: 56px;
-        margin-bottom: 14px;
+        justify-content: flex-start;
+        align-items: center;
+        min-height: 60px;
+        margin-bottom: 12px;
+        padding-right: 44px;
+    }
+
+    .mobileCloseButton {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border: 1px solid rgb(255 255 255 / 16%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgb(255 255 255 / 6%);
+        color: var(--text-redesign);
     }
 
     .items,
     .collapsedRedesign .items {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        overflow-y: auto;
+        padding-right: 4px;
     }
 
-    .footerControls {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
+    .footerControls,
     .collapsedRedesign .footerControls {
+        flex-wrap: nowrap;
+        justify-content: space-between;
         align-items: center;
+        gap: 10px;
     }
 
     .collapsedBtn {
-        width: 34px;
-        height: 34px;
-        top: 14px;
-        right: 14px;
+        display: none;
     }
 }
