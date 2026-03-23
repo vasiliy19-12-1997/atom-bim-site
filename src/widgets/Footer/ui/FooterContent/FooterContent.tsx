@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { classNames } from '@/shared/lib/classNames/classNames';
-import { Button } from '@/shared/ui/redesigned/Button';
 import { Icon } from '@/shared/ui/redesigned/Icon';
 import { AppLink } from '@/shared/ui/redesigned/AppLink';
 import { HStack, VStack } from '@/shared/ui/redesigned/Stack';
@@ -14,219 +13,171 @@ interface FooterContentProps {
     className?: string;
 }
 
+const legalLinks = [
+    {
+        to: 'https://atom-bim.ru/Docum/%D0%A1%D0%BE%D0%B3%D0%BB%D0%B0%D1%88%D0%B5%D0%BD%D0%B8%D0%B5_%D0%BE%D0%B1_%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.pdf',
+        text: 'Соглашение',
+    },
+    {
+        to: 'https://atom-bim.ru/Docum/%D0%A1%D0%BE%D0%B3%D0%BB%D0%B0%D1%88%D0%B5%D0%BD%D0%B8%D0%B5_%D0%BE%D0%B1_%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.pdf',
+        text: 'Политика данных',
+    },
+];
+
 export const FooterContent = memo((props: FooterContentProps) => {
     const { t } = useTranslation();
     const { className } = props;
     const footerItemsList = useFooterItems();
+    const navigationItems = footerItemsList.filter((item) => !item.Icon);
+    const companyLink = footerItemsList.find((item) => item.Icon);
 
     return (
         <footer className={classNames(cls.FooterContent, {}, [className])}>
-            <div className={cls.glow} />
-
             <div className={cls.container}>
-                <div className={cls.grid}>
-                    <VStack
-                        gap={16}
-                        className={cls.brandColumn}
-                    >
-                        <HStack
+                <div className={cls.surface}>
+                    <div className={cls.topRow}>
+                        <VStack
                             gap={16}
-                            className={cls.brandHead}
+                            className={cls.brandColumn}
                         >
-                            <div className={cls.logoBox}>
-                                <Icon Svg={AtomIcon} />
-                            </div>
-
-                            <VStack gap={4}>
+                            <HStack
+                                gap={16}
+                                className={cls.brandHead}
+                            >
+                                <div className={cls.logoBox}>
+                                    <Icon Svg={AtomIcon} />
+                                </div>
                                 <Text
                                     title={t('ATOM.BIM')}
+                                    text={t('BIM-стандарты, инструкции и библиотека знаний в одном окне.')}
                                     size="m"
                                     bold
+                                    className={cls.brandText}
                                 />
-                                <Text
-                                    text={t('Цифровая среда для BIM-стандартов, инструкций и базы знаний.')}
-                                    size="s"
-                                    className={cls.muted}
-                                />
-                            </VStack>
-                        </HStack>
+                            </HStack>
 
-                        <Text
-                            text={t(
-                                'Платформа объединяет требования, библиотеку материалов, этапы моделирования, инструкции и обучающие материалы для BIM-команды.',
-                            )}
-                            size="s"
-                            className={cls.description}
-                        />
-
-                        <HStack
-                            gap={16}
-                            wrap="wrap"
-                            className={cls.badges}
-                        >
-                            <span className={cls.badge}>BIM</span>
-                            <span className={cls.badge}>EIR</span>
-                            <span className={cls.badge}>24/7</span>
-                        </HStack>
-                    </VStack>
-
-                    <VStack
-                        gap={16}
-                        className={cls.column}
-                    >
-                        <Text
-                            title={t('Разделы')}
-                            size="m"
-                            bold
-                        />
+                            <Text
+                                text={t(
+                                    'Главная площадка для навигации по EIR, инструкциям, видеоматериалам, библиотеке и внутренним тестам команды.',
+                                )}
+                                size="s"
+                                className={cls.brandDescription}
+                            />
+                        </VStack>
 
                         <VStack
                             gap={16}
-                            className={cls.linkList}
+                            className={cls.linksColumn}
                         >
-                            {footerItemsList.map((item) => (
+                            <Text
+                                title={t('Быстрые переходы')}
+                                size="s"
+                                bold
+                                className={cls.columnTitle}
+                            />
+
+                            <HStack
+                                gap={16}
+                                wrap="wrap"
+                                className={cls.quickLinks}
+                            >
+                                {navigationItems.map((item) => (
+                                    <AppLink
+                                        key={item.path}
+                                        to={item.path}
+                                        className={cls.quickLink}
+                                    >
+                                        <Text
+                                            text={t(item.text)}
+                                            size="s"
+                                            className={cls.quickLinkText}
+                                        />
+                                    </AppLink>
+                                ))}
+                            </HStack>
+                        </VStack>
+
+                        <VStack
+                            gap={16}
+                            className={cls.contactsColumn}
+                        >
+                            <Text
+                                title={t('Контакты')}
+                                size="s"
+                                bold
+                                className={cls.columnTitle}
+                            />
+                            <Text
+                                text={t('Екатеринбург, ул. Белинского, 39')}
+                                size="s"
+                                className={cls.contactText}
+                            />
+                            <Text
+                                text={t('АО «Корпорация «АТОМСТРОЙКОМПЛЕКС»')}
+                                size="s"
+                                className={cls.contactText}
+                            />
+                            {companyLink && (
                                 <AppLink
-                                    key={item.path}
-                                    to={item.path}
-                                    className={cls.footerLink}
+                                    target="_blank"
+                                    to={companyLink.path}
+                                    className={cls.companyLink}
                                 >
                                     <HStack gap={8}>
-                                        <span>{t(item.text)}</span>
-                                        {item.Icon && (
+                                        <Text
+                                            text={t(companyLink.text)}
+                                            size="s"
+                                            bold
+                                            variant="accent"
+                                        />
+                                        {companyLink.Icon && (
                                             <Icon
-                                                Svg={item.Icon}
+                                                Svg={companyLink.Icon}
                                                 className={cls.linkIcon}
                                             />
                                         )}
                                     </HStack>
                                 </AppLink>
-                            ))}
+                            )}
                         </VStack>
-                    </VStack>
+                    </div>
 
-                    <VStack
-                        gap={16}
-                        className={cls.column}
-                    >
-                        <Text
-                            title={t('Документы')}
-                            size="m"
-                            bold
-                        />
-
-                        <VStack
-                            gap={16}
-                            className={cls.linkList}
-                        >
-                            <AppLink
-                                target="_blank"
-                                to="https://atom-bim.ru/Docum/%D0%A1%D0%BE%D0%B3%D0%BB%D0%B0%D1%88%D0%B5%D0%BD%D0%B8%D0%B5_%D0%BE%D0%B1_%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.pdf"
-                                className={cls.footerLink}
-                            >
-                                {t('Соглашение об использовании сайта')}
-                            </AppLink>
-
-                            <AppLink
-                                target="_blank"
-                                to="https://atom-bim.ru/Docum/%D0%A1%D0%BE%D0%B3%D0%BB%D0%B0%D1%88%D0%B5%D0%BD%D0%B8%D0%B5_%D0%BE%D0%B1_%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.pdf"
-                                className={cls.footerLink}
-                            >
-                                {t('Политика обработки персональных данных')}
-                            </AppLink>
-
-                            <AppLink
-                                target="_blank"
-                                to="https://atom-bim.ru/"
-                                className={cls.footerLink}
-                            >
-                                {t('Официальный сайт')}
-                            </AppLink>
-                        </VStack>
-                    </VStack>
-
-                    <VStack
-                        gap={16}
-                        className={cls.column}
-                    >
-                        <Text
-                            title={t('Контакты')}
-                            size="m"
-                            bold
-                        />
-
-                        <VStack gap={16}>
-                            <Text
-                                text={t('Екатеринбург, ул. Белинского, 39')}
-                                size="s"
-                                className={cls.muted}
-                            />
-                            <Text
-                                text={t('АО «Корпорация «АТОМСТРОЙКОМПЛЕКС»')}
-                                size="s"
-                                className={cls.muted}
-                            />
-                        </VStack>
-
-                        <AppLink
-                            target="_blank"
-                            to="https://atom-bim.ru/"
-                        >
-                            <Button variant="outline">{t('Перейти на сайт компании')}</Button>
-                        </AppLink>
-                    </VStack>
-                </div>
-
-                <div className={cls.divider} />
-
-                <Text
-                    className={cls.legal}
-                    text={t(
-                        'Любые материалы, файлы и сервисы, содержащиеся на сайте, не могут быть воспроизведены полностью или частично без предварительного письменного разрешения компании, за исключением случаев, предусмотренных правилами использования сайта.',
-                    )}
-                />
-
-                <HStack
-                    max
-                    justify="between"
-                    wrap="wrap"
-                    className={cls.bottom}
-                >
-                    <Text
-                        text={t('© АО «Корпорация «АТОМСТРОЙКОМПЛЕКС», 2024')}
-                        size="s"
-                        className={cls.bottomText}
-                    />
+                    <div className={cls.divider} />
 
                     <HStack
-                        gap={24}
+                        max
+                        justify="between"
                         wrap="wrap"
-                        className={cls.bottomNav}
+                        className={cls.bottom}
                     >
-                        <AppLink
-                            target="_blank"
-                            to="https://atom-bim.ru/Docum/%D0%A1%D0%BE%D0%B3%D0%BB%D0%B0%D1%88%D0%B5%D0%BD%D0%B8%D0%B5_%D0%BE%D0%B1_%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.pdf"
-                            className={cls.bottomLink}
-                        >
-                            {t('Соглашение')}
-                        </AppLink>
+                        <Text
+                            text={t('© АО «Корпорация «АТОМСТРОЙКОМПЛЕКС», 2024')}
+                            size="s"
+                            className={cls.bottomText}
+                        />
 
-                        <AppLink
-                            target="_blank"
-                            to="https://atom-bim.ru/Docum/%D0%A1%D0%BE%D0%B3%D0%BB%D0%B0%D1%88%D0%B5%D0%BD%D0%B8%D0%B5_%D0%BE%D0%B1_%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.pdf"
-                            className={cls.bottomLink}
+                        <HStack
+                            gap={24}
+                            wrap="wrap"
+                            className={cls.bottomNav}
                         >
-                            {t('Политика данных')}
-                        </AppLink>
-
-                        <AppLink
-                            target="_blank"
-                            to="https://atom-bim.ru/"
-                            className={cls.bottomLink}
-                        >
-                            {t('atom-bim.ru')}
-                        </AppLink>
+                            {legalLinks.map((item) => (
+                                <AppLink
+                                    key={item.text}
+                                    target="_blank"
+                                    to={item.to}
+                                    className={cls.bottomLink}
+                                >
+                                    <Text
+                                        text={t(item.text)}
+                                        size="s"
+                                        className={cls.bottomLinkText}
+                                    />
+                                </AppLink>
+                            ))}
+                        </HStack>
                     </HStack>
-                </HStack>
+                </div>
             </div>
         </footer>
     );

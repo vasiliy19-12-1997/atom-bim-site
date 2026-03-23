@@ -19,6 +19,7 @@ interface SidebarProps {
 }
 
 const MOBILE_BREAKPOINT = 640;
+const TABLET_BREAKPOINT = 900;
 
 export const Sidebar = memo(({ className }: SidebarProps) => {
     const { t } = useTranslation();
@@ -28,19 +29,24 @@ export const Sidebar = memo(({ className }: SidebarProps) => {
     const { pathname } = useLocation();
 
     useEffect(() => {
-        const mediaQuery = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`);
+        const mobileQuery = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`);
+        const tabletQuery = window.matchMedia(`(max-width: ${TABLET_BREAKPOINT}px)`);
 
-        const handleChange = (event: MediaQueryListEvent | MediaQueryList) => {
-            if (!event.matches) {
+        const syncSidebarState = () => {
+            setCollapsed(tabletQuery.matches && !mobileQuery.matches);
+
+            if (!mobileQuery.matches) {
                 setMobileOpened(false);
             }
         };
 
-        handleChange(mediaQuery);
-        mediaQuery.addEventListener('change', handleChange);
+        syncSidebarState();
+        mobileQuery.addEventListener('change', syncSidebarState);
+        tabletQuery.addEventListener('change', syncSidebarState);
 
         return () => {
-            mediaQuery.removeEventListener('change', handleChange);
+            mobileQuery.removeEventListener('change', syncSidebarState);
+            tabletQuery.removeEventListener('change', syncSidebarState);
         };
     }, []);
 
@@ -123,18 +129,6 @@ export const Sidebar = memo(({ className }: SidebarProps) => {
                             size={collapsed ? 34 : 52}
                             className={cls.appLogo}
                         />
-
-                        <button
-                            type="button"
-                            className={cls.mobileCloseButton}
-                            onClick={onCloseMobileSidebar}
-                            aria-label={t('Закрыть боковую панель')}
-                        >
-                            <Icon
-                                Svg={CloseIcon}
-                                clickable={false}
-                            />
-                        </button>
                     </HStack>
 
                     <VStack

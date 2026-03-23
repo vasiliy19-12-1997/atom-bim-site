@@ -74,44 +74,23 @@
 
 @media (max-width: 900px) {
     .MainLayout {
-        /* stylelint-disable-next-line string-quotes */
-        grid-template:
-            "sidebar rightbar" auto
-            "content content" 1fr
-            "footer footer" auto
-            / minmax(0, 1fr) auto;
-        row-gap: 16px;
+        grid-template-columns: 96px minmax(0, 1fr) 72px;
+        column-gap: 12px;
     }
 
     .content,
     .footer {
         max-width: none;
         width: 100%;
-        padding-inline: 16px;
-    }
-
-    .content {
-        padding-top: 0;
-    }
-
-    .sidebar,
-    .rightbar {
-        position: static;
-        height: auto;
+        padding-inline: 12px;
     }
 
     .sidebar {
-        padding: 16px 0 0 16px;
-        max-width: none;
+        padding: 16px 0 16px 12px;
     }
 
     .rightbar {
-        padding: 16px 16px 0 0;
-        align-items: flex-end;
-    }
-
-    .toolbar {
-        display: none;
+        padding: 16px 12px 16px 0;
     }
 }
 
@@ -120,7 +99,6 @@
         /* stylelint-disable-next-line string-quotes */
         grid-template:
             "rightbar" auto
-            "sidebar" auto
             "content" 1fr
             "footer" auto
             / minmax(0, 1fr);
@@ -132,16 +110,31 @@
         width: 100%;
     }
 
-    .sidebar,
-    .rightbar,
+    .sidebar {
+        position: static;
+        height: auto;
+        width: 0;
+        padding: 0;
+        overflow: visible;
+    }
+
+    .rightbar {
+        position: static;
+        height: auto;
+        padding: 12px 12px 0;
+    }
+
     .content,
     .footer {
         padding-inline: 12px;
     }
 
-    .rightbar,
-    .sidebar {
-        padding-top: 12px;
+    .content {
+        padding-top: 0;
+    }
+
+    .toolbar {
+        display: none;
     }
 
     .footer {

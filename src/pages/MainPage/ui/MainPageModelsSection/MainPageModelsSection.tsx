@@ -7,6 +7,7 @@ import { VStack, HStack } from '@/shared/ui/redesigned/Stack';
 import { modelsSections } from '../../lib/const/modelsSections';
 import { Text } from '@/shared/ui/redesigned/Text';
 import { classNames } from '@/shared/lib/classNames/classNames';
+import { AppLink } from '@/shared/ui/redesigned/AppLink';
 
 interface MainPageModelsSectionProps {
     className?: string;
@@ -46,20 +47,27 @@ export const MainPageModelsSection = memo((props: MainPageModelsSectionProps) =>
                                 className={cls.modelCard}
                                 padding="24"
                             >
-                                <VStack gap={16}>
+                                <VStack
+                                    max
+                                    gap={16}
+                                    className={cls.modelCardInner}
+                                >
                                     <Text
                                         title={section.title}
                                         size="m"
                                         bold
+                                        className={cls.modelTitle}
                                     />
                                     <Text
                                         text={section.description}
                                         size="s"
+                                        className={cls.modelDescription}
                                     />
 
                                     <HStack
                                         gap={16}
                                         wrap="wrap"
+                                        className={cls.stats}
                                     >
                                         {section.stats.map((stat) => (
                                             <Card
@@ -67,21 +75,35 @@ export const MainPageModelsSection = memo((props: MainPageModelsSectionProps) =>
                                                 padding="16"
                                                 border="partial_round"
                                                 variant="light"
+                                                className={cls.statCard}
                                             >
                                                 <Text
                                                     text={`${stat.label}: ${stat.value}`}
                                                     size="s"
+                                                    className={cls.statText}
                                                 />
                                             </Card>
                                         ))}
                                     </HStack>
+
+                                    <AppLink
+                                        to={section.path}
+                                        className={cls.modelLink}
+                                    >
+                                        <Text
+                                            text={t(section.linkText)}
+                                            size="s"
+                                            bold
+                                            variant="accent"
+                                        />
+                                    </AppLink>
                                 </VStack>
                             </Card>
                             <AppImage
                                 className={cls.image}
                                 src={section.img}
-                                width={340}
-                                height={340}
+                                width={380}
+                                height={380}
                             />
                         </HStack>
                     );

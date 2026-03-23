@@ -1,46 +1,37 @@
 .FooterContent {
-    position: relative;
-    overflow: hidden;
     width: 100%;
-    padding: 56px 24px 32px;
-    background: linear-gradient(180deg, var(--light-bg-redesign), transparent 38%), var(--color-footer-bg);
-    border-top: 1px solid var(--color-border);
-}
-
-.glow {
-    position: absolute;
-    top: -80px;
-    right: -40px;
-    width: 260px;
-    height: 260px;
-    border-radius: 50%;
-    background: var(--light-bg-redesign);
-    opacity: 0.25;
-    filter: blur(70px);
-    pointer-events: none;
+    padding: 24px 20px 0;
 }
 
 .container {
-    position: relative;
-    z-index: 1;
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
 }
 
-.grid {
+.surface {
+    border: 1px solid var(--color-border);
+    border-radius: 32px;
+    padding: 28px;
+    background: linear-gradient(180deg, var(--light-bg-redesign), transparent 42%), var(--card-bg);
+    box-shadow: 0 14px 36px rgb(0 0 0 / 6%);
+}
+
+.topRow {
     display: grid;
-    grid-template-columns: 1.3fr 1fr 1fr 1fr;
-    gap: 32px;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(260px, 0.8fr);
+    gap: 24px;
     align-items: start;
 }
 
-.brandColumn {
+.brandColumn,
+.linksColumn,
+.contactsColumn {
     min-width: 0;
 }
 
 .brandHead {
-    align-items: center;
+    align-items: flex-start;
 }
 
 .logoBox {
@@ -51,55 +42,58 @@
     justify-content: center;
     border: 1px solid var(--color-border);
     border-radius: 18px;
-    background: var(--card-bg);
+    background: var(--bg-redesign);
     box-shadow: 0 10px 24px rgb(0 0 0 / 6%);
     flex-shrink: 0;
 }
 
-.column {
-    min-width: 0;
+.brandText h2 {
+    margin-bottom: 4px;
 }
 
-.description {
+.brandText p,
+.brandDescription p,
+.contactText p,
+.bottomText p,
+.bottomLinkText p {
     color: var(--hint-redesign);
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
-.muted {
-    color: var(--hint-redesign);
+.brandDescription p {
+    max-width: 420px;
 }
 
-.badges {
-    margin-top: 4px;
+.columnTitle h3 {
+    letter-spacing: 0.02em;
 }
 
-.badge {
+.quickLinks {
+    align-items: flex-start;
+}
+
+.quickLink {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 12px;
+    text-decoration: none;
+}
+
+.quickLinkText {
+    padding: 10px 14px;
     border-radius: 999px;
     border: 1px solid var(--color-border);
-    background: var(--card-bg);
-    color: var(--text-redesign);
-    font-size: 12px;
-    line-height: 1;
+    background: var(--bg-redesign);
+    transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
 }
 
-.linkList {
-    width: 100%;
+.quickLink:hover .quickLinkText {
+    transform: translateY(-1px);
+    border-color: var(--accent-redesign);
+    background: var(--light-bg-redesign);
 }
 
-.footerLink {
-    color: var(--text-redesign);
+.companyLink,
+.bottomLink {
     text-decoration: none;
-    transition: color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
-    width: fit-content;
-}
-
-.footerLink:hover {
-    color: var(--accent-redesign);
-    transform: translateX(2px);
 }
 
 .linkIcon {
@@ -107,55 +101,59 @@
 }
 
 .divider {
-    margin: 32px 0 20px;
+    margin: 24px 0 18px;
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--color-border), transparent);
 }
 
-.legal {
-    max-width: 920px;
-    color: var(--hint-redesign);
-    line-height: 1.6;
-}
-
 .bottom {
-    margin-top: 24px;
     gap: 16px;
     align-items: center;
-}
-
-.bottomText {
-    color: var(--hint-redesign);
 }
 
 .bottomNav {
     align-items: center;
 }
 
-.bottomLink {
-    color: var(--hint-redesign);
-    text-decoration: none;
+.bottomLinkText p {
     transition: color 0.2s ease;
 }
 
-.bottomLink:hover {
+.companyLink:hover p,
+.bottomLink:hover .bottomLinkText p {
     color: var(--accent-redesign);
 }
 
-@media (max-width: 1100px) {
-    .grid {
+@media (max-width: 980px) {
+    .topRow {
         grid-template-columns: 1fr 1fr;
+    }
+
+    .brandColumn {
+        grid-column: 1 / -1;
     }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 680px) {
     .FooterContent {
-        padding: 44px 20px 28px;
+        padding: 16px 12px 0;
     }
 
-    .grid {
+    .surface {
+        padding: 22px 18px;
+        border-radius: 24px;
+    }
+
+    .topRow {
         grid-template-columns: 1fr;
-        gap: 28px;
+        gap: 20px;
+    }
+
+    .brandText h2,
+    .brandDescription p,
+    .quickLinkText p,
+    .contactText p {
+        line-height: 1.5;
     }
 
     .bottom {

@@ -102,48 +102,41 @@
 }
 
 .mobileMenuButton,
-.mobileOverlay,
-.mobileCloseButton {
+.mobileOverlay {
     display: none;
 }
 
 @media (max-width: 900px) {
-    .SidebarRedesign,
-    .collapsedRedesign {
-        max-width: none;
-        width: 100%;
+    .SidebarRedesign {
+        max-width: 96px;
     }
 
-    .inner {
-        padding: 16px;
+    .collapsedRedesign {
+        max-width: 96px;
+    }
+
+    .inner,
+    .collapsedRedesign .inner {
+        padding: 16px 10px;
     }
 
     .logoWrapper {
-        justify-content: flex-start;
-        padding-right: 48px;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
     }
 
     .items {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 10px;
-    }
-
-    .footerControls {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
+        gap: 6px;
     }
 
     .collapsedBtn {
-        top: 18px;
-        right: 18px;
+        right: 50%;
+        top: auto;
+        bottom: -18px;
+        transform: translateX(50%);
     }
 
-    .collapsedRedesign .items {
-        grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+    .collapsedBtn:hover {
+        transform: translateX(50%);
     }
 }
 
@@ -221,27 +214,9 @@
     }
 
     .logoWrapper {
-        justify-content: flex-start;
-        align-items: center;
         min-height: 60px;
         margin-bottom: 12px;
-        padding-right: 44px;
-    }
-
-    .mobileCloseButton {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 36px;
-        height: 36px;
-        border: 1px solid rgb(255 255 255 / 16%);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgb(255 255 255 / 6%);
-        color: var(--text-redesign);
+        padding-right: 0;
     }
 
     .items,

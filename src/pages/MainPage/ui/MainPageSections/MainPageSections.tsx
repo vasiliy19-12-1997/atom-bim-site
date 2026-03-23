@@ -9,6 +9,7 @@ import { sectionsArrText } from '../../lib/const/sections';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import inforIcon from '@/shared/assets/icons/new/Information 24px.svg';
 import { Icon } from '@/shared/ui/redesigned/Icon';
+import { AppLink } from '@/shared/ui/redesigned/AppLink';
 
 interface MainPageSectionsProps {
     className?: string;
@@ -41,42 +42,56 @@ export const MainPageSections = memo((props: MainPageSectionsProps) => {
                 className={classNames(cls.MainPageSections, {}, [])}
             >
                 {sectionsArrText.map((section) => (
-                    <Card
-                        max
-                        padding="0"
-                        border="partial_round"
+                    <AppLink
                         key={section.name}
-                        className={cls.card}
+                        to={section.path}
+                        className={cls.cardLink}
                     >
-                        <VStack
+                        <Card
                             max
-                            gap={16}
-                            className={cls.textWrapper}
+                            padding="0"
+                            border="partial_round"
+                            className={cls.card}
                         >
-                            <Text
-                                title={section.name}
-                                size="m"
-                                bold
-                            />
-                            <Text
-                                text={section.text}
-                                size="s"
-                            />
-                        </VStack>
-                        <HStack
-                            className={cls.imgWrapper}
-                            max
-                        >
-                            <Icon
-                                Svg={inforIcon}
-                                className={cls.icon}
-                            />
-                            <AppImage
-                                src={section.img}
-                                className={cls.img}
-                            />
-                        </HStack>
-                    </Card>
+                            <VStack
+                                max
+                                gap={16}
+                                className={cls.textWrapper}
+                            >
+                                <Text
+                                    title={section.name}
+                                    size="m"
+                                    bold
+                                    className={cls.cardTitle}
+                                />
+                                <Text
+                                    text={section.text}
+                                    size="s"
+                                    className={cls.cardDescription}
+                                />
+                                <Text
+                                    text={t(section.linkText)}
+                                    size="s"
+                                    bold
+                                    variant="accent"
+                                    className={cls.cardAction}
+                                />
+                            </VStack>
+                            <HStack
+                                className={cls.imgWrapper}
+                                max
+                            >
+                                <Icon
+                                    Svg={inforIcon}
+                                    className={cls.icon}
+                                />
+                                <AppImage
+                                    src={section.img}
+                                    className={cls.img}
+                                />
+                            </HStack>
+                        </Card>
+                    </AppLink>
                 ))}
             </HStack>
         </section>
