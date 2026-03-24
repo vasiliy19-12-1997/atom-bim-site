@@ -1,3 +1,15 @@
 .LibraryPage {
-
+    display: flex;
 }
+
+.Templates {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media (width <= 767px) {
+}
+@media (max-width: 1024px) {
+}
+@media (width >= 1024px) {
+} ;
