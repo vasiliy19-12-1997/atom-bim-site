@@ -74,3 +74,31 @@
         font-weight: 700;
     }
 }
+
+@media (width <=1024px) {
+    .size_m {
+        .title {
+            font: var(--font-m-redesign);
+        }
+        .text {
+            font: var(--font-s-redesign);
+        }
+    }
+
+    .size_l {
+        .title {
+            font: var(--font-l-redesign);
+        }
+        .text {
+            font: var(--font-m-redesign);
+        }
+    }
+    .size_s {
+        .title {
+            font: var(--font-s-redesign);
+        }
+        .text {
+            font: var(--font-xs-redesign);
+        }
+    }
+}

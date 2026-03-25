@@ -13,3 +13,27 @@
         opacity: 0.7;
     }
 }
+.size_m {
+    font: var(--font-m-redesign);
+}
+
+.size_l {
+    font: var(--font-l-redesign);
+}
+
+.size_s {
+    font: var(--font-s-redesign);
+}
+
+@media (width<=1024px) {
+    .size_m {
+        font: var(--font-s-redesign);
+    }
+
+    .size_l {
+        font: var(--font-m-redesign);
+    }
+    .size_s {
+        font: var(--font-s-redesign);
+    }
+}

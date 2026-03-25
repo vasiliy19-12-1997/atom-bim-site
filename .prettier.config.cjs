@@ -1,10 +1,9 @@
 module.exports = {
-  semi: true,
-  singleQuote: false,
-  trailingComma: "all",
-  printWidth: 100,
-  tabWidth: 2,
-  bracketSpacing: true,
-  arrowParens: "always",
-  // jsxSingleQuote: true, // если любишь одинарные в JSX
+    semi: true,
+    singleQuote: false,
+    trailingComma: 'all',
+    printWidth: 100,
+    tabWidth: 2,
+    bracketSpacing: true,
+    arrowParens: 'always',
 };
