@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import ChevronDownIcon from '@/shared/assets/icons/new/Chevron Down 24px.svg';
 import ChevronRightIcon from '@/shared/assets/icons/new/Chevron Right 24px.svg';
 import { classNames } from '@/shared/lib/classNames/classNames';
-import { Icon } from '@/shared/ui/Icon/Icon';
 import { EIRNavigationSection } from '../lib/types';
 import cls from './EIRSidebarTree.module.scss';
+import { Icon } from '@/shared/ui/redesigned/Icon';
 
 interface EIRSidebarTreeItemProps {
     node: EIRNavigationSection;
@@ -16,13 +16,7 @@ interface EIRSidebarTreeItemProps {
 }
 
 export const EIRSidebarTreeItem = memo((props: EIRSidebarTreeItemProps) => {
-    const {
-        node,
-        activeSlug,
-        expandedSet,
-        onToggle,
-        onSelect,
-    } = props;
+    const { node, activeSlug, expandedSet, onToggle, onSelect } = props;
     const { t } = useTranslation();
     const hasChildren = node.children.length > 0;
     const isExpanded = expandedSet.has(node.slug);
@@ -65,7 +59,12 @@ export const EIRSidebarTreeItem = memo((props: EIRSidebarTreeItemProps) => {
                         />
                     </button>
                 )}
-                {!hasChildren && <span className={cls.toggleSpacer} aria-hidden="true" />}
+                {!hasChildren && (
+                    <span
+                        className={cls.toggleSpacer}
+                        aria-hidden="true"
+                    />
+                )}
                 {isContainer ? (
                     <span
                         className={classNames(cls.link, {

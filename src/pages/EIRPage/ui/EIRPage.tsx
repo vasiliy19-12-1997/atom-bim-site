@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useGetEirDocumentQuery } from '@/entities/EIR';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { Page } from '@/shared/ui/deprecated/Page';
-import { Sceleton } from '@/shared/ui/Sceleton/Sceleton';
 import { EIRBreadcrumbs } from './EIRBreadcrumbs/EIRBreadcrumbs';
 import { EIRSectionContent } from './EIRSectionContent/EIRSectionContent';
 import { EIRSectionPagination } from './EIRSectionPagination/EIRSectionPagination';
@@ -12,6 +11,7 @@ import { EIRSidebarTree } from './EIRSidebarTree/EIRSidebarTree';
 import { useEirNavigation } from './lib/useEirNavigation';
 import { useEirSections } from './lib/useEirSections';
 import cls from './EIRPage.module.scss';
+import { Sceleton } from '@/shared/ui/redesigned/Sceleton';
 
 interface EIRPageProps {
     className?: string;
@@ -22,34 +22,17 @@ const EIRPage = memo((props: EIRPageProps) => {
     const { t } = useTranslation();
     const [mobileSidebarOpened, setMobileSidebarOpened] = useState(false);
 
-    const {
-        data: eirDocument,
-        isLoading,
-        isError,
-    } = useGetEirDocumentQuery();
+    const { data: eirDocument, isLoading, isError } = useGetEirDocumentQuery();
 
-    const {
-        preparedHtml,
-        tree,
-        flatSections,
-        sectionsBySlug,
-        defaultSectionSlug,
-    } = useEirSections(eirDocument);
+    const { preparedHtml, tree, flatSections, sectionsBySlug, defaultSectionSlug } = useEirSections(eirDocument);
 
-    const {
-        activeSection,
-        currentPath,
-        expandedSet,
-        previousSection,
-        nextSection,
-        selectSection,
-        toggleExpanded,
-    } = useEirNavigation({
-        tree,
-        flatSections,
-        sectionsBySlug,
-        defaultSectionSlug,
-    });
+    const { activeSection, currentPath, expandedSet, previousSection, nextSection, selectSection, toggleExpanded } =
+        useEirNavigation({
+            tree,
+            flatSections,
+            sectionsBySlug,
+            defaultSectionSlug,
+        });
 
     const handleSelectSection = (slug: string) => {
         selectSection(slug);
@@ -59,9 +42,7 @@ const EIRPage = memo((props: EIRPageProps) => {
     const currentSectionFragment = activeSection
         ? activeSection.fragmentHtml || preparedHtml.slice(activeSection.startIndex, activeSection.endIndex)
         : '';
-    const sidebarSections = tree.length === 1 && tree[0].isContainer
-        ? tree[0].children
-        : tree;
+    const sidebarSections = tree.length === 1 && tree[0].isContainer ? tree[0].children : tree;
     const mobileMenuTitle = activeSection?.title || eirDocument?.title || t('Contents');
 
     return (
@@ -78,7 +59,10 @@ const EIRPage = memo((props: EIRPageProps) => {
                     <span className={cls.mobileSidebarToggleValue}>{mobileMenuTitle}</span>
                 </button>
                 {mobileSidebarOpened && (
-                    <div id="eir-mobile-toc" className={cls.mobileSidebarPanel}>
+                    <div
+                        id="eir-mobile-toc"
+                        className={cls.mobileSidebarPanel}
+                    >
                         {sidebarSections.length ? (
                             <EIRSidebarTree
                                 nodes={sidebarSections}
@@ -106,9 +90,18 @@ const EIRPage = memo((props: EIRPageProps) => {
                 <main className={cls.articleColumn}>
                     {isLoading && (
                         <div className={cls.loadingState}>
-                            <Sceleton width="100%" height={28} />
-                            <Sceleton width="100%" height={180} />
-                            <Sceleton width="100%" height={280} />
+                            <Sceleton
+                                width="100%"
+                                height={28}
+                            />
+                            <Sceleton
+                                width="100%"
+                                height={180}
+                            />
+                            <Sceleton
+                                width="100%"
+                                height={280}
+                            />
                         </div>
                     )}
                     {!isLoading && isError && (
@@ -117,9 +110,7 @@ const EIRPage = memo((props: EIRPageProps) => {
                         </div>
                     )}
                     {!isLoading && !isError && !eirDocument && (
-                        <div className={cls.emptyState}>
-                            {t('EIR РґРѕРєСѓРјРµРЅС‚ РїСѓСЃС‚.')}
-                        </div>
+                        <div className={cls.emptyState}>{t('EIR РґРѕРєСѓРјРµРЅС‚ РїСѓСЃС‚.')}</div>
                     )}
                     {!isLoading && eirDocument && activeSection && (
                         <div className={cls.contentColumn}>

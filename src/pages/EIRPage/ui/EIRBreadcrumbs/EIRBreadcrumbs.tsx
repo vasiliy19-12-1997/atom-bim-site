@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { EIRBreadcrumb } from '@/entities/EIR';
 import { getRouteEir } from '@/shared/const/router';
 import { classNames } from '@/shared/lib/classNames/classNames';
-import { AppLink } from '@/shared/ui/AppLink/AppLink';
 import cls from './EIRBreadcrumbs.module.scss';
+import { AppLink } from '@/shared/ui/redesigned/AppLink';
 
 interface EIRBreadcrumbsProps {
     className?: string;

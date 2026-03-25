@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { InstructionArticle, InstructionTocItem } from '@/entities/Instruction';
 import { getRouteInstruction } from '@/shared/const/router';
 import { classNames } from '@/shared/lib/classNames/classNames';
-import { AppLink } from '@/shared/ui/AppLink/AppLink';
 import { prepareInstructionHtml } from '../lib/prepareInstructionHtml';
 import cls from './InstructionArticleView.module.scss';
+import { AppLink } from '@/shared/ui/redesigned/AppLink';
 
 interface InstructionArticleViewProps {
     className?: string;
@@ -28,8 +28,7 @@ export const InstructionArticleView = memo((props: InstructionArticleViewProps) 
             <h1 className={cls.title}>{article.title}</h1>
             {article.updatedAt && (
                 <p className={cls.updatedAt}>
-                    {t('Обновлено:')}{' '}
-                    {new Date(article.updatedAt).toLocaleDateString('ru-RU')}
+                    {t('Обновлено:')} {new Date(article.updatedAt).toLocaleDateString('ru-RU')}
                 </p>
             )}
             {article.kind === 'section' && (
@@ -49,9 +48,7 @@ export const InstructionArticleView = memo((props: InstructionArticleViewProps) 
                             ))}
                         </ul>
                     ) : (
-                        <p className={cls.sectionItemsEmpty}>
-                            {t('В этом разделе пока нет доступных инструкций.')}
-                        </p>
+                        <p className={cls.sectionItemsEmpty}>{t('В этом разделе пока нет доступных инструкций.')}</p>
                     )}
                 </section>
             )}

@@ -1,21 +1,17 @@
 import { memo, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-    InstructionTocItem,
-    useGetInstructionArticleQuery,
-    useGetInstructionTreeQuery,
-} from '@/entities/Instruction';
+import { InstructionTocItem, useGetInstructionArticleQuery, useGetInstructionTreeQuery } from '@/entities/Instruction';
 import { getRouteInstruction } from '@/shared/const/router';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { PAGE_ID, Page } from '@/shared/ui/deprecated/Page';
-import { Sceleton } from '@/shared/ui/Sceleton/Sceleton';
-import { Text, TextTheme } from '@/shared/ui/Text/Text';
 import { InstructionArticleView } from './InstructionArticleView/InstructionArticleView';
 import { InstructionBreadcrumbs } from './InstructionBreadcrumbs/InstructionBreadcrumbs';
 import { InstructionsSidebar } from './InstructionsSidebar/InstructionsSidebar';
 import { InstructionToc } from './InstructionToc/InstructionToc';
 import cls from './InstructionPage.module.scss';
+import { Sceleton } from '@/shared/ui/redesigned/Sceleton';
+import { Text } from '@/shared/ui/redesigned/Text';
 
 interface InstructionPageProps {
     className?: string;
@@ -92,11 +88,7 @@ const InstructionPage = memo((props: InstructionPageProps) => {
 
     const routeSlug = useMemo(() => getSlugFromPath(location.pathname), [location.pathname]);
 
-    const {
-        data: tree = [],
-        isLoading: isTreeLoading,
-        error: treeError,
-    } = useGetInstructionTreeQuery();
+    const { data: tree = [], isLoading: isTreeLoading, error: treeError } = useGetInstructionTreeQuery();
     const firstSectionSlug = useMemo(() => findFirstSection(tree), [tree]);
     const knownSlugs = useMemo(() => collectKnownSlugs(tree), [tree]);
     const hasKnownRouteSlug = routeSlug ? knownSlugs.has(routeSlug) : false;
@@ -200,7 +192,7 @@ const InstructionPage = memo((props: InstructionPageProps) => {
                     )}
                     {hasError && (
                         <Text
-                            theme={TextTheme.ERROR}
+                            variant="error"
                             title={t('Ошибка загрузки инструкций')}
                             text={errorMessage}
                         />

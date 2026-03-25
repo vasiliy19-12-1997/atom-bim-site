@@ -1,10 +1,10 @@
 import { memo, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { classNames } from '@/shared/lib/classNames/classNames';
-import { Button, ButtonTheme } from '@/shared/ui/Button/Button';
 import { paginateEirHtml } from '../lib/paginateEirHtml';
 import { EIRNavigationSection } from '../lib/types';
 import cls from './EIRSectionContent.module.scss';
+import { Button } from '@/shared/ui/redesigned/Button';
 
 interface EIRSectionContentProps {
     className?: string;
@@ -15,13 +15,7 @@ interface EIRSectionContentProps {
 }
 
 export const EIRSectionContent = memo((props: EIRSectionContentProps) => {
-    const {
-        className,
-        section,
-        path,
-        fragmentHtml,
-        updatedAt,
-    } = props;
+    const { className, section, path, fragmentHtml, updatedAt } = props;
     const { t } = useTranslation();
 
     const pages = useMemo(() => paginateEirHtml(fragmentHtml), [fragmentHtml]);
@@ -41,9 +35,7 @@ export const EIRSectionContent = memo((props: EIRSectionContentProps) => {
     return (
         <article className={classNames(cls.EIRSectionContent, {}, [className])}>
             <div className={cls.meta}>
-                <p className={cls.path}>
-                    {path.map((item) => item.title).join(' / ')}
-                </p>
+                <p className={cls.path}>{path.map((item) => item.title).join(' / ')}</p>
                 {updatedAt && (
                     <p className={cls.updatedAt}>
                         {t('Updated:')} {new Date(updatedAt).toLocaleDateString('ru-RU')}
@@ -57,9 +49,12 @@ export const EIRSectionContent = memo((props: EIRSectionContentProps) => {
                 dangerouslySetInnerHTML={{ __html: pageHtml }}
             />
             {pages.length > 1 && (
-                <nav className={cls.pageNavigation} aria-label={t('Section pages')}>
+                <nav
+                    className={cls.pageNavigation}
+                    aria-label={t('Section pages')}
+                >
                     <Button
-                        theme={ButtonTheme.OUTLINE}
+                        variant="outline"
                         disabled={pageIndex === 0}
                         onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
                     >
@@ -69,7 +64,7 @@ export const EIRSectionContent = memo((props: EIRSectionContentProps) => {
                         {pageIndex + 1} / {pages.length}
                     </span>
                     <Button
-                        theme={ButtonTheme.OUTLINE}
+                        variant="outline"
                         disabled={pageIndex === pages.length - 1}
                         onClick={() => setCurrentPage((prev) => Math.min(prev + 1, pages.length - 1))}
                     >

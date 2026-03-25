@@ -2,8 +2,8 @@ import { memo, useMemo, useState } from 'react';
 import { InstructionNavNode } from '@/entities/Instruction';
 import { getRouteInstruction } from '@/shared/const/router';
 import { classNames } from '@/shared/lib/classNames/classNames';
-import { AppLink } from '@/shared/ui/AppLink/AppLink';
 import cls from './InstructionsSidebarTree.module.scss';
+import { AppLink } from '@/shared/ui/redesigned/AppLink';
 
 interface InstructionsSidebarTreeProps {
     className?: string;
