@@ -53,7 +53,7 @@ export const fetchVideos = createAsyncThunk<Video[], fetchVideosProps, ThunkConf
                 search,
                 type: type === VideoType.ALL ? undefined : type,
             });
-            const response = await extra.api.get<Video[]>('/videos', {
+            const response = await extra.api.get<Video[]>('/api/videos/rutube', {
                 params,
             });
             if (!response.data) {

@@ -7,6 +7,7 @@ const https = require('https');
 const http = require('http');
 const { registerInstructionRoutes } = require('./instructions/instructions.routes');
 const { registerEirRoutes } = require('./eir/eir.routes');
+const { registerVideoRoutes } = require('./videos/videos.routes');
 
 const options = {
     key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
@@ -52,8 +53,9 @@ server.post('/login', (req, res) => {
 // eslint-disable-next-line
 server.use((req, res, next) => {
     const publicInstructionRoute = req.path.startsWith('/api/instructions') || req.path.startsWith('/instructions');
+    const publicVideoRoute = req.path.startsWith('/api/videos/rutube') || req.path.startsWith('/videos/rutube');
 
-    if (publicInstructionRoute) {
+    if (publicInstructionRoute || publicVideoRoute) {
         return next();
     }
 
@@ -66,6 +68,7 @@ server.use((req, res, next) => {
 
 registerInstructionRoutes(server);
 registerEirRoutes(server);
+registerVideoRoutes(server);
 server.use(router);
 
 // запуск сервера
