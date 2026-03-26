@@ -7,6 +7,12 @@ const DEFAULT_TIMEOUT = 8000;
 const MAX_PAGES = 200;
 const CHANNEL_VIDEOS_URL = 'https://rutube.ru/channel/36353169/videos/';
 
+
+const CACHE_TTL_MS = 5 * 60 * 1000;
+let cachedVideos: VideoDto[] | null = null;
+let cacheTimestamp = 0;
+let inFlightVideosPromise: Promise<VideoDto[]> | null = null;
+
 const VIDEO_ENDPOINTS = [
     'https://rutube.ru/api/video/person/36353169/',
     'https://rutube.ru/api/video/userchannel/36353169/',
@@ -275,26 +281,49 @@ const mapVideoCard = (card: RutubeCard, playlistTypeMap: Record<string, VideoDto
 };
 
 export const getRutubeVideos = async (): Promise<VideoDto[]> => {
-    const videoResponses = await Promise.allSettled(VIDEO_ENDPOINTS.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)));
+    const now = Date.now();
 
-    const apiCards = videoResponses
-        .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
-        .flatMap((result) => result.value);
-
-    const cards = apiCards.length > 0 ? apiCards : await getChannelVideosByHtml();
-
-    if (cards.length === 0) {
-        const errors = videoResponses
-            .filter((result): result is PromiseRejectedResult => result.status === 'rejected')
-            .map((result) => String(result.reason));
-
-        throw new Error(errors.join('; '));
+    if (cachedVideos && now - cacheTimestamp < CACHE_TTL_MS) {
+        return cachedVideos;
     }
 
-    const playlistTypeMap = await collectPlaylistTypeMap().catch(() => ({}));
-    const dedupedCards = Array.from(new Map(cards.map((card, index) => [String(card.id || `idx-${index}`), card])).values());
+    if (inFlightVideosPromise) {
+        return inFlightVideosPromise;
+    }
 
-    return dedupedCards.map((card, index) => mapVideoCard(card, playlistTypeMap, index));
+    inFlightVideosPromise = (async () => {
+        const videoResponses = await Promise.allSettled(VIDEO_ENDPOINTS.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)));
+
+        const apiCards = videoResponses
+            .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
+            .flatMap((result) => result.value);
+
+        const cards = apiCards.length > 0 ? apiCards : await getChannelVideosByHtml();
+
+        if (cards.length === 0) {
+            const errors = videoResponses
+                .filter((result): result is PromiseRejectedResult => result.status === 'rejected')
+                .map((result) => String(result.reason));
+
+            throw new Error(errors.join('; '));
+        }
+
+        const playlistTypeMap = await collectPlaylistTypeMap().catch(() => ({}));
+        const dedupedCards = Array.from(new Map(cards.map((card, index) => [String(card.id || `idx-${index}`), card])).values());
+
+        const videos = dedupedCards.map((card, index) => mapVideoCard(card, playlistTypeMap, index));
+
+        cachedVideos = videos;
+        cacheTimestamp = Date.now();
+
+        return videos;
+    })();
+
+    try {
+        return await inFlightVideosPromise;
+    } finally {
+        inFlightVideosPromise = null;
+    }
 };
 
 export const getFallbackVideos = (): VideoDto[] => {
