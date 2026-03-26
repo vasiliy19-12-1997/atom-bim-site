@@ -23,7 +23,7 @@ export const getVideos = async (params: QueryParams): Promise<VideoDto[]> => {
     let videos: VideoDto[] = [];
 
     try {
-        videos = await getRutubeVideos(page, limit);
+        videos = await getRutubeVideos();
     } catch {
         videos = getFallbackVideos();
     }

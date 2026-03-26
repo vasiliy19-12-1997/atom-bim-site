@@ -1,5 +1,3 @@
-import { IncomingMessage } from 'http';
-
 export interface VideoDto {
     id: string;
     title: string;
@@ -18,8 +16,21 @@ export type RutubeCard = {
     category?: string;
 };
 
-export type RutubeResponse = {
-    results?: RutubeCard[];
+export type RutubePlaylist = {
+    id?: string | number;
+    title?: string;
+    name?: string;
+    videos?: Array<{ id?: string | number } | string | number>;
+    video_ids?: Array<string | number>;
+    videos_url?: string;
+    video_url?: string;
+    api_url?: string;
+    absolute_url?: string;
+};
+
+export type RutubeListResponse<T> = {
+    results?: T[];
+    next?: string | null;
 };
 
 export type JsonServerRequest = {
@@ -34,5 +45,3 @@ export type JsonServerResponse = {
 export type JsonServerApp = {
     get: (path: string, handler: (req: JsonServerRequest, res: JsonServerResponse) => Promise<void> | void) => void;
 };
-
-export type HttpGet = (url: string) => Promise<IncomingMessage>;

@@ -1,12 +1,19 @@
 import fs from 'fs';
 import path from 'path';
 import { request as httpsRequest } from 'https';
-import { RutubeResponse, VideoDto } from './types';
+import { RutubeCard, RutubeListResponse, RutubePlaylist, VideoDto } from './types';
 
 const DEFAULT_TIMEOUT = 8000;
-const ENDPOINTS = [
+const MAX_PAGES = 200;
+
+const VIDEO_ENDPOINTS = [
     'https://rutube.ru/api/video/person/36353169/',
     'https://rutube.ru/api/video/userchannel/36353169/',
+];
+
+const PLAYLIST_ENDPOINTS = [
+    'https://rutube.ru/api/playlist/person/36353169/',
+    'https://rutube.ru/api/playlist/userchannel/36353169/',
 ];
 
 const fetchJson = async <T>(url: string): Promise<T> => new Promise((resolve, reject) => {
@@ -44,43 +51,188 @@ const fetchJson = async <T>(url: string): Promise<T> => new Promise((resolve, re
     request.end();
 });
 
-const mapResponseToVideos = (payload: RutubeResponse, page: number, limit: number): VideoDto[] => {
-    const cards = payload.results || [];
-
-    return cards.slice(0, limit).map((card, index) => {
-        const id = String(card.id || `rutube-${page}-${index}`);
-        const embedOrUrl = card.embed_url || card.video_url || card.absolute_url || '';
-        const link = embedOrUrl.startsWith('http') ? embedOrUrl : `https://rutube.ru${embedOrUrl}`;
-
-        return {
-            id,
-            title: card.title || `Видео ${id}`,
-            link,
-            type: 'VIDEO_INSTRUCTION',
-            section: 'COMMON',
-            software: 'REVIT',
-        };
-    });
-};
-
-export const getRutubeVideos = async (page: number, limit: number): Promise<VideoDto[]> => {
-    const queries = ENDPOINTS.map((endpoint) => fetchJson<RutubeResponse>(`${endpoint}?format=json&page=${page}`));
-    const results = await Promise.allSettled(queries);
-
-    const successful = results
-        .filter((item): item is PromiseFulfilledResult<RutubeResponse> => item.status === 'fulfilled')
-        .map((item) => mapResponseToVideos(item.value, page, limit))
-        .find((videos) => videos.length > 0);
-
-    if (successful) {
-        return successful;
+const normalizeApiUrl = (url: string): string => {
+    if (url.startsWith('http')) {
+        return url;
     }
 
-    const reasons = results
-        .filter((item): item is PromiseRejectedResult => item.status === 'rejected')
-        .map((item) => String(item.reason));
+    return `https://rutube.ru${url}`;
+};
 
-    throw new Error(reasons.join('; '));
+const appendFormatAndPage = (url: string, page: number): string => {
+    const divider = url.includes('?') ? '&' : '?';
+    return `${url}${divider}format=json&page=${page}`;
+};
+
+const fetchAllFromPagedEndpoint = async <T>(endpoint: string): Promise<T[]> => {
+    const allItems: T[] = [];
+
+    const fetchPage = async (page: number, nextUrl?: string | null): Promise<T[]> => {
+        if (page > MAX_PAGES) {
+            return [];
+        }
+
+        const url = nextUrl ? normalizeApiUrl(nextUrl) : appendFormatAndPage(endpoint, page);
+        const payload = await fetchJson<RutubeListResponse<T>>(url);
+        const current = payload.results || [];
+
+        if (current.length === 0) {
+            return [];
+        }
+
+        const nextItems = payload.next ? await fetchPage(page + 1, payload.next) : await fetchPage(page + 1);
+        return [...current, ...nextItems];
+    };
+
+    const items = await fetchPage(1);
+    allItems.push(...items);
+
+    return allItems;
+};
+
+const mapPlaylistNameToType = (name?: string): VideoDto['type'] => {
+    const normalized = (name || '').toLowerCase();
+
+    if (normalized.includes('плагин') || normalized.includes('plugin')) {
+        return 'PLUGINS';
+    }
+
+    if (normalized.includes('вебинар') || normalized.includes('webinar')) {
+        return 'WEBINARS';
+    }
+
+    return 'VIDEO_INSTRUCTION';
+};
+
+const mapVideoTitleToType = (title?: string): VideoDto['type'] => {
+    const normalized = (title || '').toLowerCase();
+
+    if (normalized.includes('плагин') || normalized.includes('plugin')) {
+        return 'PLUGINS';
+    }
+
+    if (normalized.includes('вебинар') || normalized.includes('webinar')) {
+        return 'WEBINARS';
+    }
+
+    return 'VIDEO_INSTRUCTION';
+};
+
+const extractPlaylistVideoIds = (playlist: RutubePlaylist): string[] => {
+    const fromVideoIds = (playlist.video_ids || []).map((id) => String(id));
+
+    const fromVideos = (playlist.videos || [])
+        .map((item) => {
+            if (typeof item === 'string' || typeof item === 'number') {
+                return String(item);
+            }
+
+            if (typeof item === 'object' && item && 'id' in item && item.id !== undefined) {
+                return String(item.id);
+            }
+
+            return '';
+        })
+        .filter(Boolean);
+
+    return [...fromVideoIds, ...fromVideos];
+};
+
+const buildPlaylistVideoEndpoints = (playlist: RutubePlaylist): string[] => {
+    const id = playlist.id ? String(playlist.id) : '';
+    const apiUrl = playlist.api_url ? normalizeApiUrl(playlist.api_url) : '';
+    const videosUrl = playlist.videos_url ? normalizeApiUrl(playlist.videos_url) : '';
+    const videoUrl = playlist.video_url ? normalizeApiUrl(playlist.video_url) : '';
+
+    const candidates = [
+        videosUrl,
+        videoUrl,
+        apiUrl ? `${apiUrl.replace(/\/$/, '')}/videos/` : '',
+        id ? `https://rutube.ru/api/playlist/custom/${id}/videos/` : '',
+        id ? `https://rutube.ru/api/playlist/${id}/videos/` : '',
+    ];
+
+    return candidates.filter(Boolean);
+};
+
+const collectPlaylistTypeMap = async (): Promise<Record<string, VideoDto['type']>> => {
+    const map: Record<string, VideoDto['type']> = {};
+
+    const playlistResponses = await Promise.allSettled(PLAYLIST_ENDPOINTS.map((endpoint) => fetchAllFromPagedEndpoint<RutubePlaylist>(endpoint)));
+
+    const playlists = playlistResponses
+        .filter((result): result is PromiseFulfilledResult<RutubePlaylist[]> => result.status === 'fulfilled')
+        .flatMap((result) => result.value);
+
+    const addToMap = (videoIds: string[], type: VideoDto['type']) => {
+        videoIds.forEach((videoId) => {
+            if (!map[videoId]) {
+                map[videoId] = type;
+            }
+        });
+    };
+
+    await Promise.all(playlists.map(async (playlist) => {
+        const type = mapPlaylistNameToType(playlist.title || playlist.name);
+
+        const inlineVideoIds = extractPlaylistVideoIds(playlist);
+        addToMap(inlineVideoIds, type);
+
+        if (inlineVideoIds.length > 0) {
+            return;
+        }
+
+        const endpoints = buildPlaylistVideoEndpoints(playlist);
+
+        const results = await Promise.allSettled(endpoints.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)));
+
+        const ids = results
+            .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
+            .flatMap((result) => result.value)
+            .map((video) => (video.id !== undefined ? String(video.id) : ''))
+            .filter(Boolean);
+
+        addToMap(ids, type);
+    }));
+
+    return map;
+};
+
+const mapVideoCard = (card: RutubeCard, playlistTypeMap: Record<string, VideoDto['type']>, index: number): VideoDto => {
+    const id = String(card.id || `rutube-${index}`);
+    const embedOrUrl = card.embed_url || card.video_url || card.absolute_url || '';
+    const link = embedOrUrl.startsWith('http') ? embedOrUrl : `https://rutube.ru${embedOrUrl}`;
+
+    return {
+        id,
+        title: card.title || `Видео ${id}`,
+        link,
+        type: playlistTypeMap[id] || mapVideoTitleToType(card.title),
+        section: 'COMMON',
+        software: 'REVIT',
+    };
+};
+
+export const getRutubeVideos = async (): Promise<VideoDto[]> => {
+    const videoResponses = await Promise.allSettled(VIDEO_ENDPOINTS.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)));
+
+    const cards = videoResponses
+        .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
+        .flatMap((result) => result.value);
+
+    if (cards.length === 0) {
+        const errors = videoResponses
+            .filter((result): result is PromiseRejectedResult => result.status === 'rejected')
+            .map((result) => String(result.reason));
+
+        throw new Error(errors.join('; '));
+    }
+
+    const playlistTypeMap = await collectPlaylistTypeMap().catch(() => ({}));
+
+    const dedupedCards = Array.from(new Map(cards.map((card, index) => [String(card.id || `idx-${index}`), card])).values());
+
+    return dedupedCards.map((card, index) => mapVideoCard(card, playlistTypeMap, index));
 };
 
 export const getFallbackVideos = (): VideoDto[] => {
