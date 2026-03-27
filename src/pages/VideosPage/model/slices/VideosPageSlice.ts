@@ -23,7 +23,7 @@ const VideosPageSlice = createSlice({
         page: 1,
         hasMore: true,
         _inited: false,
-        limit: 9,
+        limit: 8,
         order: 'asc',
         search: '',
         sort: VideoSortField.RELEVATION,
@@ -56,7 +56,7 @@ const VideosPageSlice = createSlice({
             if (view) {
                 state.view = view;
             }
-            state.limit = view === View.BIG ? 4 : 9;
+            state.limit = view === View.BIG ? 4 : 8;
             state._inited = true;
         },
     },
