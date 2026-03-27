@@ -7,6 +7,7 @@ import { ArticlePageTabs } from '@/features/ArticlePageTabs';
 import { ArticleType } from '@/entities/Article';
 import { Card } from '@/shared/ui/redesigned/Card';
 import { AppImage } from '@/shared/ui/redesigned/AppImage';
+import LibraryImage from '@/shared/assets/images/library.png';
 
 interface LibraryPageProps {
     className?: string;
@@ -28,13 +29,16 @@ const LibraryPage = memo((props: LibraryPageProps) => {
                     throw new Error('Function not implemented.');
                 }}
             />
+            <Text
+                size="m"
+                title={t('Шаблоны для Revit')}
+            />
             <section className={cls.Templates}>
-                <Text
-                    size="m"
-                    title={t('Шаблоны для Revit')}
-                />
                 <Card className={cls.templateCard}>
-                    <AppImage />
+                    <AppImage
+                        src={LibraryImage}
+                        style={{ width: '100px', height: '100px' }}
+                    />
                     <Text
                         bold
                         size="s"
@@ -42,7 +46,10 @@ const LibraryPage = memo((props: LibraryPageProps) => {
                     />
                 </Card>
                 <Card className={cls.templateCard}>
-                    <AppImage />
+                    <AppImage
+                        src={LibraryImage}
+                        style={{ width: '100px', height: '100px' }}
+                    />
                     <Text
                         bold
                         size="s"
@@ -50,7 +57,10 @@ const LibraryPage = memo((props: LibraryPageProps) => {
                     />
                 </Card>
                 <Card className={cls.templateCard}>
-                    <AppImage />
+                    <AppImage
+                        src={LibraryImage}
+                        style={{ width: '100px', height: '100px' }}
+                    />
                     <Text
                         bold
                         size="s"
@@ -58,7 +68,10 @@ const LibraryPage = memo((props: LibraryPageProps) => {
                     />
                 </Card>
                 <Card className={cls.templateCard}>
-                    <AppImage />
+                    <AppImage
+                        src={LibraryImage}
+                        style={{ width: '100px', height: '100px' }}
+                    />
                     <Text
                         bold
                         size="s"
@@ -66,7 +79,10 @@ const LibraryPage = memo((props: LibraryPageProps) => {
                     />
                 </Card>
                 <Card className={cls.templateCard}>
-                    <AppImage />
+                    <AppImage
+                        src={LibraryImage}
+                        style={{ width: '100px', height: '100px' }}
+                    />
                     <Text
                         bold
                         size="s"
@@ -74,7 +90,10 @@ const LibraryPage = memo((props: LibraryPageProps) => {
                     />
                 </Card>
                 <Card className={cls.templateCard}>
-                    <AppImage />
+                    <AppImage
+                        src={LibraryImage}
+                        style={{ width: '100px', height: '100px' }}
+                    />
                     <Text
                         bold
                         size="s"
@@ -82,7 +101,10 @@ const LibraryPage = memo((props: LibraryPageProps) => {
                     />
                 </Card>
                 <Card className={cls.templateCard}>
-                    <AppImage />
+                    <AppImage
+                        src={LibraryImage}
+                        style={{ width: '100px', height: '100px' }}
+                    />
                     <Text
                         bold
                         size="s"
