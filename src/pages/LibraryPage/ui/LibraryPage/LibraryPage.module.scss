@@ -4,18 +4,26 @@
 }
 
 .Templates {
-    display: flex;
+    display: grid;
     flex-wrap: wrap;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
 }
 
-@media (width >= 1024px) {
+.templateCard {
+    text-align: center;
 }
 
 @media (max-width: 1024px) {
+    .Templates {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
-@media (width <= 767px) {
+@media (width <= 768px) {
+    .Templates {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
 }
-
-@media (width >= 1024px) {
-} ;
