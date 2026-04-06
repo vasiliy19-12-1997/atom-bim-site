@@ -6,6 +6,12 @@ import { RutubeCard, RutubeListResponse, RutubePlaylist, VideoDto } from './type
 const DEFAULT_TIMEOUT = 8000;
 const MAX_PAGES = 200;
 const CHANNEL_VIDEOS_URL = 'https://rutube.ru/channel/36353169/videos/';
+const CHANNEL_ID = '36353169';
+const CHANNEL_FEED_URLS = [
+    `https://rutube.ru/feeds/video/${CHANNEL_ID}/`,
+    `https://rutube.ru/feeds/video/${CHANNEL_ID}.rss`,
+    `https://rutube.ru/channel/${CHANNEL_ID}/video/rss/`,
+];
 const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 const REFRESH_INTERVAL_MS = 12 * 60 * 60 * 1000;
 const CACHE_FILE_PATH = path.resolve(__dirname, 'videos-cache.json');
@@ -249,6 +255,44 @@ const extractCardsFromChannelHtml = (html: string): RutubeCard[] => {
     }));
 };
 
+const decodeXmlEntities = (value: string): string =>
+    value
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>');
+
+const extractCardsFromFeedXml = (xml: string): RutubeCard[] => {
+    const cards: RutubeCard[] = [];
+    const itemPattern = /<item\b[\s\S]*?<\/item>/gi;
+    const items = xml.match(itemPattern) || [];
+
+    items.forEach((item, index) => {
+        const titleMatch = item.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i);
+        const linkMatch = item.match(/<link>([\s\S]*?)<\/link>/i);
+        const guidMatch = item.match(/<guid[^>]*>([\s\S]*?)<\/guid>/i);
+        const sourceLink = linkMatch?.[1] || guidMatch?.[1] || '';
+        const idMatch = sourceLink.match(/\/video\/([a-f0-9]{32})\/?/i);
+        const id = idMatch?.[1];
+
+        if (!id) {
+            return;
+        }
+
+        const rawTitle = (titleMatch?.[1] || `Видео ${id}`).trim();
+        const title = decodeXmlEntities(rawTitle.replace(/<!\[CDATA\[|\]\]>/g, ''));
+
+        cards.push({
+            id,
+            title,
+            embed_url: `/play/embed/${id}`,
+        });
+    });
+
+    return Array.from(new Map(cards.map((card, index) => [String(card.id || `feed-${index}`), card])).values());
+};
+
 const getChannelVideosByHtml = async (): Promise<RutubeCard[]> => {
     const cards: RutubeCard[] = [];
     const seenIds = new Set<string>();
@@ -297,6 +341,16 @@ const getDiscoveredApiCardsFromChannelHtml = async (): Promise<RutubeCard[]> => 
     return endpointResponses
         .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
         .flatMap((result) => result.value);
+};
+
+const getChannelVideosByFeed = async (): Promise<RutubeCard[]> => {
+    const responses = await Promise.allSettled(CHANNEL_FEED_URLS.map((feedUrl) => fetchRaw(feedUrl)));
+
+    const cards = responses
+        .filter((result): result is PromiseFulfilledResult<string> => result.status === 'fulfilled')
+        .flatMap((result) => extractCardsFromFeedXml(result.value));
+
+    return Array.from(new Map(cards.map((card, index) => [String(card.id || `feed-${index}`), card])).values());
 };
 
 const mapPlaylistNameToType = (name?: string): VideoDto['type'] => {
@@ -460,13 +514,15 @@ async function loadFreshRutubeVideos(): Promise<VideoDto[]> {
     );
     const htmlCardsPromise = getChannelVideosByHtml();
     const discoveredApiCardsPromise = getDiscoveredApiCardsFromChannelHtml();
+    const feedCardsPromise = getChannelVideosByFeed();
 
     const apiCards = videoResponses
         .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
         .flatMap((result) => result.value);
     const htmlCards = await htmlCardsPromise.catch(() => []);
     const discoveredApiCards = await discoveredApiCardsPromise.catch(() => []);
-    const cards = [...apiCards, ...htmlCards, ...discoveredApiCards];
+    const feedCards = await feedCardsPromise.catch(() => []);
+    const cards = [...apiCards, ...htmlCards, ...discoveredApiCards, ...feedCards];
 
     if (cards.length === 0) {
         const errors = videoResponses
