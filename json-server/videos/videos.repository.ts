@@ -193,6 +193,31 @@ const decodeHtml = (value: string): string =>
         .replace(/&#39;/g, "'")
         .replace(/&amp;/g, '&');
 
+const normalizeEndpointCandidate = (value: string): string => {
+    const decoded = decodeHtml(value)
+        .replace(/\\\//g, '/')
+        .trim();
+    const withDomain = decoded.startsWith('http') ? decoded : `https://rutube.ru${decoded}`;
+
+    return withDomain
+        .replace(/([?&])format=json(&|$)/g, '$1')
+        .replace(/([?&])page=\d+(&|$)/g, '$1')
+        .replace(/[?&]$/, '')
+        .replace(/\?&/, '?');
+};
+
+const extractApiVideoEndpointsFromHtml = (html: string): string[] => {
+    const rawMatches = Array.from(
+        html.matchAll(/((?:https?:)?\\?\/\\?\/rutube\.ru\\?\/api\\?\/[^"']+|\\?\/api\\?\/[^"']+)/gi),
+    ).map((match) => match[1]);
+
+    const candidates = rawMatches
+        .map(normalizeEndpointCandidate)
+        .filter((url) => url.includes('/api/') && (url.includes('/video/') || url.includes('/playlist/')));
+
+    return Array.from(new Set(candidates));
+};
+
 const extractCardsFromChannelHtml = (html: string): RutubeCard[] => {
     const titleById: Record<string, string> = {};
     const titleFirstPattern = /"title":"([^"\\]*(?:\\.[^"\\]*)*)"[^{}]{0,800}?\/video\/([a-f0-9]{32})\//gi;
@@ -255,6 +280,23 @@ const getChannelVideosByHtml = async (): Promise<RutubeCard[]> => {
     }
 
     return cards;
+};
+
+const getDiscoveredApiCardsFromChannelHtml = async (): Promise<RutubeCard[]> => {
+    const html = await fetchRaw(CHANNEL_VIDEOS_URL);
+    const discoveredEndpoints = extractApiVideoEndpointsFromHtml(html);
+
+    if (discoveredEndpoints.length === 0) {
+        return [];
+    }
+
+    const endpointResponses = await Promise.allSettled(
+        discoveredEndpoints.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)),
+    );
+
+    return endpointResponses
+        .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
+        .flatMap((result) => result.value);
 };
 
 const mapPlaylistNameToType = (name?: string): VideoDto['type'] => {
@@ -417,12 +459,14 @@ async function loadFreshRutubeVideos(): Promise<VideoDto[]> {
         VIDEO_ENDPOINTS.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)),
     );
     const htmlCardsPromise = getChannelVideosByHtml();
+    const discoveredApiCardsPromise = getDiscoveredApiCardsFromChannelHtml();
 
     const apiCards = videoResponses
         .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
         .flatMap((result) => result.value);
     const htmlCards = await htmlCardsPromise.catch(() => []);
-    const cards = [...apiCards, ...htmlCards];
+    const discoveredApiCards = await discoveredApiCardsPromise.catch(() => []);
+    const cards = [...apiCards, ...htmlCards, ...discoveredApiCards];
 
     if (cards.length === 0) {
         const errors = videoResponses
