@@ -21,7 +21,7 @@ export const FiltersContainer = memo((props: FiltersContainerProps) => {
             onChangeOrder={onChangeOrder}
             onChangeSort={onChangeSort}
             onChangeSearch={onChangeSearch}
-            onChangeType={onChangeVideoType}
+            onChangeFilter={onChangeVideoType}
         />
     );
 });

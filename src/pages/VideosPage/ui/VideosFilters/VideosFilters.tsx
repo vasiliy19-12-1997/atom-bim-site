@@ -1,32 +1,31 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { VideoSortField, VideoType } from '@/entities/Video';
+import { VideoSortField, VideoFilterType } from '@/entities/Video';
+import SearchIcon from '@/shared/assets/icons/old/search.svg';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { SortOrder } from '@/shared/types/sort';
-import SearchIcon from '@/shared/assets/icons/old/search.svg';
 import { Card } from '@/shared/ui/redesigned/Card';
 import { Icon } from '@/shared/ui/redesigned/Icon';
 import { Input } from '@/shared/ui/redesigned/Input';
 import { VStack } from '@/shared/ui/redesigned/Stack';
-import cls from './VideosFilters.module.scss';
 import { VideoPageTabs } from '../VideoPageTabs/VideoPageTabs';
-import { VideoSortSelector } from '../VideoSortSelector/VideoSortSelector';
+import cls from './VideosFilters.module.scss';
 
 interface VideosFiltersProps {
     className?: string;
     sort: VideoSortField;
     order: SortOrder;
-    type: VideoType;
+    type: VideoFilterType;
     search: string;
     onChangeSort: (newSort: VideoSortField) => void;
     onChangeOrder: (newOrder: SortOrder) => void;
-    onChangeType: (newType: VideoType) => void;
+    onChangeFilter: (newType: VideoFilterType) => void;
     onChangeSearch: (value: string) => void;
 }
 
 export const VideosFilters = memo((props: VideosFiltersProps) => {
     const { t } = useTranslation();
-    const { className, sort, order, type, search, onChangeSort, onChangeOrder, onChangeType, onChangeSearch } = props;
+    const { className, sort, order, type, search, onChangeSort, onChangeOrder, onChangeFilter, onChangeSearch } = props;
 
     return (
         <Card
@@ -44,14 +43,14 @@ export const VideosFilters = memo((props: VideosFiltersProps) => {
                 <VideoPageTabs
                     className={cls.tabs}
                     value={type}
-                    onChangeType={onChangeType}
+                    onChangeType={onChangeFilter}
                 />
-                <VideoSortSelector
+                {/* <VideoSortSelector
                     sort={sort}
                     order={order}
                     onChangeSort={onChangeSort}
                     onChangeOrder={onChangeOrder}
-                />
+                /> */}
             </VStack>
         </Card>
     );

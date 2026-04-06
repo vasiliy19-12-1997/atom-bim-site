@@ -1,6 +1,6 @@
 import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { StateSchema } from '@/app/providers/StoreProvider';
-import { Video, VideoSortField, VideoType } from '@/entities/Video';
+import { Video, VideoFilterType, VideoSortField, VideoType } from '@/entities/Video';
 import { VIDEO_VIEWS_LOCALSTORAGE_KEY } from '@/shared/const/localstorage';
 import { View } from '@/shared/types';
 import { SortOrder } from '@/shared/types/sort';
@@ -27,7 +27,7 @@ const VideosPageSlice = createSlice({
         order: 'asc',
         search: '',
         sort: VideoSortField.RELEVATION,
-        type: VideoType.ALL,
+        filter: VideoType.ALL,
         entities: {},
         ids: [],
     }),
@@ -48,8 +48,8 @@ const VideosPageSlice = createSlice({
         setSearch: (state, action: PayloadAction<string>) => {
             state.search = action.payload;
         },
-        setType: (state, action: PayloadAction<VideoType>) => {
-            state.type = action.payload;
+        setType: (state, action: PayloadAction<VideoFilterType>) => {
+            state.filter = action.payload;
         },
         initState: (state) => {
             const view = localStorage.getItem(VIDEO_VIEWS_LOCALSTORAGE_KEY) as View;

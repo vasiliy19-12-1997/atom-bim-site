@@ -1,15 +1,13 @@
 import { memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { VideoMainSections, VideoSoftware, VideoType } from '@/entities/Video';
+import { VideoFilterType, VideoMainSections, VideoSoftware, VideoType } from '@/entities/Video';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { TabItem, Tabs } from '@/shared/ui/redesigned/Tabs';
 
-type TabItemType = VideoType | VideoMainSections | VideoSoftware;
-
 interface VideoPageTabsProps {
     className?: string;
-    value: TabItemType;
-    onChangeType: (value: TabItemType) => void;
+    value: VideoFilterType;
+    onChangeType: (value: VideoFilterType) => void;
 }
 
 export const VideoPageTabs = memo((props: VideoPageTabsProps) => {
@@ -22,14 +20,22 @@ export const VideoPageTabs = memo((props: VideoPageTabsProps) => {
             { value: VideoType.VIDEO_INSTRUCTION, content: t('Инструкции') },
             { value: VideoType.WEBINARS, content: t('Вебинары') },
             { value: VideoType.PLUGINS, content: t('Плагины') },
-            { value: VideoMainSections.COMMON, content: t('Общие') },
+            { value: VideoSoftware.AUTOCAD, content: t('Autodesk AutoCAD') },
+            { value: VideoSoftware.REVIT, content: t('Autodesk Revit') },
+            { value: VideoSoftware.TANGL_VALUE, content: t('TANGL') },
+            { value: VideoSoftware.CIVIL3D, content: t('Autodesk Civil 3D') },
+            { value: VideoMainSections.AR, content: t('АР') },
+            { value: VideoMainSections.KR, content: t('КР') },
+            { value: VideoMainSections.OV, content: t('ОВ') },
+            { value: VideoMainSections.VK, content: t('ВК') },
+            { value: VideoMainSections.EL, content: t('ЭЛ') },
         ],
         [t],
     );
 
     const onClickTab = useCallback(
         (tab: TabItem) => {
-            onChangeType(tab.value as TabItemType);
+            onChangeType(tab.value as VideoType);
         },
         [onChangeType],
     );

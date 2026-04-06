@@ -1,5 +1,5 @@
 import { EntityState } from '@reduxjs/toolkit';
-import { Video, VideoSortField, VideoType } from '@/entities/Video';
+import { Video, VideoFilterType, VideoSortField } from '@/entities/Video';
 import { SortOrder, View } from '@/shared/types';
 
 export interface VideosPageSchema extends EntityState<Video> {
@@ -14,7 +14,7 @@ export interface VideosPageSchema extends EntityState<Video> {
     sort: VideoSortField;
     order: SortOrder;
     search: string;
-    type: VideoType;
+    filter: VideoFilterType;
 }
 
 //  sort = 'по релевантноси по порядку изучения' , type = 'Инструкции || плагины ||  вебинары', order = 'asc || desc'

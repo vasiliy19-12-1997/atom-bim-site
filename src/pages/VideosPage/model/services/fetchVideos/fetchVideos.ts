@@ -3,14 +3,14 @@ import { ThunkConfig } from '@/shared/config/state';
 import { addQueryParams } from '@/shared/lib/url/addQueryParams/addQueryParams';
 import { SortOrder } from '@/shared/types/sort';
 
-import { Video, VideoSortField, VideoType } from '@/entities/Video';
+import { Video, VideoFilterType, VideoSortField, VideoType } from '@/entities/Video';
 import {
     getFilterSelectorOrder,
     getFilterSelectorSearch,
     getFilterSelectorSort,
     getVideosPageLimit,
     getVideosPageNumber,
-    getVideosPageType,
+    getVideosFilters,
 } from '../../selectors/videos';
 
 interface fetchVideosProps {
@@ -22,7 +22,7 @@ type VideosQuery = {
     _sort: VideoSortField;
     _order: SortOrder;
     q: string;
-    type: VideoType | undefined;
+    filter: VideoFilterType | undefined;
 };
 
 export const fetchVideos = createAsyncThunk<Video[], fetchVideosProps, ThunkConfig<string>>(
@@ -35,7 +35,7 @@ export const fetchVideos = createAsyncThunk<Video[], fetchVideosProps, ThunkConf
         const order = getFilterSelectorOrder(getState());
         const search = getFilterSelectorSearch(getState());
         const page = getVideosPageNumber(getState());
-        const type = getVideosPageType(getState());
+        const type = getVideosFilters(getState());
 
         const params: VideosQuery = {
             _page: page,
@@ -43,7 +43,7 @@ export const fetchVideos = createAsyncThunk<Video[], fetchVideosProps, ThunkConf
             _sort: sort,
             _order: order,
             q: search,
-            type: type === VideoType.ALL ? undefined : type,
+            filter: type === VideoType.ALL ? undefined : type,
         };
 
         try {
