@@ -53,9 +53,7 @@
     cursor: pointer;
     color: var(--primary-color);
     font: var(--font-m);
-    background:
-        radial-gradient(circle at 30% 30%, rgb(255 255 255 / 10%), transparent 45%),
-        var(--inverted-bg-color);
+    background: radial-gradient(circle at 30% 30%, rgb(255 255 255 / 10%), transparent 45%), var(--inverted-bg-color);
 }
 
 .link {

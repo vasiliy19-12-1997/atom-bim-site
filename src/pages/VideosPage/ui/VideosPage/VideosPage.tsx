@@ -30,8 +30,8 @@ const VideosPage = memo(() => {
                     onScrollEnd={onNextLoad}
                 >
                     <Text
-                        title={t('Videos')}
-                        text={t('Learning materials, webinars and plugin overviews')}
+                        title={t('Видеоматериалы')}
+                        text={t('Учебные материалы, вебинары и обзоры плагинов.')}
                         size={TextSize.L}
                     />
                     <VideosInfiniteList className={cls.list} />
