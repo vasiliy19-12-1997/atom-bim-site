@@ -6,7 +6,8 @@ import { RutubeCard, RutubeListResponse, RutubePlaylist, VideoDto } from './type
 const DEFAULT_TIMEOUT = 8000;
 const MAX_PAGES = 200;
 const CHANNEL_VIDEOS_URL = 'https://rutube.ru/channel/36353169/videos/';
-const CACHE_TTL_MS = 5 * 60 * 1000;
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const REFRESH_INTERVAL_MS = 24 * 60 * 60 * 1000;
 const CACHE_FILE_PATH = path.resolve(__dirname, 'videos-cache.json');
 
 let cachedVideos: VideoDto[] | null = null;
@@ -69,36 +70,37 @@ const bootstrapCacheFromDisk = () => {
 
 bootstrapCacheFromDisk();
 
-const fetchRaw = async (url: string): Promise<string> => new Promise((resolve, reject) => {
-    const request = httpsRequest(url, { method: 'GET', timeout: DEFAULT_TIMEOUT }, (response) => {
-        const chunks: Buffer[] = [];
+const fetchRaw = async (url: string): Promise<string> =>
+    new Promise((resolve, reject) => {
+        const request = httpsRequest(url, { method: 'GET', timeout: DEFAULT_TIMEOUT }, (response) => {
+            const chunks: Buffer[] = [];
 
-        response.on('data', (chunk) => {
-            chunks.push(Buffer.from(chunk));
+            response.on('data', (chunk) => {
+                chunks.push(Buffer.from(chunk));
+            });
+
+            response.on('end', () => {
+                const raw = Buffer.concat(chunks).toString('utf8');
+
+                if (response.statusCode && response.statusCode >= 400) {
+                    reject(new Error(`Rutube API error ${response.statusCode}`));
+                    return;
+                }
+
+                resolve(raw);
+            });
         });
 
-        response.on('end', () => {
-            const raw = Buffer.concat(chunks).toString('utf8');
-
-            if (response.statusCode && response.statusCode >= 400) {
-                reject(new Error(`Rutube API error ${response.statusCode}`));
-                return;
-            }
-
-            resolve(raw);
+        request.on('timeout', () => {
+            request.destroy(new Error('Rutube API timeout'));
         });
-    });
 
-    request.on('timeout', () => {
-        request.destroy(new Error('Rutube API timeout'));
-    });
+        request.on('error', (error) => {
+            reject(error);
+        });
 
-    request.on('error', (error) => {
-        reject(error);
+        request.end();
     });
-
-    request.end();
-});
 
 const fetchJson = async <T>(url: string): Promise<T> => {
     const raw = await fetchRaw(url);
@@ -144,11 +146,12 @@ const fetchAllFromPagedEndpoint = async <T>(endpoint: string): Promise<T[]> => {
     return fetchPage(1);
 };
 
-const decodeHtml = (value: string): string => value
-    .replace(/\\u002F/g, '/')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&amp;/g, '&');
+const decodeHtml = (value: string): string =>
+    value
+        .replace(/\\u002F/g, '/')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&amp;/g, '&');
 
 const extractCardsFromChannelHtml = (html: string): RutubeCard[] => {
     const titleById: Record<string, string> = {};
@@ -271,7 +274,9 @@ const buildPlaylistVideoEndpoints = (playlist: RutubePlaylist): string[] => {
 const collectPlaylistTypeMap = async (): Promise<Record<string, VideoDto['type']>> => {
     const map: Record<string, VideoDto['type']> = {};
 
-    const playlistResponses = await Promise.allSettled(PLAYLIST_ENDPOINTS.map((endpoint) => fetchAllFromPagedEndpoint<RutubePlaylist>(endpoint)));
+    const playlistResponses = await Promise.allSettled(
+        PLAYLIST_ENDPOINTS.map((endpoint) => fetchAllFromPagedEndpoint<RutubePlaylist>(endpoint)),
+    );
 
     const playlists = playlistResponses
         .filter((result): result is PromiseFulfilledResult<RutubePlaylist[]> => result.status === 'fulfilled')
@@ -285,28 +290,32 @@ const collectPlaylistTypeMap = async (): Promise<Record<string, VideoDto['type']
         });
     };
 
-    await Promise.all(playlists.map(async (playlist) => {
-        const type = mapPlaylistNameToType(playlist.title || playlist.name);
+    await Promise.all(
+        playlists.map(async (playlist) => {
+            const type = mapPlaylistNameToType(playlist.title || playlist.name);
 
-        const inlineVideoIds = extractPlaylistVideoIds(playlist);
-        addToMap(inlineVideoIds, type);
+            const inlineVideoIds = extractPlaylistVideoIds(playlist);
+            addToMap(inlineVideoIds, type);
 
-        if (inlineVideoIds.length > 0) {
-            return;
-        }
+            if (inlineVideoIds.length > 0) {
+                return;
+            }
 
-        const endpoints = buildPlaylistVideoEndpoints(playlist);
+            const endpoints = buildPlaylistVideoEndpoints(playlist);
 
-        const results = await Promise.allSettled(endpoints.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)));
+            const results = await Promise.allSettled(
+                endpoints.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)),
+            );
 
-        const ids = results
-            .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
-            .flatMap((result) => result.value)
-            .map((video) => (video.id !== undefined ? String(video.id) : ''))
-            .filter(Boolean);
+            const ids = results
+                .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
+                .flatMap((result) => result.value)
+                .map((video) => (video.id !== undefined ? String(video.id) : ''))
+                .filter(Boolean);
 
-        addToMap(ids, type);
-    }));
+            addToMap(ids, type);
+        }),
+    );
 
     return map;
 };
@@ -326,14 +335,17 @@ const mapVideoCard = (card: RutubeCard, playlistTypeMap: Record<string, VideoDto
     };
 };
 
-const loadFreshRutubeVideos = async (): Promise<VideoDto[]> => {
-    const videoResponses = await Promise.allSettled(VIDEO_ENDPOINTS.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)));
+async function loadFreshRutubeVideos(): Promise<VideoDto[]> {
+    const videoResponses = await Promise.allSettled(
+        VIDEO_ENDPOINTS.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)),
+    );
+    const htmlCardsPromise = getChannelVideosByHtml();
 
     const apiCards = videoResponses
         .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
         .flatMap((result) => result.value);
-
-    const cards = apiCards.length > 0 ? apiCards : await getChannelVideosByHtml();
+    const htmlCards = await htmlCardsPromise.catch(() => []);
+    const cards = [...apiCards, ...htmlCards];
 
     if (cards.length === 0) {
         const errors = videoResponses
@@ -344,7 +356,9 @@ const loadFreshRutubeVideos = async (): Promise<VideoDto[]> => {
     }
 
     const playlistTypeMap = await collectPlaylistTypeMap().catch(() => ({}));
-    const dedupedCards = Array.from(new Map(cards.map((card, index) => [String(card.id || `idx-${index}`), card])).values());
+    const dedupedCards = Array.from(
+        new Map(cards.map((card, index) => [String(card.id || `idx-${index}`), card])).values(),
+    );
     const videos = dedupedCards.map((card, index) => mapVideoCard(card, playlistTypeMap, index));
 
     cachedVideos = videos;
@@ -352,6 +366,20 @@ const loadFreshRutubeVideos = async (): Promise<VideoDto[]> => {
     saveVideosCacheToDisk(videos);
 
     return videos;
+}
+
+const scheduleCacheRefresh = () => {
+    setInterval(() => {
+        if (inFlightVideosPromise) {
+            return;
+        }
+
+        inFlightVideosPromise = loadFreshRutubeVideos()
+            .catch(() => cachedVideos || [])
+            .finally(() => {
+                inFlightVideosPromise = null;
+            });
+    }, REFRESH_INTERVAL_MS);
 };
 
 const refreshInBackgroundIfNeeded = () => {
@@ -391,3 +419,4 @@ export const getFallbackVideos = (): VideoDto[] => {
     const db = JSON.parse(raw) as { videos?: VideoDto[] };
     return db.videos || [];
 };
+scheduleCacheRefresh();

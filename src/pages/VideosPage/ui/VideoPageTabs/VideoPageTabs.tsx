@@ -1,13 +1,15 @@
 import { memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { VideoType } from '@/entities/Video';
+import { VideoMainSections, VideoSoftware, VideoType } from '@/entities/Video';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { TabItem, Tabs } from '@/shared/ui/redesigned/Tabs';
 
+type TabItemType = VideoType | VideoMainSections | VideoSoftware;
+
 interface VideoPageTabsProps {
     className?: string;
-    value: VideoType;
-    onChangeType: (value: VideoType) => void;
+    value: TabItemType;
+    onChangeType: (value: TabItemType) => void;
 }
 
 export const VideoPageTabs = memo((props: VideoPageTabsProps) => {
@@ -16,17 +18,18 @@ export const VideoPageTabs = memo((props: VideoPageTabsProps) => {
 
     const tabs = useMemo<TabItem[]>(
         () => [
-            { value: VideoType.ALL, content: t('All types') },
-            { value: VideoType.VIDEO_INSTRUCTION, content: t('Instructions') },
-            { value: VideoType.WEBINARS, content: t('Webinars') },
-            { value: VideoType.PLUGINS, content: t('Plugins') },
+            { value: VideoType.ALL, content: t('Все типы') },
+            { value: VideoType.VIDEO_INSTRUCTION, content: t('Инструкции') },
+            { value: VideoType.WEBINARS, content: t('Вебинары') },
+            { value: VideoType.PLUGINS, content: t('Плагины') },
+            { value: VideoMainSections.COMMON, content: t('Общие') },
         ],
         [t],
     );
 
     const onClickTab = useCallback(
         (tab: TabItem) => {
-            onChangeType(tab.value as VideoType);
+            onChangeType(tab.value as TabItemType);
         },
         [onChangeType],
     );
