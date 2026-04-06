@@ -44,4 +44,5 @@ export type JsonServerResponse = {
 
 export type JsonServerApp = {
     get: (path: string, handler: (req: JsonServerRequest, res: JsonServerResponse) => Promise<void> | void) => void;
+    post: (path: string, handler: (req: JsonServerRequest, res: JsonServerResponse) => Promise<void> | void) => void;
 };

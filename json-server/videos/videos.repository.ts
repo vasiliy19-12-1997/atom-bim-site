@@ -6,8 +6,8 @@ import { RutubeCard, RutubeListResponse, RutubePlaylist, VideoDto } from './type
 const DEFAULT_TIMEOUT = 8000;
 const MAX_PAGES = 200;
 const CHANNEL_VIDEOS_URL = 'https://rutube.ru/channel/36353169/videos/';
-const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
-const REFRESH_INTERVAL_MS = 24 * 60 * 60 * 1000;
+const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
+const REFRESH_INTERVAL_MS = 12 * 60 * 60 * 1000;
 const CACHE_FILE_PATH = path.resolve(__dirname, 'videos-cache.json');
 
 let cachedVideos: VideoDto[] | null = null;
@@ -125,25 +125,65 @@ const appendFormatAndPage = (url: string, page: number): string => {
     return `${url}${divider}format=json&page=${page}`;
 };
 
-const fetchAllFromPagedEndpoint = async <T>(endpoint: string): Promise<T[]> => {
-    const fetchPage = async (page: number, nextUrl?: string | null): Promise<T[]> => {
-        if (page > MAX_PAGES) {
-            return [];
-        }
+const getItemSignature = (item: unknown): string => {
+    if (typeof item === 'object' && item) {
+        const itemAsRecord = item as Record<string, unknown>;
+        const id = itemAsRecord.id ?? itemAsRecord.uuid ?? itemAsRecord.pk;
+        const title = itemAsRecord.title ?? itemAsRecord.name;
 
+        if (id !== undefined || title !== undefined) {
+            return `${String(id ?? '')}:${String(title ?? '')}`;
+        }
+    }
+
+    return JSON.stringify(item);
+};
+
+const fetchAllFromPagedEndpoint = async <T>(endpoint: string): Promise<T[]> => {
+    const items: T[] = [];
+    const seenItemSignatures = new Set<string>();
+    const seenPageSignatures = new Set<string>();
+    let page = 1;
+    let nextUrl: string | null | undefined;
+
+    while (page <= MAX_PAGES) {
         const url = nextUrl ? normalizeApiUrl(nextUrl) : appendFormatAndPage(endpoint, page);
+        // eslint-disable-next-line no-await-in-loop
         const payload = await fetchJson<RutubeListResponse<T>>(url);
         const current = payload.results || [];
 
         if (current.length === 0) {
-            return [];
+            break;
         }
 
-        const nextItems = payload.next ? await fetchPage(page + 1, payload.next) : await fetchPage(page + 1);
-        return [...current, ...nextItems];
-    };
+        const pageSignature = current.map(getItemSignature).join('|');
+        if (seenPageSignatures.has(pageSignature)) {
+            break;
+        }
+        seenPageSignatures.add(pageSignature);
 
-    return fetchPage(1);
+        let hasNewItems = false;
+
+        current.forEach((item) => {
+            const signature = getItemSignature(item);
+
+            if (!seenItemSignatures.has(signature)) {
+                seenItemSignatures.add(signature);
+                items.push(item);
+                hasNewItems = true;
+            }
+        });
+
+        nextUrl = payload.next;
+
+        if (!nextUrl && !hasNewItems) {
+            break;
+        }
+
+        page += 1;
+    }
+
+    return items;
 };
 
 const decodeHtml = (value: string): string =>
@@ -185,25 +225,36 @@ const extractCardsFromChannelHtml = (html: string): RutubeCard[] => {
 };
 
 const getChannelVideosByHtml = async (): Promise<RutubeCard[]> => {
-    const fetchPages = async (page: number): Promise<RutubeCard[]> => {
-        if (page > MAX_PAGES) {
-            return [];
-        }
+    const cards: RutubeCard[] = [];
+    const seenIds = new Set<string>();
 
+    for (let page = 1; page <= MAX_PAGES; page += 1) {
+        // eslint-disable-next-line no-await-in-loop
         const html = await fetchRaw(`${CHANNEL_VIDEOS_URL}?page=${page}`);
-        const cards = extractCardsFromChannelHtml(html);
+        const pageCards = extractCardsFromChannelHtml(html);
 
-        if (cards.length === 0) {
-            return [];
+        if (pageCards.length === 0) {
+            break;
         }
 
-        const next = await fetchPages(page + 1);
-        return [...cards, ...next];
-    };
+        let hasNewCards = false;
 
-    const cards = await fetchPages(1);
+        pageCards.forEach((card, index) => {
+            const id = String(card.id || `idx-${page}-${index}`);
 
-    return Array.from(new Map(cards.map((card, index) => [String(card.id || `idx-${index}`), card])).values());
+            if (!seenIds.has(id)) {
+                seenIds.add(id);
+                cards.push(card);
+                hasNewCards = true;
+            }
+        });
+
+        if (!hasNewCards) {
+            break;
+        }
+    }
+
+    return cards;
 };
 
 const mapPlaylistNameToType = (name?: string): VideoDto['type'] => {
@@ -402,6 +453,18 @@ export const getRutubeVideos = async (): Promise<VideoDto[]> => {
         return cachedVideos;
     }
 
+    if (inFlightVideosPromise) {
+        return inFlightVideosPromise;
+    }
+
+    inFlightVideosPromise = loadFreshRutubeVideos().finally(() => {
+        inFlightVideosPromise = null;
+    });
+
+    return inFlightVideosPromise;
+};
+
+export const refreshRutubeVideosCache = async (): Promise<VideoDto[]> => {
     if (inFlightVideosPromise) {
         return inFlightVideosPromise;
     }

@@ -8,6 +8,7 @@ const http = require('http');
 const { registerInstructionRoutes } = require('./instructions/instructions.routes');
 const { registerEirRoutes } = require('./eir/eir.routes');
 const { registerVideoRoutes } = require('./videos/videos.routes');
+const { refreshRutubeVideosCache } = require('./videos/videos.repository');
 
 const options = {
     key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
@@ -39,6 +40,7 @@ server.post('/login', (req, res) => {
         const userFromBd = users.find((user) => user.username === username && user.password === password);
 
         if (userFromBd) {
+            refreshRutubeVideosCache().catch(() => null);
             return res.json(userFromBd);
         }
 
@@ -53,7 +55,7 @@ server.post('/login', (req, res) => {
 // eslint-disable-next-line
 server.use((req, res, next) => {
     const publicInstructionRoute = req.path.startsWith('/api/instructions') || req.path.startsWith('/instructions');
-    const publicVideoRoute = req.path.startsWith('/api/videos/rutube') || req.path.startsWith('/videos/rutube');
+    const publicVideoRoute = req.path === '/api/videos/rutube' || req.path === '/videos/rutube';
 
     if (publicInstructionRoute || publicVideoRoute) {
         return next();

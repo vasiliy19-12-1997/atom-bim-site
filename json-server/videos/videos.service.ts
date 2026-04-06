@@ -8,6 +8,8 @@ type QueryParams = {
     sort: keyof VideoDto;
     order: 'asc' | 'desc';
     type?: VideoDto['type'];
+    section?: VideoDto['section'];
+    software?: VideoDto['software'];
 };
 
 export const getVideos = async (params: QueryParams): Promise<VideoDto[]> => {
@@ -18,6 +20,8 @@ export const getVideos = async (params: QueryParams): Promise<VideoDto[]> => {
         sort,
         order,
         type,
+        section,
+        software,
     } = params;
 
     let videos: VideoDto[] = [];
@@ -39,11 +43,13 @@ export const getVideos = async (params: QueryParams): Promise<VideoDto[]> => {
 
     const filtered = videos.filter((video) => {
         const byType = type ? video.type === type : true;
+        const bySection = section ? video.section === section : true;
+        const bySoftware = software ? video.software === software : true;
         const bySearch = normalizedSearch.length > 0
             ? video.title.toLowerCase().includes(normalizedSearch)
             : true;
 
-        return byType && bySearch;
+        return byType && bySection && bySoftware && bySearch;
     });
 
     const sorted = filtered.sort((a, b) => {
