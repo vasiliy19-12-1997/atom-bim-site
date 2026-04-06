@@ -322,8 +322,14 @@ const buildPlaylistVideoEndpoints = (playlist: RutubePlaylist): string[] => {
     return candidates.filter(Boolean);
 };
 
-const collectPlaylistTypeMap = async (): Promise<Record<string, VideoDto['type']>> => {
-    const map: Record<string, VideoDto['type']> = {};
+type PlaylistCollectionResult = {
+    typeMap: Record<string, VideoDto['type']>;
+    cards: RutubeCard[];
+};
+
+const collectPlaylistData = async (): Promise<PlaylistCollectionResult> => {
+    const typeMap: Record<string, VideoDto['type']> = {};
+    const cardsById = new Map<string, RutubeCard>();
 
     const playlistResponses = await Promise.allSettled(
         PLAYLIST_ENDPOINTS.map((endpoint) => fetchAllFromPagedEndpoint<RutubePlaylist>(endpoint)),
@@ -335,8 +341,8 @@ const collectPlaylistTypeMap = async (): Promise<Record<string, VideoDto['type']
 
     const addToMap = (videoIds: string[], type: VideoDto['type']) => {
         videoIds.forEach((videoId) => {
-            if (!map[videoId]) {
-                map[videoId] = type;
+            if (!typeMap[videoId]) {
+                typeMap[videoId] = type;
             }
         });
     };
@@ -347,6 +353,15 @@ const collectPlaylistTypeMap = async (): Promise<Record<string, VideoDto['type']
 
             const inlineVideoIds = extractPlaylistVideoIds(playlist);
             addToMap(inlineVideoIds, type);
+            inlineVideoIds.forEach((videoId) => {
+                if (!cardsById.has(videoId)) {
+                    cardsById.set(videoId, {
+                        id: videoId,
+                        title: `Видео ${videoId}`,
+                        embed_url: `/play/embed/${videoId}`,
+                    });
+                }
+            });
 
             if (inlineVideoIds.length > 0) {
                 return;
@@ -361,14 +376,25 @@ const collectPlaylistTypeMap = async (): Promise<Record<string, VideoDto['type']
             const ids = results
                 .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
                 .flatMap((result) => result.value)
-                .map((video) => (video.id !== undefined ? String(video.id) : ''))
+                .map((video) => {
+                    const id = video.id !== undefined ? String(video.id) : '';
+
+                    if (id && !cardsById.has(id)) {
+                        cardsById.set(id, video);
+                    }
+
+                    return id;
+                })
                 .filter(Boolean);
 
             addToMap(ids, type);
         }),
     );
 
-    return map;
+    return {
+        typeMap,
+        cards: Array.from(cardsById.values()),
+    };
 };
 
 const mapVideoCard = (card: RutubeCard, playlistTypeMap: Record<string, VideoDto['type']>, index: number): VideoDto => {
@@ -406,11 +432,14 @@ async function loadFreshRutubeVideos(): Promise<VideoDto[]> {
         throw new Error(errors.join('; '));
     }
 
-    const playlistTypeMap = await collectPlaylistTypeMap().catch(() => ({}));
+    const playlistData = await collectPlaylistData().catch<PlaylistCollectionResult>(() => ({
+        typeMap: {},
+        cards: [],
+    }));
     const dedupedCards = Array.from(
-        new Map(cards.map((card, index) => [String(card.id || `idx-${index}`), card])).values(),
+        new Map([...cards, ...playlistData.cards].map((card, index) => [String(card.id || `idx-${index}`), card])).values(),
     );
-    const videos = dedupedCards.map((card, index) => mapVideoCard(card, playlistTypeMap, index));
+    const videos = dedupedCards.map((card, index) => mapVideoCard(card, playlistData.typeMap, index));
 
     cachedVideos = videos;
     cacheTimestamp = Date.now();
