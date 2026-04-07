@@ -148,11 +148,23 @@ const normalizeKey = (key: string): string =>
         .replace(/[()_./\\-]/g, '');
 
 const hasHttpUrl = (value: string): boolean => /^https?:\/\//i.test(value);
+const isRutubeUrl = (value: string): boolean => /^https?:\/\/(?:www\.)?rutube\.ru\//i.test(value);
 
-const pickBestLink = (row: Record<string, unknown>): string => {
+const normalizeRutubeLink = (value: string): string => {
+    const normalized = value.trim();
+    const videoMatch = normalized.match(/\/video\/([a-f0-9]{32})\/?/i);
+
+    if (videoMatch) {
+        return `https://rutube.ru/play/embed/${videoMatch[1]}`;
+    }
+
+    return normalized;
+};
+
+const pickRutubeLink = (row: Record<string, unknown>): string => {
     const entries = Object.entries(row)
         .map(([key, value]) => ({ key, normalizedKey: normalizeKey(key), value: asString(value) }))
-        .filter((entry) => hasHttpUrl(entry.value));
+        .filter((entry) => hasHttpUrl(entry.value) && isRutubeUrl(entry.value));
 
     if (entries.length === 0) {
         return '';
@@ -160,10 +172,9 @@ const pickBestLink = (row: Record<string, unknown>): string => {
 
     const preferred = entries.find((entry) => entry.normalizedKey.includes('путькпубликации'))
         || entries.find((entry) => entry.normalizedKey.includes('publ'))
-        || entries.find((entry) => entry.normalizedKey.includes('link'))
-        || entries.find((entry) => /rutube|atom-bim|youtube|vkvideo|vimeo/i.test(entry.value));
+        || entries.find((entry) => entry.normalizedKey.includes('link'));
 
-    return preferred?.value || entries[0].value;
+    return normalizeRutubeLink(preferred?.value || entries[0].value);
 };
 
 const pickTitle = (row: Record<string, unknown>): string => {
@@ -209,7 +220,7 @@ const mapTitleToType = (title?: string): VideoDto['type'] => {
 };
 
 const mapNocoRowToVideo = (row: Record<string, unknown>, index: number): VideoDto | null => {
-    const link = pickBestLink(row);
+    const link = pickRutubeLink(row);
 
     if (!link) {
         return null;
