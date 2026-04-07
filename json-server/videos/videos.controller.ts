@@ -1,6 +1,6 @@
 import { JsonServerRequest, JsonServerResponse, VideoDto } from './types';
 import { getVideos } from './videos.service';
-import { refreshRutubeVideosCache } from './videos.repository';
+import { getRutubeRefreshDiagnostics, refreshRutubeVideosCache } from './videos.repository';
 
 const SORT_FIELDS: Array<keyof VideoDto> = ['id', 'title', 'type', 'section', 'software', 'link'];
 const TYPE_VALUES: Array<VideoDto['type']> = ['VIDEO_INSTRUCTION', 'WEBINARS', 'PLUGINS'];
@@ -67,6 +67,7 @@ export const refreshVideosController = async (_req: JsonServerRequest, res: Json
             success: true,
             count: videos.length,
             updatedAt: Date.now(),
+            diagnostics: getRutubeRefreshDiagnostics(),
         });
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Unexpected videos refresh error';

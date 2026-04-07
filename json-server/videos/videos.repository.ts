@@ -19,6 +19,7 @@ const CACHE_FILE_PATH = path.resolve(__dirname, 'videos-cache.json');
 let cachedVideos: VideoDto[] | null = null;
 let cacheTimestamp = 0;
 let inFlightVideosPromise: Promise<VideoDto[]> | null = null;
+let lastRefreshDiagnostics: Record<string, unknown> = {};
 
 const VIDEO_ENDPOINTS = [
     'https://rutube.ru/api/video/person/36353169/',
@@ -337,21 +338,26 @@ const getChannelVideosByHtml = async (): Promise<RutubeCard[]> => {
     return cards;
 };
 
-const getDiscoveredApiCardsFromChannelHtml = async (): Promise<RutubeCard[]> => {
+const getDiscoveredApiCardsFromChannelHtml = async (): Promise<{ cards: RutubeCard[]; endpoints: string[] }> => {
     const html = await fetchRaw(CHANNEL_VIDEOS_URL);
     const discoveredEndpoints = extractApiVideoEndpointsFromHtml(html);
 
     if (discoveredEndpoints.length === 0) {
-        return [];
+        return { cards: [], endpoints: [] };
     }
 
     const endpointResponses = await Promise.allSettled(
         discoveredEndpoints.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)),
     );
 
-    return endpointResponses
+    const cards = endpointResponses
         .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
         .flatMap((result) => result.value);
+
+    return {
+        cards,
+        endpoints: discoveredEndpoints,
+    };
 };
 
 const getChannelVideosByFeed = async (): Promise<RutubeCard[]> => {
@@ -531,7 +537,8 @@ async function loadFreshRutubeVideos(): Promise<VideoDto[]> {
         .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
         .flatMap((result) => result.value);
     const htmlCards = await htmlCardsPromise.catch(() => []);
-    const discoveredApiCards = await discoveredApiCardsPromise.catch(() => []);
+    const discoveredApi = await discoveredApiCardsPromise.catch(() => ({ cards: [], endpoints: [] }));
+    const discoveredApiCards = discoveredApi.cards;
     const feedCards = await feedCardsPromise.catch(() => []);
     const cards = [...apiCards, ...htmlCards, ...discoveredApiCards, ...feedCards];
 
@@ -551,6 +558,20 @@ async function loadFreshRutubeVideos(): Promise<VideoDto[]> {
         new Map([...cards, ...playlistData.cards].map((card, index) => [String(card.id || `idx-${index}`), card])).values(),
     );
     const videos = dedupedCards.map((card, index) => mapVideoCard(card, playlistData.typeMap, index));
+
+    lastRefreshDiagnostics = {
+        updatedAt: Date.now(),
+        sourceCounts: {
+            apiCards: apiCards.length,
+            htmlCards: htmlCards.length,
+            discoveredApiCards: discoveredApiCards.length,
+            feedCards: feedCards.length,
+            playlistCards: playlistData.cards.length,
+            totalBeforeDedupe: cards.length + playlistData.cards.length,
+            totalAfterDedupe: dedupedCards.length,
+        },
+        discoveredEndpoints: discoveredApi.endpoints,
+    };
 
     cachedVideos = videos;
     cacheTimestamp = Date.now();
@@ -615,6 +636,8 @@ export const refreshRutubeVideosCache = async (): Promise<VideoDto[]> => {
 
     return inFlightVideosPromise;
 };
+
+export const getRutubeRefreshDiagnostics = () => lastRefreshDiagnostics;
 
 export const getFallbackVideos = (): VideoDto[] => {
     const filePath = path.resolve(__dirname, '../db.json');
