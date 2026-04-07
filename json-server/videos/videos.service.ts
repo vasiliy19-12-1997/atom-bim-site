@@ -35,7 +35,7 @@ export const getVideos = async (params: QueryParams): Promise<VideoDto[]> => {
         if (uniqueLinksCount > 1) {
             videos = fallback;
         } else {
-            throw new Error('Rutube is unavailable and local fallback contains non-unique links');
+            throw new Error('NocoDB is unavailable and local fallback contains non-unique links');
         }
     }
 
