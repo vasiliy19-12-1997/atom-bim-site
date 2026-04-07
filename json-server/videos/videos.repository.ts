@@ -132,6 +132,43 @@ const appendFormatAndPage = (url: string, page: number): string => {
     return `${url}${divider}format=json&page=${page}`;
 };
 
+const extractCollectionFromPayload = <T>(payload: unknown): { items: T[]; next?: string | null } => {
+    if (!payload || typeof payload !== 'object') {
+        return { items: [] };
+    }
+
+    const source = payload as Record<string, unknown>;
+    const nestedData = (source.data && typeof source.data === 'object' ? source.data : {}) as Record<string, unknown>;
+    const nestedPayload = (source.payload && typeof source.payload === 'object' ? source.payload : {}) as Record<string, unknown>;
+
+    const candidates: unknown[] = [
+        source.results,
+        source.items,
+        source.videos,
+        source.video_list,
+        nestedData.results,
+        nestedData.items,
+        nestedData.videos,
+        nestedData.video_list,
+        nestedPayload.results,
+        nestedPayload.items,
+        nestedPayload.videos,
+    ];
+    const itemsCandidate = candidates.find(Array.isArray);
+    const items = Array.isArray(itemsCandidate) ? (itemsCandidate as T[]) : [];
+
+    const nextCandidate = source.next
+        || nestedData.next
+        || nestedPayload.next
+        || (source.pagination && typeof source.pagination === 'object' ? (source.pagination as Record<string, unknown>).next : undefined)
+        || (source.paging && typeof source.paging === 'object' ? (source.paging as Record<string, unknown>).next : undefined);
+
+    return {
+        items,
+        next: typeof nextCandidate === 'string' || nextCandidate === null ? nextCandidate : undefined,
+    };
+};
+
 const getItemSignature = (item: unknown): string => {
     if (typeof item === 'object' && item) {
         const itemAsRecord = item as Record<string, unknown>;
@@ -157,7 +194,8 @@ const fetchAllFromPagedEndpoint = async <T>(endpoint: string): Promise<T[]> => {
         const url = nextUrl ? normalizeApiUrl(nextUrl) : appendFormatAndPage(endpoint, page);
         // eslint-disable-next-line no-await-in-loop
         const payload = await fetchJson<RutubeListResponse<T>>(url);
-        const current = payload.results || [];
+        const collection = extractCollectionFromPayload<T>(payload);
+        const current = collection.items;
 
         if (current.length === 0) {
             break;
@@ -181,7 +219,7 @@ const fetchAllFromPagedEndpoint = async <T>(endpoint: string): Promise<T[]> => {
             }
         });
 
-        nextUrl = payload.next;
+        nextUrl = collection.next;
 
         if (!nextUrl && !hasNewItems) {
             break;
@@ -516,15 +554,17 @@ const collectPlaylistData = async (): Promise<PlaylistCollectionResult> => {
 };
 
 const mapVideoCard = (card: RutubeCard, playlistTypeMap: Record<string, VideoDto['type']>, index: number): VideoDto => {
-    const id = String(card.id || `rutube-${index}`);
+    const fallbackCard = card as RutubeCard & Record<string, unknown>;
+    const id = String(card.id || fallbackCard.pk || fallbackCard.uuid || fallbackCard.video_id || `rutube-${index}`);
+    const titleSource = card.title || (typeof fallbackCard.name === 'string' ? fallbackCard.name : undefined);
     const embedOrUrl = card.embed_url || card.video_url || card.absolute_url || `/play/embed/${id}`;
     const link = embedOrUrl.startsWith('http') ? embedOrUrl : `https://rutube.ru${embedOrUrl}`;
 
     return {
         id,
-        title: card.title || `Видео ${id}`,
+        title: titleSource || `Видео ${id}`,
         link,
-        type: playlistTypeMap[id] || mapVideoTitleToType(card.title),
+        type: playlistTypeMap[id] || mapVideoTitleToType(titleSource),
         section: 'COMMON',
         software: 'REVIT',
     };
