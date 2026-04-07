@@ -213,13 +213,24 @@ const normalizeEndpointCandidate = (value: string): string => {
 };
 
 const extractApiVideoEndpointsFromHtml = (html: string): string[] => {
+    const decodedHtml = decodeHtml(html).replace(/\\\//g, '/');
     const rawMatches = Array.from(
-        html.matchAll(/((?:https?:)?\\?\/\\?\/rutube\.ru\\?\/api\\?\/[^"']+|\\?\/api\\?\/[^"']+)/gi),
+        decodedHtml.matchAll(/((?:https?:\/\/rutube\.ru)?\/api\/[^"'\s<]+)/gi),
     ).map((match) => match[1]);
 
     const candidates = rawMatches
         .map(normalizeEndpointCandidate)
-        .filter((url) => url.includes('/api/') && (url.includes('/video/') || url.includes('/playlist/')));
+        .filter((url) => {
+            if (!url.includes('/api/')) {
+                return false;
+            }
+
+            if (url.includes('/api/ads') || url.includes('/api/oauth') || url.includes('/api/auth')) {
+                return false;
+            }
+
+            return true;
+        });
 
     return Array.from(new Set(candidates));
 };
