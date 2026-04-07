@@ -3,7 +3,7 @@ import { ThunkConfig } from '@/shared/config/state';
 import { addQueryParams } from '@/shared/lib/url/addQueryParams/addQueryParams';
 import { SortOrder } from '@/shared/types/sort';
 
-import { Video, VideoFilterType, VideoSortField, VideoType } from '@/entities/Video';
+import { Video, VideoFilterType, VideoMainSections, VideoSoftware, VideoSortField, VideoType } from '@/entities/Video';
 import {
     getFilterSelectorOrder,
     getFilterSelectorSearch,
@@ -22,8 +22,32 @@ type VideosQuery = {
     _sort: VideoSortField;
     _order: SortOrder;
     q: string;
-    filter: VideoFilterType | undefined;
+    type?: VideoType;
+    section?: VideoMainSections;
+    software?: VideoSoftware;
 };
+
+const TYPE_VALUES: VideoType[] = [VideoType.VIDEO_INSTRUCTION, VideoType.WEBINARS, VideoType.PLUGINS];
+const SECTION_VALUES: VideoMainSections[] = [
+    VideoMainSections.COMMON,
+    VideoMainSections.AR,
+    VideoMainSections.KR,
+    VideoMainSections.OV,
+    VideoMainSections.VK,
+    VideoMainSections.EL,
+];
+const SOFTWARE_VALUES: VideoSoftware[] = [
+    VideoSoftware.AUTOCAD,
+    VideoSoftware.REVIT,
+    VideoSoftware.TANGL_VALUE,
+    VideoSoftware.CIVIL3D,
+];
+
+const isVideoType = (value: VideoFilterType): value is VideoType => TYPE_VALUES.includes(value as VideoType);
+const isVideoSection = (value: VideoFilterType): value is VideoMainSections =>
+    SECTION_VALUES.includes(value as VideoMainSections);
+const isVideoSoftware = (value: VideoFilterType): value is VideoSoftware =>
+    SOFTWARE_VALUES.includes(value as VideoSoftware);
 
 export const fetchVideos = createAsyncThunk<Video[], fetchVideosProps, ThunkConfig<string>>(
     'VideosPage/fetchVideos',
@@ -43,15 +67,26 @@ export const fetchVideos = createAsyncThunk<Video[], fetchVideosProps, ThunkConf
             _sort: sort,
             _order: order,
             q: search,
-            filter: type === VideoType.ALL ? undefined : type,
         };
+
+        if (type !== VideoType.ALL) {
+            if (isVideoType(type)) {
+                params.type = type;
+            } else if (isVideoSection(type)) {
+                params.section = type;
+            } else if (isVideoSoftware(type)) {
+                params.software = type;
+            }
+        }
 
         try {
             addQueryParams({
                 sort,
                 order,
                 search,
-                type: type === VideoType.ALL ? undefined : type,
+                type: params.type,
+                section: params.section,
+                software: params.software,
             });
             const response = await extra.api.get<Video[]>('/api/videos/rutube', {
                 params,

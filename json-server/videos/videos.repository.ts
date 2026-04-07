@@ -6,13 +6,20 @@ import { RutubeCard, RutubeListResponse, RutubePlaylist, VideoDto } from './type
 const DEFAULT_TIMEOUT = 8000;
 const MAX_PAGES = 200;
 const CHANNEL_VIDEOS_URL = 'https://rutube.ru/channel/36353169/videos/';
-const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
-const REFRESH_INTERVAL_MS = 24 * 60 * 60 * 1000;
+const CHANNEL_ID = '36353169';
+const CHANNEL_FEED_URLS = [
+    `https://rutube.ru/feeds/video/${CHANNEL_ID}/`,
+    `https://rutube.ru/feeds/video/${CHANNEL_ID}.rss`,
+    `https://rutube.ru/channel/${CHANNEL_ID}/video/rss/`,
+];
+const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
+const REFRESH_INTERVAL_MS = 12 * 60 * 60 * 1000;
 const CACHE_FILE_PATH = path.resolve(__dirname, 'videos-cache.json');
 
 let cachedVideos: VideoDto[] | null = null;
 let cacheTimestamp = 0;
 let inFlightVideosPromise: Promise<VideoDto[]> | null = null;
+let lastRefreshDiagnostics: Record<string, unknown> = {};
 
 const VIDEO_ENDPOINTS = [
     'https://rutube.ru/api/video/person/36353169/',
@@ -23,6 +30,11 @@ const PLAYLIST_ENDPOINTS = [
     'https://rutube.ru/api/playlist/person/36353169/',
     'https://rutube.ru/api/playlist/userchannel/36353169/',
 ];
+const NOCODB_BASE_URL = String(process.env.NOCODB_BASE_URL || 'http://tim.atomsk.ru:3000').replace(/\/$/, '');
+const NOCODB_TABLE_ID = String(process.env.NOCODB_TABLE_ID || 'm2jcg5rzheaqlxw');
+const NOCODB_VIEW_ID = String(process.env.NOCODB_VIEW_ID || 'vwqbdsi0ekspi90b');
+const NOCODB_TOKEN = String(process.env.NOCODB_TOKEN || process.env.NOCODB_API_TOKEN || '');
+const NOCODB_LIMIT = 200;
 
 const readVideosCacheFromDisk = (): { videos: VideoDto[]; updatedAt: number } | null => {
     try {
@@ -112,6 +124,26 @@ const fetchJson = async <T>(url: string): Promise<T> => {
     }
 };
 
+const fetchNocoDbJson = async <T>(url: string): Promise<T> => {
+    const headers: Record<string, string> = {
+        Accept: 'application/json',
+    };
+
+    if (NOCODB_TOKEN) {
+        headers['xc-token'] = NOCODB_TOKEN;
+    }
+
+    const response = await fetch(url, {
+        headers,
+    });
+
+    if (!response.ok) {
+        throw new Error(`NocoDB API error ${response.status}`);
+    }
+
+    return response.json() as Promise<T>;
+};
+
 const normalizeApiUrl = (url: string): string => {
     if (url.startsWith('http')) {
         return url;
@@ -125,25 +157,103 @@ const appendFormatAndPage = (url: string, page: number): string => {
     return `${url}${divider}format=json&page=${page}`;
 };
 
-const fetchAllFromPagedEndpoint = async <T>(endpoint: string): Promise<T[]> => {
-    const fetchPage = async (page: number, nextUrl?: string | null): Promise<T[]> => {
-        if (page > MAX_PAGES) {
-            return [];
-        }
+const extractCollectionFromPayload = <T>(payload: unknown): { items: T[]; next?: string | null } => {
+    if (!payload || typeof payload !== 'object') {
+        return { items: [] };
+    }
 
+    const source = payload as Record<string, unknown>;
+    const nestedData = (source.data && typeof source.data === 'object' ? source.data : {}) as Record<string, unknown>;
+    const nestedPayload = (source.payload && typeof source.payload === 'object' ? source.payload : {}) as Record<string, unknown>;
+
+    const candidates: unknown[] = [
+        source.results,
+        source.items,
+        source.videos,
+        source.video_list,
+        nestedData.results,
+        nestedData.items,
+        nestedData.videos,
+        nestedData.video_list,
+        nestedPayload.results,
+        nestedPayload.items,
+        nestedPayload.videos,
+    ];
+    const itemsCandidate = candidates.find(Array.isArray);
+    const items = Array.isArray(itemsCandidate) ? (itemsCandidate as T[]) : [];
+
+    const nextCandidate = source.next
+        || nestedData.next
+        || nestedPayload.next
+        || (source.pagination && typeof source.pagination === 'object' ? (source.pagination as Record<string, unknown>).next : undefined)
+        || (source.paging && typeof source.paging === 'object' ? (source.paging as Record<string, unknown>).next : undefined);
+
+    return {
+        items,
+        next: typeof nextCandidate === 'string' || nextCandidate === null ? nextCandidate : undefined,
+    };
+};
+
+const getItemSignature = (item: unknown): string => {
+    if (typeof item === 'object' && item) {
+        const itemAsRecord = item as Record<string, unknown>;
+        const id = itemAsRecord.id ?? itemAsRecord.uuid ?? itemAsRecord.pk;
+        const title = itemAsRecord.title ?? itemAsRecord.name;
+
+        if (id !== undefined || title !== undefined) {
+            return `${String(id ?? '')}:${String(title ?? '')}`;
+        }
+    }
+
+    return JSON.stringify(item);
+};
+
+const fetchAllFromPagedEndpoint = async <T>(endpoint: string): Promise<T[]> => {
+    const items: T[] = [];
+    const seenItemSignatures = new Set<string>();
+    const seenPageSignatures = new Set<string>();
+    let page = 1;
+    let nextUrl: string | null | undefined;
+
+    while (page <= MAX_PAGES) {
         const url = nextUrl ? normalizeApiUrl(nextUrl) : appendFormatAndPage(endpoint, page);
+        // eslint-disable-next-line no-await-in-loop
         const payload = await fetchJson<RutubeListResponse<T>>(url);
-        const current = payload.results || [];
+        const collection = extractCollectionFromPayload<T>(payload);
+        const current = collection.items;
 
         if (current.length === 0) {
-            return [];
+            break;
         }
 
-        const nextItems = payload.next ? await fetchPage(page + 1, payload.next) : await fetchPage(page + 1);
-        return [...current, ...nextItems];
-    };
+        const pageSignature = current.map(getItemSignature).join('|');
+        if (seenPageSignatures.has(pageSignature)) {
+            break;
+        }
+        seenPageSignatures.add(pageSignature);
 
-    return fetchPage(1);
+        let hasNewItems = false;
+
+        current.forEach((item) => {
+            const signature = getItemSignature(item);
+
+            if (!seenItemSignatures.has(signature)) {
+                seenItemSignatures.add(signature);
+                items.push(item);
+                hasNewItems = true;
+            }
+        });
+
+        nextUrl = collection.next;
+
+        if (!nextUrl && !hasNewItems) {
+            break;
+        }
+
+        page += 1;
+    }
+
+    return items;
 };
 
 const decodeHtml = (value: string): string =>
@@ -152,6 +262,47 @@ const decodeHtml = (value: string): string =>
         .replace(/&quot;/g, '"')
         .replace(/&#39;/g, "'")
         .replace(/&amp;/g, '&');
+
+const decodeJsEscapes = (value: string): string =>
+    value
+        .replace(/\\x([0-9a-fA-F]{2})/g, (_, hex: string) => String.fromCharCode(parseInt(hex, 16)))
+        .replace(/\\u([0-9a-fA-F]{4})/g, (_, hex: string) => String.fromCharCode(parseInt(hex, 16)));
+
+const normalizeEndpointCandidate = (value: string): string => {
+    const decoded = decodeJsEscapes(decodeHtml(value))
+        .replace(/\\\//g, '/')
+        .trim();
+    const withDomain = decoded.startsWith('http') ? decoded : `https://rutube.ru${decoded}`;
+
+    return withDomain
+        .replace(/([?&])format=json(&|$)/g, '$1')
+        .replace(/([?&])page=\d+(&|$)/g, '$1')
+        .replace(/[?&]$/, '')
+        .replace(/\?&/, '?');
+};
+
+const extractApiVideoEndpointsFromHtml = (html: string): string[] => {
+    const decodedHtml = decodeHtml(html).replace(/\\\//g, '/');
+    const rawMatches = Array.from(
+        decodedHtml.matchAll(/((?:https?:\/\/rutube\.ru)?\/api\/[^"'\s<]+)/gi),
+    ).map((match) => match[1]);
+
+    const candidates = rawMatches
+        .map(normalizeEndpointCandidate)
+        .filter((url) => {
+            if (!url.includes('/api/')) {
+                return false;
+            }
+
+            if (url.includes('/api/ads') || url.includes('/api/oauth') || url.includes('/api/auth')) {
+                return false;
+            }
+
+            return true;
+        });
+
+    return Array.from(new Set(candidates));
+};
 
 const extractCardsFromChannelHtml = (html: string): RutubeCard[] => {
     const titleById: Record<string, string> = {};
@@ -184,26 +335,177 @@ const extractCardsFromChannelHtml = (html: string): RutubeCard[] => {
     }));
 };
 
+const decodeXmlEntities = (value: string): string =>
+    value
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>');
+
+const extractCardsFromFeedXml = (xml: string): RutubeCard[] => {
+    const cards: RutubeCard[] = [];
+    const itemPattern = /<item\b[\s\S]*?<\/item>/gi;
+    const items = xml.match(itemPattern) || [];
+
+    items.forEach((item, index) => {
+        const titleMatch = item.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i);
+        const linkMatch = item.match(/<link>([\s\S]*?)<\/link>/i);
+        const guidMatch = item.match(/<guid[^>]*>([\s\S]*?)<\/guid>/i);
+        const sourceLink = linkMatch?.[1] || guidMatch?.[1] || '';
+        const idMatch = sourceLink.match(/\/video\/([a-f0-9]{32})\/?/i);
+        const id = idMatch?.[1];
+
+        if (!id) {
+            return;
+        }
+
+        const rawTitle = (titleMatch?.[1] || `Видео ${id}`).trim();
+        const title = decodeXmlEntities(rawTitle.replace(/<!\[CDATA\[|\]\]>/g, ''));
+
+        cards.push({
+            id,
+            title,
+            embed_url: `/play/embed/${id}`,
+        });
+    });
+
+    return Array.from(new Map(cards.map((card, index) => [String(card.id || `feed-${index}`), card])).values());
+};
+
 const getChannelVideosByHtml = async (): Promise<RutubeCard[]> => {
-    const fetchPages = async (page: number): Promise<RutubeCard[]> => {
-        if (page > MAX_PAGES) {
-            return [];
-        }
+    const cards: RutubeCard[] = [];
+    const seenIds = new Set<string>();
 
+    for (let page = 1; page <= MAX_PAGES; page += 1) {
+        // eslint-disable-next-line no-await-in-loop
         const html = await fetchRaw(`${CHANNEL_VIDEOS_URL}?page=${page}`);
-        const cards = extractCardsFromChannelHtml(html);
+        const pageCards = extractCardsFromChannelHtml(html);
 
-        if (cards.length === 0) {
-            return [];
+        if (pageCards.length === 0) {
+            break;
         }
 
-        const next = await fetchPages(page + 1);
-        return [...cards, ...next];
+        let hasNewCards = false;
+
+        pageCards.forEach((card, index) => {
+            const id = String(card.id || `idx-${page}-${index}`);
+
+            if (!seenIds.has(id)) {
+                seenIds.add(id);
+                cards.push(card);
+                hasNewCards = true;
+            }
+        });
+
+        if (!hasNewCards) {
+            break;
+        }
+    }
+
+    return cards;
+};
+
+const getDiscoveredApiCardsFromChannelHtml = async (): Promise<{ cards: RutubeCard[]; endpoints: string[] }> => {
+    const html = await fetchRaw(CHANNEL_VIDEOS_URL);
+    const discoveredEndpoints = extractApiVideoEndpointsFromHtml(html);
+
+    if (discoveredEndpoints.length === 0) {
+        return { cards: [], endpoints: [] };
+    }
+
+    const endpointResponses = await Promise.allSettled(
+        discoveredEndpoints.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)),
+    );
+
+    const cards = endpointResponses
+        .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
+        .flatMap((result) => result.value);
+
+    return {
+        cards,
+        endpoints: discoveredEndpoints,
     };
+};
 
-    const cards = await fetchPages(1);
+const extractNocoDbRows = (payload: unknown): Array<Record<string, unknown>> => {
+    if (!payload || typeof payload !== 'object') {
+        return [];
+    }
 
-    return Array.from(new Map(cards.map((card, index) => [String(card.id || `idx-${index}`), card])).values());
+    const source = payload as Record<string, unknown>;
+    const candidates = [source.list, source.records, source.items, source.results];
+    const list = candidates.find(Array.isArray);
+
+    return Array.isArray(list) ? (list as Array<Record<string, unknown>>) : [];
+};
+
+const extractNocoDbCard = (row: Record<string, unknown>, index: number): RutubeCard | null => {
+    const stringValues = Object.values(row).filter((value): value is string => typeof value === 'string');
+    const link = stringValues.find((value) => value.includes('rutube.ru/video/') || value.includes('/play/embed/'));
+
+    if (!link) {
+        return null;
+    }
+
+    const idMatch = link.match(/\/video\/([a-f0-9]{32})\/?/i) || link.match(/\/embed\/([a-f0-9]{32})\/?/i);
+    const idFromRow = typeof row.id === 'number' || typeof row.id === 'string' ? String(row.id) : undefined;
+    const title = (typeof row['Инструкция'] === 'string' && row['Инструкция'])
+        || (typeof row.title === 'string' && row.title)
+        || stringValues.find((value) => !value.startsWith('http'))
+        || `Видео ${idFromRow || index}`;
+
+    return {
+        id: idMatch?.[1] || idFromRow || `nocodb-${index}`,
+        title,
+        video_url: link,
+    };
+};
+
+const getCardsFromNocoDb = async (): Promise<RutubeCard[]> => {
+    if (!NOCODB_BASE_URL || !NOCODB_TABLE_ID) {
+        return [];
+    }
+
+    let offset = 0;
+    let hasMore = true;
+    const cards: RutubeCard[] = [];
+
+    while (hasMore) {
+        const query = new URLSearchParams({
+            limit: String(NOCODB_LIMIT),
+            offset: String(offset),
+            viewId: NOCODB_VIEW_ID,
+        });
+        const url = `${NOCODB_BASE_URL}/api/v2/tables/${NOCODB_TABLE_ID}/records?${query.toString()}`;
+        // eslint-disable-next-line no-await-in-loop
+        const payload = await fetchNocoDbJson<unknown>(url);
+        const rows = extractNocoDbRows(payload);
+
+        for (let index = 0; index < rows.length; index += 1) {
+            const row = rows[index];
+            const card = extractNocoDbCard(row, offset + index);
+
+            if (card) {
+                cards.push(card);
+            }
+        }
+
+        hasMore = rows.length === NOCODB_LIMIT;
+        offset += NOCODB_LIMIT;
+    }
+
+    return Array.from(new Map(cards.map((card, index) => [String(card.id || `nocodb-${index}`), card])).values());
+};
+
+const getChannelVideosByFeed = async (): Promise<RutubeCard[]> => {
+    const responses = await Promise.allSettled(CHANNEL_FEED_URLS.map((feedUrl) => fetchRaw(feedUrl)));
+
+    const cards = responses
+        .filter((result): result is PromiseFulfilledResult<string> => result.status === 'fulfilled')
+        .flatMap((result) => extractCardsFromFeedXml(result.value));
+
+    return Array.from(new Map(cards.map((card, index) => [String(card.id || `feed-${index}`), card])).values());
 };
 
 const mapPlaylistNameToType = (name?: string): VideoDto['type'] => {
@@ -271,8 +573,14 @@ const buildPlaylistVideoEndpoints = (playlist: RutubePlaylist): string[] => {
     return candidates.filter(Boolean);
 };
 
-const collectPlaylistTypeMap = async (): Promise<Record<string, VideoDto['type']>> => {
-    const map: Record<string, VideoDto['type']> = {};
+type PlaylistCollectionResult = {
+    typeMap: Record<string, VideoDto['type']>;
+    cards: RutubeCard[];
+};
+
+const collectPlaylistData = async (): Promise<PlaylistCollectionResult> => {
+    const typeMap: Record<string, VideoDto['type']> = {};
+    const cardsById = new Map<string, RutubeCard>();
 
     const playlistResponses = await Promise.allSettled(
         PLAYLIST_ENDPOINTS.map((endpoint) => fetchAllFromPagedEndpoint<RutubePlaylist>(endpoint)),
@@ -284,8 +592,8 @@ const collectPlaylistTypeMap = async (): Promise<Record<string, VideoDto['type']
 
     const addToMap = (videoIds: string[], type: VideoDto['type']) => {
         videoIds.forEach((videoId) => {
-            if (!map[videoId]) {
-                map[videoId] = type;
+            if (!typeMap[videoId]) {
+                typeMap[videoId] = type;
             }
         });
     };
@@ -296,6 +604,15 @@ const collectPlaylistTypeMap = async (): Promise<Record<string, VideoDto['type']
 
             const inlineVideoIds = extractPlaylistVideoIds(playlist);
             addToMap(inlineVideoIds, type);
+            inlineVideoIds.forEach((videoId) => {
+                if (!cardsById.has(videoId)) {
+                    cardsById.set(videoId, {
+                        id: videoId,
+                        title: `Видео ${videoId}`,
+                        embed_url: `/play/embed/${videoId}`,
+                    });
+                }
+            });
 
             if (inlineVideoIds.length > 0) {
                 return;
@@ -310,56 +627,99 @@ const collectPlaylistTypeMap = async (): Promise<Record<string, VideoDto['type']
             const ids = results
                 .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
                 .flatMap((result) => result.value)
-                .map((video) => (video.id !== undefined ? String(video.id) : ''))
+                .map((video) => {
+                    const id = video.id !== undefined ? String(video.id) : '';
+
+                    if (id && !cardsById.has(id)) {
+                        cardsById.set(id, video);
+                    }
+
+                    return id;
+                })
                 .filter(Boolean);
 
             addToMap(ids, type);
         }),
     );
 
-    return map;
+    return {
+        typeMap,
+        cards: Array.from(cardsById.values()),
+    };
 };
 
 const mapVideoCard = (card: RutubeCard, playlistTypeMap: Record<string, VideoDto['type']>, index: number): VideoDto => {
-    const id = String(card.id || `rutube-${index}`);
+    const fallbackCard = card as RutubeCard & Record<string, unknown>;
+    const id = String(card.id || fallbackCard.pk || fallbackCard.uuid || fallbackCard.video_id || `rutube-${index}`);
+    const titleSource = card.title || (typeof fallbackCard.name === 'string' ? fallbackCard.name : undefined);
     const embedOrUrl = card.embed_url || card.video_url || card.absolute_url || `/play/embed/${id}`;
     const link = embedOrUrl.startsWith('http') ? embedOrUrl : `https://rutube.ru${embedOrUrl}`;
 
     return {
         id,
-        title: card.title || `Видео ${id}`,
+        title: titleSource || `Видео ${id}`,
         link,
-        type: playlistTypeMap[id] || mapVideoTitleToType(card.title),
+        type: playlistTypeMap[id] || mapVideoTitleToType(titleSource),
         section: 'COMMON',
         software: 'REVIT',
     };
 };
 
 async function loadFreshRutubeVideos(): Promise<VideoDto[]> {
-    const videoResponses = await Promise.allSettled(
-        VIDEO_ENDPOINTS.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)),
-    );
-    const htmlCardsPromise = getChannelVideosByHtml();
-
-    const apiCards = videoResponses
-        .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
-        .flatMap((result) => result.value);
-    const htmlCards = await htmlCardsPromise.catch(() => []);
-    const cards = [...apiCards, ...htmlCards];
+    const nocoCards = await getCardsFromNocoDb().catch(() => []);
+    let apiCards: RutubeCard[] = [];
+    let htmlCards: RutubeCard[] = [];
+    let discoveredApiCards: RutubeCard[] = [];
+    let feedCards: RutubeCard[] = [];
+    let discoveredEndpoints: string[] = [];
+    let cards: RutubeCard[] = nocoCards;
 
     if (cards.length === 0) {
-        const errors = videoResponses
-            .filter((result): result is PromiseRejectedResult => result.status === 'rejected')
-            .map((result) => String(result.reason));
+        const videoResponses = await Promise.allSettled(
+            VIDEO_ENDPOINTS.map((endpoint) => fetchAllFromPagedEndpoint<RutubeCard>(endpoint)),
+        );
+        const htmlCardsPromise = getChannelVideosByHtml();
+        const discoveredApiCardsPromise = getDiscoveredApiCardsFromChannelHtml();
+        const feedCardsPromise = getChannelVideosByFeed();
 
-        throw new Error(errors.join('; '));
+        apiCards = videoResponses
+            .filter((result): result is PromiseFulfilledResult<RutubeCard[]> => result.status === 'fulfilled')
+            .flatMap((result) => result.value);
+        htmlCards = await htmlCardsPromise.catch(() => []);
+        const discoveredApi = await discoveredApiCardsPromise.catch(() => ({ cards: [], endpoints: [] }));
+        discoveredApiCards = discoveredApi.cards;
+        discoveredEndpoints = discoveredApi.endpoints;
+        feedCards = await feedCardsPromise.catch(() => []);
+        cards = [...apiCards, ...htmlCards, ...discoveredApiCards, ...feedCards];
     }
 
-    const playlistTypeMap = await collectPlaylistTypeMap().catch(() => ({}));
+    if (cards.length === 0) {
+        throw new Error('No videos found in NocoDB or Rutube sources');
+    }
+
+    const playlistData = await collectPlaylistData().catch<PlaylistCollectionResult>(() => ({
+        typeMap: {},
+        cards: [],
+    }));
     const dedupedCards = Array.from(
-        new Map(cards.map((card, index) => [String(card.id || `idx-${index}`), card])).values(),
+        new Map([...cards, ...playlistData.cards].map((card, index) => [String(card.id || `idx-${index}`), card])).values(),
     );
-    const videos = dedupedCards.map((card, index) => mapVideoCard(card, playlistTypeMap, index));
+    const videos = dedupedCards.map((card, index) => mapVideoCard(card, playlistData.typeMap, index));
+
+    lastRefreshDiagnostics = {
+        updatedAt: Date.now(),
+        sourceCounts: {
+            nocoCards: nocoCards.length,
+            apiCards: apiCards.length,
+            htmlCards: htmlCards.length,
+            discoveredApiCards: discoveredApiCards.length,
+            feedCards: feedCards.length,
+            playlistCards: playlistData.cards.length,
+            totalBeforeDedupe: cards.length + playlistData.cards.length,
+            totalAfterDedupe: dedupedCards.length,
+        },
+        discoveredEndpoints,
+    };
 
     cachedVideos = videos;
     cacheTimestamp = Date.now();
@@ -412,6 +772,20 @@ export const getRutubeVideos = async (): Promise<VideoDto[]> => {
 
     return inFlightVideosPromise;
 };
+
+export const refreshRutubeVideosCache = async (): Promise<VideoDto[]> => {
+    if (inFlightVideosPromise) {
+        return inFlightVideosPromise;
+    }
+
+    inFlightVideosPromise = loadFreshRutubeVideos().finally(() => {
+        inFlightVideosPromise = null;
+    });
+
+    return inFlightVideosPromise;
+};
+
+export const getRutubeRefreshDiagnostics = () => lastRefreshDiagnostics;
 
 export const getFallbackVideos = (): VideoDto[] => {
     const filePath = path.resolve(__dirname, '../db.json');
