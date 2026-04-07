@@ -1,13 +1,13 @@
 .primary {
-    color: var(--text-redesign);
+    color: var(--primary-color);
 
     & :hover {
-        color: var(--accent-redesign);
+        color: var(--accent);
     }
 }
 
 .red {
-    color: var(--cancel-redesign);
+    color: var(--cancel);
 
     & :hover {
         opacity: 0.7;

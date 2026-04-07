@@ -1,9 +1,9 @@
 .title {
-    color: var(--text-redesign);
+    color: var(--primary-color);
 }
 
 .text {
-    color: var(--text-redesign);
+    color: var(--primary-color);
 }
 
 .error {
@@ -18,11 +18,11 @@
 
 .accent {
     .title {
-        color: var(--accent-redesign);
+        color: var(--accent);
     }
 
     .text {
-        color: var(--accent-redesign);
+        color: var(--accent);
     }
 }
 

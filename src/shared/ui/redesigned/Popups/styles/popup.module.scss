@@ -4,7 +4,7 @@
 
 .menu {
     border-radius: 18px;
-    border: 1px solid var(--accent-redesign);
+    border: 1px solid var(--accent);
     overflow: hidden;
 }
 
@@ -18,7 +18,7 @@
 }
 
 .active {
-    background-color: var(--light-bg-redesign);
+    background-color: var(--inverted-secondary-color);
 }
 
 .disabled {

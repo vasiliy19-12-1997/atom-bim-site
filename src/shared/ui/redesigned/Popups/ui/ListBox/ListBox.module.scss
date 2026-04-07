@@ -1,9 +1,9 @@
 .options {
     position: absolute;
-    background-color: var(--dark-bg-redesign);
+    background-color: var(--bg-color);
     z-index: 10000;
     border: 12px;
-    box-shadow: 4px 4px 4px 4px var(--dark-bg-redesign);
+    box-shadow: 4px 4px 4px 4px var(--bg-color);
 }
 
 .item {
@@ -11,5 +11,5 @@
 }
 
 .selected {
-    background: var(--light-bg-redesign);
+    background: var(--inverted-secondary-color);
 }

@@ -3,7 +3,7 @@
     overflow: hidden;
     width: 100%;
     padding: 30px 24px 32px;
-    background: linear-gradient(180deg, var(--light-bg-redesign), transparent 38%), var(--color-footer-bg);
+    background: linear-gradient(180deg, var(--inverted-secondary-color), transparent 38%), var(--color-footer-bg);
     border-top: 1px solid var(--color-border);
 }
 
@@ -14,7 +14,7 @@
     width: 260px;
     height: 260;
     border-radius: 50%;
-    background: var(--light-bg-redesign);
+    background: var(--inverted-secondary-color);
     opacity: 0.25;
     filter: blur(70px);
     pointer-events: none;

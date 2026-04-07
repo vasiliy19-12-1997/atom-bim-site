@@ -5,7 +5,7 @@
     min-height: 100%;
     border-radius: 32px;
     border: 1px solid var(--color-border);
-    background: linear-gradient(180deg, var(--light-bg-redesign), transparent 35%), var(--inverted-bg-color);
+    background: linear-gradient(180deg, var(--inverted-secondary-color), transparent 35%), var(--inverted-bg-color);
     box-shadow: 0 16px 40px rgb(0 0 0 / 10%);
     transition: width 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     overflow: visible;
@@ -53,7 +53,7 @@
     border: 1px solid var(--color-border);
     border-radius: 50%;
     background: var(--card-bg);
-    color: var(--text-redesign);
+    color: var(--primary-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -63,8 +63,8 @@
 }
 
 .collapsedBtn:hover {
-    background: var(--light-bg-redesign);
-    border-color: var(--accent-redesign);
+    background: var(--inverted-secondary-color);
+    border-color: var(--accent);
 }
 
 .collapsedBtn svg {

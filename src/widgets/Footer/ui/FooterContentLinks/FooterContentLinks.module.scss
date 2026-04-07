@@ -9,7 +9,7 @@
 
 .legal {
     max-width: 920px;
-    color: var(--hint-redesign);
+    color: var(--secondary-color);
     line-height: 1.6;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .bottomText {
-    color: var(--hint-redesign);
+    color: var(--secondary-color);
 }
 
 .bottomNav {
@@ -28,13 +28,13 @@
 }
 
 .bottomLink {
-    color: var(--hint-redesign);
+    color: var(--secondary-color);
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 .bottomLink:hover {
-    color: var(--accent-redesign);
+    color: var(--accent);
 }
 
 @media (width <= 768px) {

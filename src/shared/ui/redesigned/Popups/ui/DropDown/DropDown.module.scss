@@ -1,5 +1,5 @@
 .menu {
-    background-color: var(--dark-bg-redesign);
+    background-color: var(--bg-color);
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -13,5 +13,5 @@
     background: none;
     outline: none;
     cursor: pointer;
-    color: var(--text-redesign);
+    color: var(--primary-color);
 }

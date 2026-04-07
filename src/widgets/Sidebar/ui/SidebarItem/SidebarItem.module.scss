@@ -51,12 +51,12 @@
 }
 
 .active {
-    background: linear-gradient(90deg, var(--light-bg-redesign), transparent 100%);
-    border: 1px solid var(--accent-redesign);
+    background: linear-gradient(90deg, var(--inverted-secondary-color), transparent 100%);
+    border: 1px solid var(--accent);
     box-shadow: inset 0 0 0 1px rgb(255 255 255 / 4%);
 }
 
 .active .icon,
 .active .link {
-    color: var(--text-redesign);
+    color: var(--primary-color);
 }
