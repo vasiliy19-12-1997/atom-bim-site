@@ -200,8 +200,13 @@ const decodeHtml = (value: string): string =>
         .replace(/&#39;/g, "'")
         .replace(/&amp;/g, '&');
 
+const decodeJsEscapes = (value: string): string =>
+    value
+        .replace(/\\x([0-9a-fA-F]{2})/g, (_, hex: string) => String.fromCharCode(parseInt(hex, 16)))
+        .replace(/\\u([0-9a-fA-F]{4})/g, (_, hex: string) => String.fromCharCode(parseInt(hex, 16)));
+
 const normalizeEndpointCandidate = (value: string): string => {
-    const decoded = decodeHtml(value)
+    const decoded = decodeJsEscapes(decodeHtml(value))
         .replace(/\\\//g, '/')
         .trim();
     const withDomain = decoded.startsWith('http') ? decoded : `https://rutube.ru${decoded}`;
