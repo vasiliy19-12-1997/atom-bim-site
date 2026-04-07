@@ -9,14 +9,18 @@ const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 const REFRESH_INTERVAL_MS = 12 * 60 * 60 * 1000;
 const CACHE_FILE_PATH = path.resolve(__dirname, 'videos-cache.json');
 
-const DEFAULT_NOCO_BASE_URL = 'http://tim.atomsk.ru:3000';
-const DEFAULT_NOCO_TABLE_ID = 'm2jcg5rzheaqlxw';
-const DEFAULT_NOCO_VIEW_ID = 'vwqbdsi0ekspi90b';
+const DEFAULT_NOCODB_HOST = 'http://tim.atomsk.ru:3000';
+const DEFAULT_NOCODB_WORKSPACE_ID = 'wai9abey';
+const DEFAULT_NOCODB_BASE_ID = 'p8a9nuessg5k78h';
+const DEFAULT_NOCODB_TABLE_ID = 'm2jcg5rzheaqlxw';
+const DEFAULT_NOCODB_VIEW_ID = 'vwqbdsi0ekspi90b';
 
-const NOCO_BASE_URL = (process.env.NOCO_DB_BASE_URL || DEFAULT_NOCO_BASE_URL).replace(/\/$/, '');
-const NOCO_TABLE_ID = process.env.NOCO_DB_TABLE_ID || DEFAULT_NOCO_TABLE_ID;
-const NOCO_VIEW_ID = process.env.NOCO_DB_VIEW_ID || DEFAULT_NOCO_VIEW_ID;
-const NOCO_TOKEN = process.env.NOCO_DB_API_TOKEN || process.env.XC_TOKEN || '';
+const NOCODB_HOST = (process.env.NOCODB_HOST || process.env.NOCO_DB_BASE_URL || DEFAULT_NOCODB_HOST).replace(/\/$/, '');
+const NOCODB_WORKSPACE_ID = process.env.NOCODB_WORKSPACE_ID || DEFAULT_NOCODB_WORKSPACE_ID;
+const NOCODB_BASE_ID = process.env.NOCODB_BASE_ID || DEFAULT_NOCODB_BASE_ID;
+const NOCODB_TABLE_ID = process.env.NOCODB_TABLE_ID || process.env.NOCO_DB_TABLE_ID || DEFAULT_NOCODB_TABLE_ID;
+const NOCODB_VIEW_ID = process.env.NOCODB_VIEW_ID || process.env.NOCO_DB_VIEW_ID || DEFAULT_NOCODB_VIEW_ID;
+const NOCODB_API_TOKEN = process.env.NOCODB_API_TOKEN || process.env.NOCO_DB_API_TOKEN || process.env.XC_TOKEN || '';
 
 let cachedVideos: VideoDto[] | null = null;
 let cacheTimestamp = 0;
@@ -80,9 +84,9 @@ const fetchRaw = async (url: string): Promise<string> =>
             {
                 method: 'GET',
                 timeout: DEFAULT_TIMEOUT,
-                headers: NOCO_TOKEN
+                headers: NOCODB_API_TOKEN
                     ? {
-                        'xc-token': NOCO_TOKEN,
+                        'xc-token': NOCODB_API_TOKEN,
                     }
                     : undefined,
             },
@@ -231,11 +235,11 @@ const buildNocoRecordsUrl = (offset: number, limit: number): string => {
         limit: String(limit),
     });
 
-    if (NOCO_VIEW_ID) {
-        params.set('viewId', NOCO_VIEW_ID);
+    if (NOCODB_VIEW_ID) {
+        params.set('viewId', NOCODB_VIEW_ID);
     }
 
-    return `${NOCO_BASE_URL}/api/v2/tables/${NOCO_TABLE_ID}/records?${params.toString()}`;
+    return `${NOCODB_HOST}/api/v2/tables/${NOCODB_TABLE_ID}/records?${params.toString()}`;
 };
 
 const loadNocoRows = async (): Promise<Array<Record<string, unknown>>> => {
@@ -290,8 +294,10 @@ async function loadFreshRutubeVideos(): Promise<VideoDto[]> {
         rowsFetched: rows.length,
         videosMapped: videos.length,
         videosAfterDedupe: deduped.length,
-        tableId: NOCO_TABLE_ID,
-        viewId: NOCO_VIEW_ID,
+        workspaceId: NOCODB_WORKSPACE_ID,
+        baseId: NOCODB_BASE_ID,
+        tableId: NOCODB_TABLE_ID,
+        viewId: NOCODB_VIEW_ID,
     };
 
     return deduped;
