@@ -291,21 +291,6 @@ const buildNocoRecordsUrl = (offset: number, limit: number): string => {
     return `${NOCODB_HOST}/api/v2/tables/${NOCODB_TABLE_ID}/records?${params.toString()}`;
 };
 
-let cachedExternalLinks: InstructionExternalLink[] | null = null;
-let externalLinksCacheTimestamp = 0;
-let inFlightExternalLinksPromise: Promise<InstructionExternalLink[]> | null = null;
-
-const bootstrapExternalLinksCacheFromDisk = () => {
-    const cache = readLinksCacheFromDisk();
-
-    if (!cache || !Array.isArray(cache.links) || cache.links.length === 0) {
-        return;
-    }
-
-    cachedExternalLinks = cache.links;
-    externalLinksCacheTimestamp = typeof cache.updatedAt === 'number' ? cache.updatedAt : 0;
-};
-
 const loadNocoRows = async (): Promise<Array<Record<string, unknown>>> => {
     const pageLimit = 200;
     let offset = 0;
@@ -334,91 +319,6 @@ const loadNocoRows = async (): Promise<Array<Record<string, unknown>>> => {
     return rows;
 };
 
-const loadFreshInstructionLinks = async (): Promise<InstructionExternalLink[]> => {
-    const rows = await loadNocoRows();
-    const links = rows
-        .map((row, index) => mapNocoRowToInstructionLink(row, index))
-        .filter((item): item is InstructionExternalLink => Boolean(item));
-
-    if (links.length === 0) {
-        throw new Error('NocoDB returned no usable instruction links');
-    }
-
-    const deduped = Array.from(new Map(links.map((item) => [item.url, item])).values());
-
-    cachedExternalLinks = deduped;
-    externalLinksCacheTimestamp = Date.now();
-    saveLinksCacheToDisk(deduped);
-
-    return deduped;
-};
-
-const scheduleExternalLinksCacheRefresh = () => {
-    setInterval(() => {
-        if (inFlightExternalLinksPromise) {
-            return;
-        }
-
-        inFlightExternalLinksPromise = loadFreshInstructionLinks()
-            .catch(() => cachedExternalLinks || [])
-            .finally(() => {
-                inFlightExternalLinksPromise = null;
-            });
-    }, LINKS_REFRESH_INTERVAL_MS);
-};
-
-const refreshExternalLinksInBackgroundIfNeeded = () => {
-    const cacheIsStale = Date.now() - externalLinksCacheTimestamp >= LINKS_CACHE_TTL_MS;
-
-    if (!cacheIsStale || inFlightExternalLinksPromise) {
-        return;
-    }
-
-    inFlightExternalLinksPromise = loadFreshInstructionLinks()
-        .catch(() => cachedExternalLinks || [])
-        .finally(() => {
-            inFlightExternalLinksPromise = null;
-        });
-};
-
-const getInstructionLinks = async (): Promise<InstructionExternalLink[]> => {
-    if (cachedExternalLinks && cachedExternalLinks.length > 0) {
-        refreshExternalLinksInBackgroundIfNeeded();
-        return cachedExternalLinks;
-    }
-
-    if (inFlightExternalLinksPromise) {
-        return inFlightExternalLinksPromise;
-    }
-
-    inFlightExternalLinksPromise = loadFreshInstructionLinks().finally(() => {
-        inFlightExternalLinksPromise = null;
-    });
-
-    return inFlightExternalLinksPromise;
-};
-
-const refreshInstructionLinksCache = async (): Promise<InstructionExternalLink[]> => {
-    if (inFlightExternalLinksPromise) {
-        return inFlightExternalLinksPromise;
-    }
-
-    inFlightExternalLinksPromise = loadFreshInstructionLinks().finally(() => {
-        inFlightExternalLinksPromise = null;
-    });
-
-    return inFlightExternalLinksPromise;
-};
-
-const getCachedInstructionLinksSnapshot = (): InstructionExternalLink[] => {
-    if (cachedExternalLinks && cachedExternalLinks.length > 0) {
-        return cachedExternalLinks;
-    }
-
-    const diskCache = readLinksCacheFromDisk();
-    return Array.isArray(diskCache?.links) ? diskCache.links : [];
-};
-
 export class InstructionsRepository {
     private readonly client: YandexWikiClient;
 
@@ -428,8 +328,74 @@ export class InstructionsRepository {
 
     private treeCache: { expiresAt: number; value: Promise<InstructionNavNode[]> } | null = null;
 
+    private cachedExternalLinks: InstructionExternalLink[] | null = null;
+
+    private externalLinksCacheTimestamp = 0;
+
+    private inFlightExternalLinksPromise: Promise<InstructionExternalLink[]> | null = null;
+
     constructor(client: YandexWikiClient) {
         this.client = client;
+        this.bootstrapExternalLinksCacheFromDisk();
+        this.scheduleExternalLinksCacheRefresh();
+    }
+
+    private bootstrapExternalLinksCacheFromDisk() {
+        const cache = readLinksCacheFromDisk();
+
+        if (!cache || !Array.isArray(cache.links) || cache.links.length === 0) {
+            return;
+        }
+
+        this.cachedExternalLinks = cache.links;
+        this.externalLinksCacheTimestamp = typeof cache.updatedAt === 'number' ? cache.updatedAt : 0;
+    }
+
+    private scheduleExternalLinksCacheRefresh() {
+        setInterval(() => {
+            if (this.inFlightExternalLinksPromise) {
+                return;
+            }
+
+            this.inFlightExternalLinksPromise = this.loadFreshInstructionLinks()
+                .catch(() => this.cachedExternalLinks || [])
+                .finally(() => {
+                    this.inFlightExternalLinksPromise = null;
+                });
+        }, LINKS_REFRESH_INTERVAL_MS);
+    }
+
+    private async loadFreshInstructionLinks(): Promise<InstructionExternalLink[]> {
+        const rows = await loadNocoRows();
+        const links = rows
+            .map((row, index) => mapNocoRowToInstructionLink(row, index))
+            .filter((item): item is InstructionExternalLink => Boolean(item));
+
+        if (links.length === 0) {
+            throw new Error('NocoDB returned no usable instruction links');
+        }
+
+        const deduped = Array.from(new Map(links.map((item) => [item.url, item])).values());
+
+        this.cachedExternalLinks = deduped;
+        this.externalLinksCacheTimestamp = Date.now();
+        saveLinksCacheToDisk(deduped);
+
+        return deduped;
+    }
+
+    private refreshExternalLinksInBackgroundIfNeeded() {
+        const cacheIsStale = Date.now() - this.externalLinksCacheTimestamp >= LINKS_CACHE_TTL_MS;
+
+        if (!cacheIsStale || this.inFlightExternalLinksPromise) {
+            return;
+        }
+
+        this.inFlightExternalLinksPromise = this.loadFreshInstructionLinks()
+            .catch(() => this.cachedExternalLinks || [])
+            .finally(() => {
+                this.inFlightExternalLinksPromise = null;
+            });
     }
 
     private async getRootPage(): Promise<WikiPageDto | null> {
@@ -624,15 +590,41 @@ export class InstructionsRepository {
         return file;
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    public getExternalLinksFromNoco = async (): Promise<InstructionExternalLink[]> => getInstructionLinks();
+    public async getExternalLinksFromNoco(): Promise<InstructionExternalLink[]> {
+        if (this.cachedExternalLinks && this.cachedExternalLinks.length > 0) {
+            this.refreshExternalLinksInBackgroundIfNeeded();
+            return this.cachedExternalLinks;
+        }
 
-    // eslint-disable-next-line class-methods-use-this
-    public refreshExternalLinksFromNoco = async (): Promise<InstructionExternalLink[]> => refreshInstructionLinksCache();
+        if (this.inFlightExternalLinksPromise) {
+            return this.inFlightExternalLinksPromise;
+        }
 
-    // eslint-disable-next-line class-methods-use-this
-    public getCachedExternalLinksSnapshot = (): InstructionExternalLink[] => getCachedInstructionLinksSnapshot();
+        this.inFlightExternalLinksPromise = this.loadFreshInstructionLinks().finally(() => {
+            this.inFlightExternalLinksPromise = null;
+        });
+
+        return this.inFlightExternalLinksPromise;
+    }
+
+    public async refreshExternalLinksFromNoco(): Promise<InstructionExternalLink[]> {
+        if (this.inFlightExternalLinksPromise) {
+            return this.inFlightExternalLinksPromise;
+        }
+
+        this.inFlightExternalLinksPromise = this.loadFreshInstructionLinks().finally(() => {
+            this.inFlightExternalLinksPromise = null;
+        });
+
+        return this.inFlightExternalLinksPromise;
+    }
+
+    public getCachedExternalLinksSnapshot(): InstructionExternalLink[] {
+        if (this.cachedExternalLinks && this.cachedExternalLinks.length > 0) {
+            return this.cachedExternalLinks;
+        }
+
+        const diskCache = readLinksCacheFromDisk();
+        return Array.isArray(diskCache?.links) ? diskCache.links : [];
+    }
 }
-
-bootstrapExternalLinksCacheFromDisk();
-scheduleExternalLinksCacheRefresh();
