@@ -1,7 +1,9 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useGetInstructionLinksQuery } from '@/entities/Instruction';
+import { useGetInstructionLinksQuery, useGetInstructionTreeQuery } from '@/entities/Instruction';
+import { getRouteInstruction } from '@/shared/const/router';
 import { classNames } from '@/shared/lib/classNames/classNames';
+import { AppLink } from '@/shared/ui/redesigned/AppLink';
 import { Card } from '@/shared/ui/redesigned/Card';
 import { HStack, VStack } from '@/shared/ui/redesigned/Stack';
 import { Text } from '@/shared/ui/redesigned/Text';
@@ -15,6 +17,12 @@ export const MainPageInstructionLinks = memo((props: MainPageInstructionLinksPro
     const { className } = props;
     const { t } = useTranslation();
     const { data, isLoading } = useGetInstructionLinksQuery();
+    const { data: tree = [] } = useGetInstructionTreeQuery();
+
+    const getCategoryBySlug = (slug: string): string | undefined => {
+        const section = tree.find((node) => node.slug === slug || node.children?.some((item) => item.slug === slug));
+        return section?.slug;
+    };
 
     return (
         <Card
@@ -40,14 +48,23 @@ export const MainPageInstructionLinks = memo((props: MainPageInstructionLinksPro
                     <VStack gap={8}>
                         {data.slice(0, 30).map((item) => (
                             <HStack key={item.id} max justify="between" className={cls.linkRow}>
-                                <a
-                                    href={item.url}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className={cls.link}
-                                >
-                                    {item.title}
-                                </a>
+                                {item.slug ? (
+                                    <AppLink
+                                        to={getRouteInstruction(item.slug, getCategoryBySlug(item.slug))}
+                                        className={cls.link}
+                                    >
+                                        {item.title}
+                                    </AppLink>
+                                ) : (
+                                    <a
+                                        href={item.url}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className={cls.link}
+                                    >
+                                        {item.title}
+                                    </a>
+                                )}
                             </HStack>
                         ))}
                     </VStack>
