@@ -570,6 +570,15 @@ export const refreshRutubeVideosCache = async (): Promise<VideoDto[]> => {
 
 export const getRutubeRefreshDiagnostics = () => lastRefreshDiagnostics;
 
+export const getCachedRutubeVideosSnapshot = (): VideoDto[] => {
+    if (cachedVideos && cachedVideos.length > 0) {
+        return normalizeVideosMetadata(cachedVideos);
+    }
+
+    const diskCache = readVideosCacheFromDisk();
+    return normalizeVideosMetadata(diskCache?.videos || []);
+};
+
 export const getFallbackVideos = (): VideoDto[] => {
     const filePath = path.resolve(__dirname, '../db.json');
     const raw = fs.readFileSync(filePath, 'utf8');
