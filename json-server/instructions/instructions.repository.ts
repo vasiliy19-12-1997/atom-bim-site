@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { request as httpRequest } from 'http';
 import { request as httpsRequest } from 'https';
 import {
@@ -23,8 +25,10 @@ import {
 
 const getRootSlug = (): string => String(process.env.YANDEX_WIKI_ROOT_SLUG || '').trim();
 const TREE_CACHE_TTL_MS = 30_000;
-const LINKS_CACHE_TTL_MS = 5 * 60_000;
+const LINKS_CACHE_TTL_MS = 12 * 60 * 60 * 1000;
+const LINKS_REFRESH_INTERVAL_MS = 12 * 60 * 60 * 1000;
 const NOCODB_TIMEOUT = 20_000;
+const LINKS_CACHE_FILE_PATH = path.resolve(__dirname, 'instructions-links-cache.json');
 
 const DEFAULT_NOCODB_HOST = 'http://tim.atomsk.ru:3000';
 const DEFAULT_NOCODB_TABLE_ID = 'm2jcg5rzheaqlxw';
@@ -40,6 +44,39 @@ const NOCODB_VIEW_ID = process.env.NOCODB_INSTRUCTIONS_VIEW_ID
     || process.env.NOCO_DB_VIEW_ID
     || DEFAULT_NOCODB_VIEW_ID;
 const NOCODB_API_TOKEN = process.env.NOCODB_API_TOKEN || process.env.NOCO_DB_API_TOKEN || process.env.XC_TOKEN || '';
+
+type InstructionLinksCacheFile = {
+    updatedAt?: number;
+    links?: InstructionExternalLink[];
+};
+
+const readLinksCacheFromDisk = (): InstructionLinksCacheFile | null => {
+    try {
+        if (!fs.existsSync(LINKS_CACHE_FILE_PATH)) {
+            return null;
+        }
+
+        const raw = fs.readFileSync(LINKS_CACHE_FILE_PATH, 'utf8');
+        return JSON.parse(raw) as InstructionLinksCacheFile;
+    } catch {
+        return null;
+    }
+};
+
+const saveLinksCacheToDisk = (links: InstructionExternalLink[]): void => {
+    try {
+        fs.writeFileSync(
+            LINKS_CACHE_FILE_PATH,
+            JSON.stringify({
+                updatedAt: Date.now(),
+                links,
+            }),
+            'utf8',
+        );
+    } catch {
+        // noop
+    }
+};
 
 const logInstructionsStage = (context: string, payload: unknown) => {
     // eslint-disable-next-line no-console
@@ -209,7 +246,6 @@ const buildNocoRecordsUrl = (offset: number, limit: number): string => {
     const params = new URLSearchParams({
         offset: String(offset),
         limit: String(limit),
-        fields: 'Id,id,ID,_id,Инструкция,instruction,title,Название,name,wikiLink,WikiLink,wikilink',
     });
 
     if (NOCODB_VIEW_ID) {
@@ -232,8 +268,39 @@ export class InstructionsRepository {
 
     private linksSnapshot: InstructionExternalLink[] = [];
 
+    private linksSnapshotUpdatedAt = 0;
+
+    private inFlightLinksPromise: Promise<InstructionExternalLink[]> | null = null;
+
     constructor(client: YandexWikiClient) {
         this.client = client;
+        this.bootstrapLinksFromDisk();
+        this.scheduleLinksCacheRefresh();
+    }
+
+    private bootstrapLinksFromDisk(): void {
+        const cache = readLinksCacheFromDisk();
+
+        if (!cache || !Array.isArray(cache.links) || cache.links.length === 0) {
+            return;
+        }
+
+        this.linksSnapshot = cache.links;
+        this.linksSnapshotUpdatedAt = typeof cache.updatedAt === 'number' ? cache.updatedAt : 0;
+    }
+
+    private scheduleLinksCacheRefresh(): void {
+        setInterval(() => {
+            if (this.inFlightLinksPromise) {
+                return;
+            }
+
+            this.inFlightLinksPromise = this.loadFreshExternalLinksFromNoco()
+                .catch(() => this.linksSnapshot)
+                .finally(() => {
+                    this.inFlightLinksPromise = null;
+                });
+        }, LINKS_REFRESH_INTERVAL_MS);
     }
 
     private async getRootPage(): Promise<WikiPageDto | null> {
@@ -435,6 +502,51 @@ export class InstructionsRepository {
             return this.linksCache.value;
         }
 
+        const cacheIsStale = now - this.linksSnapshotUpdatedAt >= LINKS_CACHE_TTL_MS;
+
+        if (this.linksSnapshot.length > 0 && cacheIsStale && !this.inFlightLinksPromise) {
+            this.inFlightLinksPromise = this.loadFreshExternalLinksFromNoco()
+                .catch(() => this.linksSnapshot)
+                .finally(() => {
+                    this.inFlightLinksPromise = null;
+                });
+        }
+
+        if (this.linksSnapshot.length > 0) {
+            return this.linksSnapshot;
+        }
+
+        return this.refreshExternalLinksFromNoco();
+    }
+
+    public async refreshExternalLinksFromNoco(): Promise<InstructionExternalLink[]> {
+        if (this.inFlightLinksPromise) {
+            return this.inFlightLinksPromise;
+        }
+
+        this.inFlightLinksPromise = this.loadFreshExternalLinksFromNoco().finally(() => {
+            this.inFlightLinksPromise = null;
+        });
+
+        return this.inFlightLinksPromise;
+    }
+
+    public getCachedExternalLinksSnapshot(): InstructionExternalLink[] {
+        if (this.linksSnapshot.length > 0) {
+            return this.linksSnapshot;
+        }
+
+        const cache = readLinksCacheFromDisk();
+        if (!cache || !Array.isArray(cache.links)) {
+            return [];
+        }
+
+        return cache.links;
+    }
+
+    private async loadFreshExternalLinksFromNoco(): Promise<InstructionExternalLink[]> {
+        const now = Date.now();
+
         const nextPromise = (async () => {
             const pageLimit = 25;
             let offset = 0;
@@ -489,6 +601,8 @@ export class InstructionsRepository {
 
             const deduped = Array.from(new Map(links.map((item) => [item.url, item])).values());
             this.linksSnapshot = deduped;
+            this.linksSnapshotUpdatedAt = Date.now();
+            saveLinksCacheToDisk(deduped);
             return deduped;
         })();
 

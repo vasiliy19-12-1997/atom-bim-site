@@ -148,4 +148,24 @@ export const registerInstructionRoutes = (app: JsonServerApp) => {
             res.status(status).json({ message });
         }
     });
+
+    app.post('/api/instructions/links/refresh', async (req, res) => {
+        try {
+            await getController().refreshExternalLinks(req, res);
+        } catch (error) {
+            const { status, message } = resolveError(error);
+            // eslint-disable-next-line no-console
+            console.error(`[instructions] ${message}`);
+            res.status(status).json({ message });
+        }
+    });
+
+    app.post('/instructions/links/refresh', async (req, res) => {
+        try {
+            await getController().refreshExternalLinks(req, res);
+        } catch (error) {
+            const { status, message } = resolveError(error);
+            res.status(status).json({ message });
+        }
+    });
 };

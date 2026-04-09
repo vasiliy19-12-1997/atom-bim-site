@@ -111,4 +111,35 @@ export class InstructionsController {
             res.json([]);
         }
     };
+
+    public refreshExternalLinks = async (_req: JsonServerRequest, res: JsonServerResponse) => {
+        try {
+            const links = await this.service.refreshExternalLinksFromNoco();
+            res.json({
+                success: true,
+                count: links.length,
+                updatedAt: Date.now(),
+            });
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Unexpected links refresh error';
+            const cachedLinks = this.service.getCachedExternalLinksSnapshot();
+
+            if (cachedLinks.length > 0) {
+                res.json({
+                    success: true,
+                    stale: true,
+                    fallbackSource: 'cache',
+                    count: cachedLinks.length,
+                    updatedAt: Date.now(),
+                    message,
+                });
+                return;
+            }
+
+            res.status(500).json({
+                success: false,
+                message,
+            });
+        }
+    };
 }
