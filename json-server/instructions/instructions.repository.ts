@@ -27,12 +27,12 @@ const getRootSlug = (): string => String(process.env.YANDEX_WIKI_ROOT_SLUG || ''
 const TREE_CACHE_TTL_MS = 30_000;
 const LINKS_CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 const LINKS_REFRESH_INTERVAL_MS = 12 * 60 * 60 * 1000;
-const NOCODB_TIMEOUT = 8000;
+const NOCODB_TIMEOUT = 20_000;
 const LINKS_CACHE_FILE_PATH = path.resolve(__dirname, 'instructions-links-cache.json');
 
 const DEFAULT_NOCODB_HOST = 'http://tim.atomsk.ru:3000';
 const DEFAULT_NOCODB_TABLE_ID = 'm2jcg5rzheaqlxw';
-const DEFAULT_NOCODB_VIEW_ID = '';
+const DEFAULT_NOCODB_VIEW_ID = 'vwqbdsi0ekspi90b';
 
 const NOCODB_HOST = (process.env.NOCODB_HOST || process.env.NOCO_DB_BASE_URL || DEFAULT_NOCODB_HOST).replace(/\/$/, '');
 const NOCODB_TABLE_ID = process.env.NOCODB_INSTRUCTIONS_TABLE_ID
