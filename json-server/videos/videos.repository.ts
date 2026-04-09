@@ -11,9 +11,9 @@ const CACHE_FILE_PATH = path.resolve(__dirname, 'videos-cache.json');
 
 const DEFAULT_NOCODB_HOST = 'http://tim.atomsk.ru:3000';
 const DEFAULT_NOCODB_WORKSPACE_ID = 'wai9abey';
-const DEFAULT_NOCODB_BASE_ID = 'p8a9nuessg5k78h';
-const DEFAULT_NOCODB_TABLE_ID = 'm2jcg5rzheaqlxw';
-const DEFAULT_NOCODB_VIEW_ID = 'vwqbdsi0ekspi90b';
+const DEFAULT_NOCODB_BASE_ID = 'pfj3kgqkqluows9';
+const DEFAULT_NOCODB_TABLE_ID = 'm5z0a1njg29eah8';
+const DEFAULT_NOCODB_VIEW_ID = 'vwfo7lznj9072y4v';
 
 const NOCODB_HOST = (process.env.NOCODB_HOST || process.env.NOCO_DB_BASE_URL || DEFAULT_NOCODB_HOST).replace(/\/$/, '');
 const NOCODB_WORKSPACE_ID = process.env.NOCODB_WORKSPACE_ID || DEFAULT_NOCODB_WORKSPACE_ID;
@@ -84,8 +84,8 @@ const fetchRaw = async (url: string): Promise<string> =>
                 timeout: DEFAULT_TIMEOUT,
                 headers: NOCODB_API_TOKEN
                     ? {
-                        'xc-token': NOCODB_API_TOKEN,
-                    }
+                          'xc-token': NOCODB_API_TOKEN,
+                      }
                     : undefined,
             },
             (res) => {
@@ -213,9 +213,10 @@ const pickRutubeLink = (row: Record<string, unknown>): string => {
         return '';
     }
 
-    const preferred = entries.find((entry) => entry.normalizedKey.includes('путькпубликации'))
-        || entries.find((entry) => entry.normalizedKey.includes('publ'))
-        || entries.find((entry) => entry.normalizedKey.includes('link'));
+    const preferred =
+        entries.find((entry) => entry.normalizedKey.includes('путькпубликации')) ||
+        entries.find((entry) => entry.normalizedKey.includes('publ')) ||
+        entries.find((entry) => entry.normalizedKey.includes('link'));
 
     return normalizeRutubeLink(preferred?.value || entries[0].value);
 };
@@ -241,8 +242,10 @@ const pickTitle = (row: Record<string, unknown>): string => {
 
     const candidate = Object.entries(row).find(([key, value]) => {
         const normalized = normalizeKey(key);
-        return Boolean(asString(value))
-            && (normalized.includes('инструкц') || normalized.includes('title') || normalized.includes('name'));
+        return (
+            Boolean(asString(value)) &&
+            (normalized.includes('инструкц') || normalized.includes('title') || normalized.includes('name'))
+        );
     });
 
     return candidate ? asString(candidate[1]) : '';
@@ -269,23 +272,16 @@ const pickValueByKeys = (row: Record<string, unknown>, keys: string[]): string =
 };
 
 const pickSectionFromRow = (row: Record<string, unknown>): string =>
-    pickValueByKeys(row, [
-        'Раздел',
-        'Section',
-        'section',
-        'Направление',
-        'Discipline',
-        'Дисциплина',
-    ]);
+    pickValueByKeys(row, ['Раздел', 'Section', 'section', 'Направление', 'Discipline', 'Дисциплина']);
 
 const mapTitleToType = (title?: string): VideoDto['type'] => {
     const normalized = normalizeText(title || '');
 
     if (
-        normalized.includes('плагин')
-        || normalized.includes('plugin')
-        || normalized.includes('диспетчер отделки')
-        || normalized.includes('modplus')
+        normalized.includes('плагин') ||
+        normalized.includes('plugin') ||
+        normalized.includes('диспетчер отделки') ||
+        normalized.includes('modplus')
     ) {
         return 'PLUGINS';
     }
@@ -305,20 +301,15 @@ const mapSectionValue = (value?: string): VideoDto['section'] | null => {
     }
 
     if (
-        normalized === 'ар'
-        || normalized === 'ap'
-        || normalized.includes('architect')
-        || normalized.includes('архит')
+        normalized === 'ар' ||
+        normalized === 'ap' ||
+        normalized.includes('architect') ||
+        normalized.includes('архит')
     ) {
         return 'AR';
     }
 
-    if (
-        normalized === 'кр'
-        || normalized === 'kp'
-        || normalized === 'кж'
-        || normalized.includes('конструк')
-    ) {
+    if (normalized === 'кр' || normalized === 'kp' || normalized === 'кж' || normalized.includes('конструк')) {
         return 'KR';
     }
 
@@ -353,35 +344,31 @@ const mapTitleToSection = (title?: string): VideoDto['section'] => {
     }
 
     if (
-        normalized.includes('армирован')
-        || normalized.includes('арматур')
-        || normalized.includes('торцеобразовател')
-        || normalized.includes('чертежей изделий')
-        || normalized.includes('(из)')
+        normalized.includes('армирован') ||
+        normalized.includes('арматур') ||
+        normalized.includes('торцеобразовател') ||
+        normalized.includes('чертежей изделий') ||
+        normalized.includes('(из)')
     ) {
         return 'KR';
     }
 
     if (
-        normalized.includes('машино-мест')
-        || normalized.includes('огражден')
-        || normalized.includes('рабочие наборы ар')
-        || normalized.includes('отделк')
-        || normalized.includes('пола')
-        || normalized.includes('кровл')
-        || normalized.includes('фасад')
-        || normalized.includes('фасон')
-        || normalized.includes('архит')
-        || normalized.includes('помещен')
+        normalized.includes('машино-мест') ||
+        normalized.includes('огражден') ||
+        normalized.includes('рабочие наборы ар') ||
+        normalized.includes('отделк') ||
+        normalized.includes('пола') ||
+        normalized.includes('кровл') ||
+        normalized.includes('фасад') ||
+        normalized.includes('фасон') ||
+        normalized.includes('архит') ||
+        normalized.includes('помещен')
     ) {
         return 'AR';
     }
 
-    if (
-        normalized.includes('вентиляц')
-        || normalized.includes('воздуховод')
-        || normalized.includes('отоплен')
-    ) {
+    if (normalized.includes('вентиляц') || normalized.includes('воздуховод') || normalized.includes('отоплен')) {
         return 'OV';
     }
 
@@ -430,10 +417,10 @@ const mapTypeValue = (value?: string): VideoDto['type'] | null => {
     }
 
     if (
-        normalized.includes('plugin')
-        || normalized.includes('плагин')
-        || normalized === 'plugins'
-        || normalized === 'plugin'
+        normalized.includes('plugin') ||
+        normalized.includes('плагин') ||
+        normalized === 'plugins' ||
+        normalized === 'plugin'
     ) {
         return 'PLUGINS';
     }
@@ -443,9 +430,9 @@ const mapTypeValue = (value?: string): VideoDto['type'] | null => {
     }
 
     if (
-        normalized.includes('инструк')
-        || normalized.includes('instruction')
-        || normalized.includes('videoinstruction')
+        normalized.includes('инструк') ||
+        normalized.includes('instruction') ||
+        normalized.includes('videoinstruction')
     ) {
         return 'VIDEO_INSTRUCTION';
     }
@@ -500,15 +487,9 @@ const mapNocoRowToVideo = (row: Record<string, unknown>, index: number): VideoDt
     const title = pickTitle(row) || `Видео ${index + 1}`;
     const rawId = row.Id ?? row.id ?? row.ID ?? row._id;
     const id = String(rawId || `nocodb-${index + 1}`);
-    const typeFromRow = mapTypeValue(
-        pickValueByKeys(row, ['Тип', 'Type', 'Категория', 'Category']),
-    );
-    const sectionFromRow = mapSectionValue(
-        pickSectionFromRow(row),
-    );
-    const softwareFromRow = mapSoftwareValue(
-        pickValueByKeys(row, ['ПО', 'Программа', 'Software', 'Platform']),
-    );
+    const typeFromRow = mapTypeValue(pickValueByKeys(row, ['Тип', 'Type', 'Категория', 'Category']));
+    const sectionFromRow = mapSectionValue(pickSectionFromRow(row));
+    const softwareFromRow = mapSoftwareValue(pickValueByKeys(row, ['ПО', 'Программа', 'Software', 'Platform']));
 
     return enrichVideoByTitle({
         id,
