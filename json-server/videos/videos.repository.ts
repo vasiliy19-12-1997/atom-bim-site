@@ -137,7 +137,51 @@ type NocoListResponse = {
     };
 };
 
-const asString = (value: unknown): string => (typeof value === 'string' ? value.trim() : '');
+const asString = (value: unknown): string => {
+    if (typeof value === 'string') {
+        return value.trim();
+    }
+
+    if (typeof value === 'number' || typeof value === 'boolean') {
+        return String(value).trim();
+    }
+
+    if (Array.isArray(value)) {
+        return value
+            .map((item) => asString(item))
+            .filter(Boolean)
+            .join(' ')
+            .trim();
+    }
+
+    if (value && typeof value === 'object') {
+        const record = value as Record<string, unknown>;
+        const preferred = [
+            record.title,
+            record.name,
+            record.label,
+            record.value,
+            record.text,
+            record.section,
+            record.Section,
+            record.Раздел,
+        ]
+            .map((item) => asString(item))
+            .find(Boolean);
+
+        if (preferred) {
+            return preferred;
+        }
+
+        return Object.values(record)
+            .map((item) => asString(item))
+            .filter(Boolean)
+            .join(' ')
+            .trim();
+    }
+
+    return '';
+};
 const normalizeText = (value: string): string => value.toLowerCase().replace(/ё/g, 'е');
 
 const normalizeKey = (key: string): string =>
@@ -223,6 +267,16 @@ const pickValueByKeys = (row: Record<string, unknown>, keys: string[]): string =
 
     return partialMatch ? asString(partialMatch[1]) : '';
 };
+
+const pickSectionFromRow = (row: Record<string, unknown>): string =>
+    pickValueByKeys(row, [
+        'Раздел',
+        'Section',
+        'section',
+        'Направление',
+        'Discipline',
+        'Дисциплина',
+    ]);
 
 const mapTitleToType = (title?: string): VideoDto['type'] => {
     const normalized = normalizeText(title || '');
@@ -450,7 +504,7 @@ const mapNocoRowToVideo = (row: Record<string, unknown>, index: number): VideoDt
         pickValueByKeys(row, ['Тип', 'Type', 'Категория', 'Category']),
     );
     const sectionFromRow = mapSectionValue(
-        pickValueByKeys(row, ['Раздел', 'Section', 'Направление', 'Discipline']),
+        pickSectionFromRow(row),
     );
     const softwareFromRow = mapSoftwareValue(
         pickValueByKeys(row, ['ПО', 'Программа', 'Software', 'Platform']),
