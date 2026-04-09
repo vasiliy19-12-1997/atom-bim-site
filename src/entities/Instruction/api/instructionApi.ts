@@ -1,5 +1,5 @@
 import { rtqApi } from '@/shared/config/api/rtqApi';
-import { InstructionArticle, InstructionNavNode } from '../model/types/instruction';
+import { InstructionArticle, InstructionExternalLink, InstructionNavNode } from '../model/types/instruction';
 
 const instructionApi = rtqApi.injectEndpoints({
     endpoints: (build) => ({
@@ -13,10 +13,16 @@ const instructionApi = rtqApi.injectEndpoints({
                 url: `/api/instructions/article/${encodeURIComponent(slug)}`,
             }),
         }),
+        getInstructionLinks: build.query<InstructionExternalLink[], void>({
+            query: () => ({
+                url: '/api/instructions/links',
+            }),
+        }),
     }),
 });
 
 export const {
     useGetInstructionTreeQuery,
     useGetInstructionArticleQuery,
+    useGetInstructionLinksQuery,
 } = instructionApi;

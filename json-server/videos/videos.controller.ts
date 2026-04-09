@@ -1,6 +1,11 @@
 import { JsonServerRequest, JsonServerResponse, VideoDto } from './types';
 import { getVideos } from './videos.service';
-import { getRutubeRefreshDiagnostics, refreshRutubeVideosCache } from './videos.repository';
+import {
+    getCachedRutubeVideosSnapshot,
+    getFallbackVideos,
+    getRutubeRefreshDiagnostics,
+    refreshRutubeVideosCache,
+} from './videos.repository';
 
 const SORT_FIELDS: Array<keyof VideoDto> = ['id', 'title', 'type', 'section', 'software', 'link'];
 const TYPE_VALUES: Array<VideoDto['type']> = ['VIDEO_INSTRUCTION', 'WEBINARS', 'PLUGINS'];
@@ -71,6 +76,36 @@ export const refreshVideosController = async (_req: JsonServerRequest, res: Json
         });
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Unexpected videos refresh error';
+        const cachedVideos = getCachedRutubeVideosSnapshot();
+
+        if (cachedVideos.length > 0) {
+            res.json({
+                success: true,
+                stale: true,
+                fallbackSource: 'cache',
+                count: cachedVideos.length,
+                updatedAt: Date.now(),
+                message,
+                diagnostics: getRutubeRefreshDiagnostics(),
+            });
+            return;
+        }
+
+        const fallbackVideos = getFallbackVideos();
+
+        if (fallbackVideos.length > 0) {
+            res.json({
+                success: true,
+                stale: true,
+                fallbackSource: 'db.json',
+                count: fallbackVideos.length,
+                updatedAt: Date.now(),
+                message,
+                diagnostics: getRutubeRefreshDiagnostics(),
+            });
+            return;
+        }
+
         res.status(500).json({ success: false, message });
     }
 };

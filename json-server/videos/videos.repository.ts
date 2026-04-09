@@ -73,8 +73,6 @@ const bootstrapCacheFromDisk = () => {
     }
 };
 
-bootstrapCacheFromDisk();
-
 const fetchRaw = async (url: string): Promise<string> =>
     new Promise((resolve, reject) => {
         const requester = url.startsWith('https://') ? httpsRequest : httpRequest;
@@ -139,7 +137,52 @@ type NocoListResponse = {
     };
 };
 
-const asString = (value: unknown): string => (typeof value === 'string' ? value.trim() : '');
+const asString = (value: unknown): string => {
+    if (typeof value === 'string') {
+        return value.trim();
+    }
+
+    if (typeof value === 'number' || typeof value === 'boolean') {
+        return String(value).trim();
+    }
+
+    if (Array.isArray(value)) {
+        return value
+            .map((item) => asString(item))
+            .filter(Boolean)
+            .join(' ')
+            .trim();
+    }
+
+    if (value && typeof value === 'object') {
+        const record = value as Record<string, unknown>;
+        const preferred = [
+            record.title,
+            record.name,
+            record.label,
+            record.value,
+            record.text,
+            record.section,
+            record.Section,
+            record.Раздел,
+        ]
+            .map((item) => asString(item))
+            .find(Boolean);
+
+        if (preferred) {
+            return preferred;
+        }
+
+        return Object.values(record)
+            .map((item) => asString(item))
+            .filter(Boolean)
+            .join(' ')
+            .trim();
+    }
+
+    return '';
+};
+const normalizeText = (value: string): string => value.toLowerCase().replace(/ё/g, 'е');
 
 const normalizeKey = (key: string): string =>
     key
@@ -205,10 +248,45 @@ const pickTitle = (row: Record<string, unknown>): string => {
     return candidate ? asString(candidate[1]) : '';
 };
 
-const mapTitleToType = (title?: string): VideoDto['type'] => {
-    const normalized = (title || '').toLowerCase();
+const pickValueByKeys = (row: Record<string, unknown>, keys: string[]): string => {
+    const normalizedCandidates = keys.map((key) => normalizeKey(key));
 
-    if (normalized.includes('плагин') || normalized.includes('plugin')) {
+    const directMatch = Object.entries(row).find(([key, value]) => {
+        const normalizedKey = normalizeKey(key);
+        return normalizedCandidates.includes(normalizedKey) && Boolean(asString(value));
+    });
+
+    if (directMatch) {
+        return asString(directMatch[1]);
+    }
+
+    const partialMatch = Object.entries(row).find(([key, value]) => {
+        const normalizedKey = normalizeKey(key);
+        return Boolean(asString(value)) && normalizedCandidates.some((candidate) => normalizedKey.includes(candidate));
+    });
+
+    return partialMatch ? asString(partialMatch[1]) : '';
+};
+
+const pickSectionFromRow = (row: Record<string, unknown>): string =>
+    pickValueByKeys(row, [
+        'Раздел',
+        'Section',
+        'section',
+        'Направление',
+        'Discipline',
+        'Дисциплина',
+    ]);
+
+const mapTitleToType = (title?: string): VideoDto['type'] => {
+    const normalized = normalizeText(title || '');
+
+    if (
+        normalized.includes('плагин')
+        || normalized.includes('plugin')
+        || normalized.includes('диспетчер отделки')
+        || normalized.includes('modplus')
+    ) {
         return 'PLUGINS';
     }
 
@@ -218,6 +296,199 @@ const mapTitleToType = (title?: string): VideoDto['type'] => {
 
     return 'VIDEO_INSTRUCTION';
 };
+
+const mapSectionValue = (value?: string): VideoDto['section'] | null => {
+    const normalized = normalizeText(value || '').replace(/\s+/g, '');
+
+    if (!normalized) {
+        return null;
+    }
+
+    if (
+        normalized === 'ар'
+        || normalized === 'ap'
+        || normalized.includes('architect')
+        || normalized.includes('архит')
+    ) {
+        return 'AR';
+    }
+
+    if (
+        normalized === 'кр'
+        || normalized === 'kp'
+        || normalized === 'кж'
+        || normalized.includes('конструк')
+    ) {
+        return 'KR';
+    }
+
+    if (normalized === 'ов' || normalized === 'ob') {
+        return 'OV';
+    }
+
+    if (normalized === 'вк' || normalized === 'bk') {
+        return 'VK';
+    }
+
+    if (normalized === 'эл' || normalized === 'электрика') {
+        return 'EL';
+    }
+
+    if (normalized.includes('common') || normalized.includes('общ')) {
+        return 'COMMON';
+    }
+
+    return null;
+};
+
+const mapTitleToSection = (title?: string): VideoDto['section'] => {
+    const normalized = normalizeText(title || '');
+
+    if (/(^|\W)(кр|kr)(\W|$)/i.test(normalized)) {
+        return 'KR';
+    }
+
+    if (/(^|\W)(ар|ar|ап|ap)(\W|$)/i.test(normalized)) {
+        return 'AR';
+    }
+
+    if (
+        normalized.includes('армирован')
+        || normalized.includes('арматур')
+        || normalized.includes('торцеобразовател')
+        || normalized.includes('чертежей изделий')
+        || normalized.includes('(из)')
+    ) {
+        return 'KR';
+    }
+
+    if (
+        normalized.includes('машино-мест')
+        || normalized.includes('огражден')
+        || normalized.includes('рабочие наборы ар')
+        || normalized.includes('отделк')
+        || normalized.includes('пола')
+        || normalized.includes('кровл')
+        || normalized.includes('фасад')
+        || normalized.includes('фасон')
+        || normalized.includes('архит')
+        || normalized.includes('помещен')
+    ) {
+        return 'AR';
+    }
+
+    if (
+        normalized.includes('вентиляц')
+        || normalized.includes('воздуховод')
+        || normalized.includes('отоплен')
+    ) {
+        return 'OV';
+    }
+
+    if (normalized.includes('канализ') || normalized.includes('водосн') || normalized.includes('труб')) {
+        return 'VK';
+    }
+
+    if (normalized.includes('элект') || normalized.includes('кабел') || normalized.includes('освещ')) {
+        return 'EL';
+    }
+
+    return 'COMMON';
+};
+
+const mapSoftwareValue = (value?: string): VideoDto['software'] | null => {
+    const normalized = normalizeText(value || '').replace(/\s+/g, '');
+
+    if (!normalized) {
+        return null;
+    }
+
+    if (normalized.includes('autocad') || normalized === 'cad') {
+        return 'AUTOCAD';
+    }
+
+    if (normalized.includes('revit')) {
+        return 'REVIT';
+    }
+
+    if (normalized.includes('tangl')) {
+        return 'TANGL_VALUE';
+    }
+
+    if (normalized.includes('civil3d') || normalized.includes('civil')) {
+        return 'CIVIL3D';
+    }
+
+    return null;
+};
+
+const mapTypeValue = (value?: string): VideoDto['type'] | null => {
+    const normalized = normalizeText(value || '').replace(/\s+/g, '');
+
+    if (!normalized) {
+        return null;
+    }
+
+    if (
+        normalized.includes('plugin')
+        || normalized.includes('плагин')
+        || normalized === 'plugins'
+        || normalized === 'plugin'
+    ) {
+        return 'PLUGINS';
+    }
+
+    if (normalized.includes('webinar') || normalized.includes('вебинар')) {
+        return 'WEBINARS';
+    }
+
+    if (
+        normalized.includes('инструк')
+        || normalized.includes('instruction')
+        || normalized.includes('videoinstruction')
+    ) {
+        return 'VIDEO_INSTRUCTION';
+    }
+
+    return null;
+};
+
+const mapTitleToSoftware = (title?: string): VideoDto['software'] => {
+    const normalized = normalizeText(title || '');
+
+    if (normalized.includes('civil 3d') || normalized.includes('civil3d')) {
+        return 'CIVIL3D';
+    }
+
+    if (normalized.includes('наборах характеристик') || normalized.includes('штриховок')) {
+        return 'CIVIL3D';
+    }
+
+    if (normalized.includes('autocad') || normalized.includes('auto cad')) {
+        return 'AUTOCAD';
+    }
+
+    if (normalized.includes('tangl')) {
+        return 'TANGL_VALUE';
+    }
+
+    return 'REVIT';
+};
+
+const enrichVideoByTitle = (video: VideoDto): VideoDto => {
+    const titleBasedType = mapTitleToType(video.title);
+    const titleBasedSection = mapTitleToSection(video.title);
+    const titleBasedSoftware = mapTitleToSoftware(video.title);
+
+    return {
+        ...video,
+        type: video.type && video.type !== 'VIDEO_INSTRUCTION' ? video.type : titleBasedType,
+        section: video.section && video.section !== 'COMMON' ? video.section : titleBasedSection,
+        software: video.software && video.software !== 'REVIT' ? video.software : titleBasedSoftware,
+    };
+};
+
+const normalizeVideosMetadata = (videos: VideoDto[]): VideoDto[] => videos.map(enrichVideoByTitle);
 
 const mapNocoRowToVideo = (row: Record<string, unknown>, index: number): VideoDto | null => {
     const link = pickRutubeLink(row);
@@ -229,15 +500,24 @@ const mapNocoRowToVideo = (row: Record<string, unknown>, index: number): VideoDt
     const title = pickTitle(row) || `Видео ${index + 1}`;
     const rawId = row.Id ?? row.id ?? row.ID ?? row._id;
     const id = String(rawId || `nocodb-${index + 1}`);
+    const typeFromRow = mapTypeValue(
+        pickValueByKeys(row, ['Тип', 'Type', 'Категория', 'Category']),
+    );
+    const sectionFromRow = mapSectionValue(
+        pickSectionFromRow(row),
+    );
+    const softwareFromRow = mapSoftwareValue(
+        pickValueByKeys(row, ['ПО', 'Программа', 'Software', 'Platform']),
+    );
 
-    return {
+    return enrichVideoByTitle({
         id,
         title,
         link,
-        type: mapTitleToType(title),
-        section: 'COMMON',
-        software: 'REVIT',
-    };
+        type: typeFromRow || mapTitleToType(title),
+        section: sectionFromRow || mapTitleToSection(title),
+        software: softwareFromRow || mapTitleToSoftware(title),
+    });
 };
 
 const buildNocoRecordsUrl = (offset: number, limit: number): string => {
@@ -294,10 +574,11 @@ async function loadFreshRutubeVideos(): Promise<VideoDto[]> {
     }
 
     const deduped = Array.from(new Map(videos.map((video) => [video.link, video])).values());
+    const normalized = normalizeVideosMetadata(deduped);
 
-    cachedVideos = deduped;
+    cachedVideos = normalized;
     cacheTimestamp = Date.now();
-    saveVideosCacheToDisk(deduped);
+    saveVideosCacheToDisk(normalized);
 
     lastRefreshDiagnostics = {
         updatedAt: cacheTimestamp,
@@ -311,7 +592,7 @@ async function loadFreshRutubeVideos(): Promise<VideoDto[]> {
         viewId: NOCODB_VIEW_ID,
     };
 
-    return deduped;
+    return normalized;
 }
 
 const scheduleCacheRefresh = () => {
@@ -344,6 +625,8 @@ const refreshInBackgroundIfNeeded = () => {
 
 export const getRutubeVideos = async (): Promise<VideoDto[]> => {
     if (cachedVideos && cachedVideos.length > 0) {
+        cachedVideos = normalizeVideosMetadata(cachedVideos);
+        saveVideosCacheToDisk(cachedVideos);
         refreshInBackgroundIfNeeded();
         return cachedVideos;
     }
@@ -373,11 +656,21 @@ export const refreshRutubeVideosCache = async (): Promise<VideoDto[]> => {
 
 export const getRutubeRefreshDiagnostics = () => lastRefreshDiagnostics;
 
+export const getCachedRutubeVideosSnapshot = (): VideoDto[] => {
+    if (cachedVideos && cachedVideos.length > 0) {
+        return normalizeVideosMetadata(cachedVideos);
+    }
+
+    const diskCache = readVideosCacheFromDisk();
+    return normalizeVideosMetadata(diskCache?.videos || []);
+};
+
 export const getFallbackVideos = (): VideoDto[] => {
     const filePath = path.resolve(__dirname, '../db.json');
     const raw = fs.readFileSync(filePath, 'utf8');
     const db = JSON.parse(raw) as { videos?: VideoDto[] };
-    return db.videos || [];
+    return normalizeVideosMetadata(db.videos || []);
 };
 
+bootstrapCacheFromDisk();
 scheduleCacheRefresh();

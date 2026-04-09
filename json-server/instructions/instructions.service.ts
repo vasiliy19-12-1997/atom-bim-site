@@ -1,4 +1,4 @@
-import { InstructionArticle, InstructionNavNode, WikiFileDto } from './types';
+import { InstructionArticle, InstructionExternalLink, InstructionNavNode, WikiFileDto } from './types';
 import { InstructionsRepository } from './instructions.repository';
 
 export class InstructionsService {
@@ -18,5 +18,9 @@ export class InstructionsService {
 
     public async getFileByPath(slug: string, filePath: string): Promise<WikiFileDto> {
         return this.repository.getFileByPath(slug, filePath);
+    }
+
+    public async getExternalLinksFromNoco(): Promise<InstructionExternalLink[]> {
+        return this.repository.getExternalLinksFromNoco();
     }
 }

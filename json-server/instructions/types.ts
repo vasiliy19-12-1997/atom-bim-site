@@ -43,6 +43,13 @@ export interface InstructionDataSource {
     articles: InstructionArticle[];
 }
 
+export interface InstructionExternalLink {
+    id: string;
+    title: string;
+    url: string;
+    slug: string;
+}
+
 export interface JsonServerResponse {
     json: (body: unknown) => void;
     status: (code: number) => JsonServerResponse;

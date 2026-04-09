@@ -3,6 +3,7 @@ import { Page } from '@/shared/ui/redesigned/Page';
 import { MainPageHeader } from '../MainPageHeader/MainPageHeader';
 import { MainPageModelsSection } from '../MainPageModelsSection/MainPageModelsSection';
 import { MainPageSections } from '../MainPageSections/MainPageSections';
+import { MainPageInstructionLinks } from '../MainPageInstructionLinks/MainPageInstructionLinks';
 import { MainPageVideoSection } from '../MainPageVideoSection/MainPageVideoSection';
 import cls from './MainPage.module.scss';
 
@@ -15,6 +16,7 @@ const MainPage = memo(() => {
             <div className={cls.content}>
                 <MainPageHeader />
                 <MainPageSections />
+                <MainPageInstructionLinks />
                 <MainPageVideoSection />
                 <MainPageModelsSection />
                 <hr className={cls.divider} />

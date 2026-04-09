@@ -1,0 +1,19 @@
+.linksCard {
+    border: 1px solid var(--color-border);
+    background: var(--card-bg);
+}
+
+.linkRow {
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--color-border);
+}
+
+.linkRow:last-child {
+    border-bottom: none;
+}
+
+.link {
+    font-size: 15px;
+    line-height: 1.35;
+}
+
