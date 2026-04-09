@@ -290,16 +290,29 @@ const mapSectionValue = (value?: string): VideoDto['section'] | null => {
 const mapTitleToSection = (title?: string): VideoDto['section'] => {
     const normalized = normalizeText(title || '');
 
+    if (/(^|\W)(кр|kr)(\W|$)/i.test(normalized)) {
+        return 'KR';
+    }
+
+    if (/(^|\W)(ар|ar|ап|ap)(\W|$)/i.test(normalized)) {
+        return 'AR';
+    }
+
     if (
         normalized.includes('армирован')
         || normalized.includes('арматур')
         || normalized.includes('торцеобразовател')
+        || normalized.includes('чертежей изделий')
+        || normalized.includes('(из)')
     ) {
         return 'KR';
     }
 
     if (
-        normalized.includes('отделк')
+        normalized.includes('машино-мест')
+        || normalized.includes('огражден')
+        || normalized.includes('рабочие наборы ар')
+        || normalized.includes('отделк')
         || normalized.includes('пола')
         || normalized.includes('кровл')
         || normalized.includes('фасад')
@@ -390,6 +403,10 @@ const mapTitleToSoftware = (title?: string): VideoDto['software'] => {
     const normalized = normalizeText(title || '');
 
     if (normalized.includes('civil 3d') || normalized.includes('civil3d')) {
+        return 'CIVIL3D';
+    }
+
+    if (normalized.includes('наборах характеристик') || normalized.includes('штриховок')) {
         return 'CIVIL3D';
     }
 
