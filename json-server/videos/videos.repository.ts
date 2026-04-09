@@ -73,8 +73,6 @@ const bootstrapCacheFromDisk = () => {
     }
 };
 
-bootstrapCacheFromDisk();
-
 const fetchRaw = async (url: string): Promise<string> =>
     new Promise((resolve, reject) => {
         const requester = url.startsWith('https://') ? httpsRequest : httpRequest;
@@ -140,6 +138,7 @@ type NocoListResponse = {
 };
 
 const asString = (value: unknown): string => (typeof value === 'string' ? value.trim() : '');
+const normalizeText = (value: string): string => value.toLowerCase().replace(/ё/g, 'е');
 
 const normalizeKey = (key: string): string =>
     key
@@ -226,7 +225,7 @@ const pickValueByKeys = (row: Record<string, unknown>, keys: string[]): string =
 };
 
 const mapTitleToType = (title?: string): VideoDto['type'] => {
-    const normalized = (title || '').toLowerCase();
+    const normalized = normalizeText(title || '');
 
     if (
         normalized.includes('плагин')
@@ -245,7 +244,7 @@ const mapTitleToType = (title?: string): VideoDto['type'] => {
 };
 
 const mapSectionValue = (value?: string): VideoDto['section'] | null => {
-    const normalized = (value || '').toLowerCase().replace(/\s+/g, '');
+    const normalized = normalizeText(value || '').replace(/\s+/g, '');
 
     if (!normalized) {
         return null;
@@ -279,21 +278,44 @@ const mapSectionValue = (value?: string): VideoDto['section'] | null => {
 };
 
 const mapTitleToSection = (title?: string): VideoDto['section'] => {
-    const normalized = (title || '').toLowerCase();
+    const normalized = normalizeText(title || '');
 
     if (normalized.includes('армирован')) {
         return 'KR';
     }
 
-    if (normalized.includes('отделк') || normalized.includes('пола') || normalized.includes('кровл')) {
+    if (
+        normalized.includes('отделк')
+        || normalized.includes('пола')
+        || normalized.includes('кровл')
+        || normalized.includes('фасад')
+        || normalized.includes('архит')
+        || normalized.includes('помещен')
+    ) {
         return 'AR';
+    }
+
+    if (
+        normalized.includes('вентиляц')
+        || normalized.includes('воздуховод')
+        || normalized.includes('отоплен')
+    ) {
+        return 'OV';
+    }
+
+    if (normalized.includes('канализ') || normalized.includes('водосн') || normalized.includes('труб')) {
+        return 'VK';
+    }
+
+    if (normalized.includes('элект') || normalized.includes('кабел') || normalized.includes('освещ')) {
+        return 'EL';
     }
 
     return 'COMMON';
 };
 
 const mapSoftwareValue = (value?: string): VideoDto['software'] | null => {
-    const normalized = (value || '').toLowerCase().replace(/\s+/g, '');
+    const normalized = normalizeText(value || '').replace(/\s+/g, '');
 
     if (!normalized) {
         return null;
@@ -319,7 +341,7 @@ const mapSoftwareValue = (value?: string): VideoDto['software'] | null => {
 };
 
 const mapTypeValue = (value?: string): VideoDto['type'] | null => {
-    const normalized = (value || '').toLowerCase().replace(/\s+/g, '');
+    const normalized = normalizeText(value || '').replace(/\s+/g, '');
 
     if (!normalized) {
         return null;
@@ -349,6 +371,39 @@ const mapTypeValue = (value?: string): VideoDto['type'] | null => {
     return null;
 };
 
+const mapTitleToSoftware = (title?: string): VideoDto['software'] => {
+    const normalized = normalizeText(title || '');
+
+    if (normalized.includes('civil 3d') || normalized.includes('civil3d')) {
+        return 'CIVIL3D';
+    }
+
+    if (normalized.includes('autocad') || normalized.includes('auto cad')) {
+        return 'AUTOCAD';
+    }
+
+    if (normalized.includes('tangl')) {
+        return 'TANGL_VALUE';
+    }
+
+    return 'REVIT';
+};
+
+const enrichVideoByTitle = (video: VideoDto): VideoDto => {
+    const titleBasedType = mapTitleToType(video.title);
+    const titleBasedSection = mapTitleToSection(video.title);
+    const titleBasedSoftware = mapTitleToSoftware(video.title);
+
+    return {
+        ...video,
+        type: video.type && video.type !== 'VIDEO_INSTRUCTION' ? video.type : titleBasedType,
+        section: video.section && video.section !== 'COMMON' ? video.section : titleBasedSection,
+        software: video.software && video.software !== 'REVIT' ? video.software : titleBasedSoftware,
+    };
+};
+
+const normalizeVideosMetadata = (videos: VideoDto[]): VideoDto[] => videos.map(enrichVideoByTitle);
+
 const mapNocoRowToVideo = (row: Record<string, unknown>, index: number): VideoDto | null => {
     const link = pickRutubeLink(row);
 
@@ -369,14 +424,14 @@ const mapNocoRowToVideo = (row: Record<string, unknown>, index: number): VideoDt
         pickValueByKeys(row, ['ПО', 'Программа', 'Software', 'Platform']),
     );
 
-    return {
+    return enrichVideoByTitle({
         id,
         title,
         link,
         type: typeFromRow || mapTitleToType(title),
         section: sectionFromRow || mapTitleToSection(title),
-        software: softwareFromRow || 'REVIT',
-    };
+        software: softwareFromRow || mapTitleToSoftware(title),
+    });
 };
 
 const buildNocoRecordsUrl = (offset: number, limit: number): string => {
@@ -433,10 +488,11 @@ async function loadFreshRutubeVideos(): Promise<VideoDto[]> {
     }
 
     const deduped = Array.from(new Map(videos.map((video) => [video.link, video])).values());
+    const normalized = normalizeVideosMetadata(deduped);
 
-    cachedVideos = deduped;
+    cachedVideos = normalized;
     cacheTimestamp = Date.now();
-    saveVideosCacheToDisk(deduped);
+    saveVideosCacheToDisk(normalized);
 
     lastRefreshDiagnostics = {
         updatedAt: cacheTimestamp,
@@ -450,7 +506,7 @@ async function loadFreshRutubeVideos(): Promise<VideoDto[]> {
         viewId: NOCODB_VIEW_ID,
     };
 
-    return deduped;
+    return normalized;
 }
 
 const scheduleCacheRefresh = () => {
@@ -483,6 +539,8 @@ const refreshInBackgroundIfNeeded = () => {
 
 export const getRutubeVideos = async (): Promise<VideoDto[]> => {
     if (cachedVideos && cachedVideos.length > 0) {
+        cachedVideos = normalizeVideosMetadata(cachedVideos);
+        saveVideosCacheToDisk(cachedVideos);
         refreshInBackgroundIfNeeded();
         return cachedVideos;
     }
@@ -516,7 +574,8 @@ export const getFallbackVideos = (): VideoDto[] => {
     const filePath = path.resolve(__dirname, '../db.json');
     const raw = fs.readFileSync(filePath, 'utf8');
     const db = JSON.parse(raw) as { videos?: VideoDto[] };
-    return db.videos || [];
+    return normalizeVideosMetadata(db.videos || []);
 };
 
+bootstrapCacheFromDisk();
 scheduleCacheRefresh();
