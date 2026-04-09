@@ -28,7 +28,7 @@ const NOCODB_TIMEOUT = 8_000;
 
 const DEFAULT_NOCODB_HOST = 'http://tim.atomsk.ru:3000';
 const DEFAULT_NOCODB_TABLE_ID = 'm2jcg5rzheaqlxw';
-const DEFAULT_NOCODB_VIEW_ID = 'vwqbdsi0ekspi90b';
+const DEFAULT_NOCODB_VIEW_ID = '';
 
 const NOCODB_HOST = (process.env.NOCODB_HOST || process.env.NOCO_DB_BASE_URL || DEFAULT_NOCODB_HOST).replace(/\/$/, '');
 const NOCODB_TABLE_ID = process.env.NOCODB_INSTRUCTIONS_TABLE_ID
@@ -36,8 +36,6 @@ const NOCODB_TABLE_ID = process.env.NOCODB_INSTRUCTIONS_TABLE_ID
     || process.env.NOCO_DB_TABLE_ID
     || DEFAULT_NOCODB_TABLE_ID;
 const NOCODB_VIEW_ID = process.env.NOCODB_INSTRUCTIONS_VIEW_ID
-    || process.env.NOCODB_VIEW_ID
-    || process.env.NOCO_DB_VIEW_ID
     || DEFAULT_NOCODB_VIEW_ID;
 const NOCODB_API_TOKEN = process.env.NOCODB_API_TOKEN || process.env.NOCO_DB_API_TOKEN || process.env.XC_TOKEN || '';
 
