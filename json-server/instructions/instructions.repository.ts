@@ -36,8 +36,6 @@ const NOCODB_TABLE_ID = process.env.NOCODB_INSTRUCTIONS_TABLE_ID
     || process.env.NOCO_DB_TABLE_ID
     || DEFAULT_NOCODB_TABLE_ID;
 const NOCODB_VIEW_ID = process.env.NOCODB_INSTRUCTIONS_VIEW_ID
-    || process.env.NOCODB_VIEW_ID
-    || process.env.NOCO_DB_VIEW_ID
     || DEFAULT_NOCODB_VIEW_ID;
 const NOCODB_API_TOKEN = process.env.NOCODB_API_TOKEN || process.env.NOCO_DB_API_TOKEN || process.env.XC_TOKEN || '';
 

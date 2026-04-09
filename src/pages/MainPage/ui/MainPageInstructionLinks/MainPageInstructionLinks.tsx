@@ -1,9 +1,7 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetInstructionLinksQuery } from '@/entities/Instruction';
-import { getRouteInstruction } from '@/shared/const/router';
 import { classNames } from '@/shared/lib/classNames/classNames';
-import { AppLink } from '@/shared/ui/redesigned/AppLink';
 import { Card } from '@/shared/ui/redesigned/Card';
 import { HStack, VStack } from '@/shared/ui/redesigned/Stack';
 import { Text } from '@/shared/ui/redesigned/Text';
@@ -40,14 +38,16 @@ export const MainPageInstructionLinks = memo((props: MainPageInstructionLinksPro
 
                 {!!data?.length && (
                     <VStack gap={8}>
-                        {data.slice(0, 12).map((item) => (
+                        {data.slice(0, 30).map((item) => (
                             <HStack key={item.id} max justify="between" className={cls.linkRow}>
-                                <AppLink
-                                    to={getRouteInstruction(item.slug)}
+                                <a
+                                    href={item.url}
+                                    target="_blank"
+                                    rel="noreferrer"
                                     className={cls.link}
                                 >
                                     {item.title}
-                                </AppLink>
+                                </a>
                             </HStack>
                         ))}
                     </VStack>
@@ -56,4 +56,3 @@ export const MainPageInstructionLinks = memo((props: MainPageInstructionLinksPro
         </Card>
     );
 });
-
