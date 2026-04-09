@@ -205,10 +205,35 @@ const pickTitle = (row: Record<string, unknown>): string => {
     return candidate ? asString(candidate[1]) : '';
 };
 
+const pickValueByKeys = (row: Record<string, unknown>, keys: string[]): string => {
+    const normalizedCandidates = keys.map((key) => normalizeKey(key));
+
+    const directMatch = Object.entries(row).find(([key, value]) => {
+        const normalizedKey = normalizeKey(key);
+        return normalizedCandidates.includes(normalizedKey) && Boolean(asString(value));
+    });
+
+    if (directMatch) {
+        return asString(directMatch[1]);
+    }
+
+    const partialMatch = Object.entries(row).find(([key, value]) => {
+        const normalizedKey = normalizeKey(key);
+        return Boolean(asString(value)) && normalizedCandidates.some((candidate) => normalizedKey.includes(candidate));
+    });
+
+    return partialMatch ? asString(partialMatch[1]) : '';
+};
+
 const mapTitleToType = (title?: string): VideoDto['type'] => {
     const normalized = (title || '').toLowerCase();
 
-    if (normalized.includes('плагин') || normalized.includes('plugin')) {
+    if (
+        normalized.includes('плагин')
+        || normalized.includes('plugin')
+        || normalized.includes('диспетчер отделки')
+        || normalized.includes('modplus')
+    ) {
         return 'PLUGINS';
     }
 
@@ -217,6 +242,111 @@ const mapTitleToType = (title?: string): VideoDto['type'] => {
     }
 
     return 'VIDEO_INSTRUCTION';
+};
+
+const mapSectionValue = (value?: string): VideoDto['section'] | null => {
+    const normalized = (value || '').toLowerCase().replace(/\s+/g, '');
+
+    if (!normalized) {
+        return null;
+    }
+
+    if (normalized === 'ар' || normalized.includes('architect') || normalized.includes('архит')) {
+        return 'AR';
+    }
+
+    if (normalized === 'кр' || normalized === 'кж' || normalized.includes('конструк')) {
+        return 'KR';
+    }
+
+    if (normalized === 'ов') {
+        return 'OV';
+    }
+
+    if (normalized === 'вк') {
+        return 'VK';
+    }
+
+    if (normalized === 'эл' || normalized === 'электрика') {
+        return 'EL';
+    }
+
+    if (normalized.includes('common') || normalized.includes('общ')) {
+        return 'COMMON';
+    }
+
+    return null;
+};
+
+const mapTitleToSection = (title?: string): VideoDto['section'] => {
+    const normalized = (title || '').toLowerCase();
+
+    if (normalized.includes('армирован')) {
+        return 'KR';
+    }
+
+    if (normalized.includes('отделк') || normalized.includes('пола') || normalized.includes('кровл')) {
+        return 'AR';
+    }
+
+    return 'COMMON';
+};
+
+const mapSoftwareValue = (value?: string): VideoDto['software'] | null => {
+    const normalized = (value || '').toLowerCase().replace(/\s+/g, '');
+
+    if (!normalized) {
+        return null;
+    }
+
+    if (normalized.includes('autocad') || normalized === 'cad') {
+        return 'AUTOCAD';
+    }
+
+    if (normalized.includes('revit')) {
+        return 'REVIT';
+    }
+
+    if (normalized.includes('tangl')) {
+        return 'TANGL_VALUE';
+    }
+
+    if (normalized.includes('civil3d') || normalized.includes('civil')) {
+        return 'CIVIL3D';
+    }
+
+    return null;
+};
+
+const mapTypeValue = (value?: string): VideoDto['type'] | null => {
+    const normalized = (value || '').toLowerCase().replace(/\s+/g, '');
+
+    if (!normalized) {
+        return null;
+    }
+
+    if (
+        normalized.includes('plugin')
+        || normalized.includes('плагин')
+        || normalized === 'plugins'
+        || normalized === 'plugin'
+    ) {
+        return 'PLUGINS';
+    }
+
+    if (normalized.includes('webinar') || normalized.includes('вебинар')) {
+        return 'WEBINARS';
+    }
+
+    if (
+        normalized.includes('инструк')
+        || normalized.includes('instruction')
+        || normalized.includes('videoinstruction')
+    ) {
+        return 'VIDEO_INSTRUCTION';
+    }
+
+    return null;
 };
 
 const mapNocoRowToVideo = (row: Record<string, unknown>, index: number): VideoDto | null => {
@@ -229,14 +359,23 @@ const mapNocoRowToVideo = (row: Record<string, unknown>, index: number): VideoDt
     const title = pickTitle(row) || `Видео ${index + 1}`;
     const rawId = row.Id ?? row.id ?? row.ID ?? row._id;
     const id = String(rawId || `nocodb-${index + 1}`);
+    const typeFromRow = mapTypeValue(
+        pickValueByKeys(row, ['Тип', 'Type', 'Категория', 'Category']),
+    );
+    const sectionFromRow = mapSectionValue(
+        pickValueByKeys(row, ['Раздел', 'Section', 'Направление', 'Discipline']),
+    );
+    const softwareFromRow = mapSoftwareValue(
+        pickValueByKeys(row, ['ПО', 'Программа', 'Software', 'Platform']),
+    );
 
     return {
         id,
         title,
         link,
-        type: mapTitleToType(title),
-        section: 'COMMON',
-        software: 'REVIT',
+        type: typeFromRow || mapTitleToType(title),
+        section: sectionFromRow || mapTitleToSection(title),
+        software: softwareFromRow || 'REVIT',
     };
 };
 
