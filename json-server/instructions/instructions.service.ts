@@ -23,4 +23,12 @@ export class InstructionsService {
     public async getExternalLinksFromNoco(): Promise<InstructionExternalLink[]> {
         return this.repository.getExternalLinksFromNoco();
     }
+
+    public async refreshExternalLinksFromNoco(): Promise<InstructionExternalLink[]> {
+        return this.repository.refreshExternalLinksFromNoco();
+    }
+
+    public getCachedExternalLinksSnapshot(): InstructionExternalLink[] {
+        return this.repository.getCachedExternalLinksSnapshot();
+    }
 }

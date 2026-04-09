@@ -65,6 +65,7 @@ export interface JsonServerRequest {
 
 export interface JsonServerApp {
     get: (path: string, handler: (req: JsonServerRequest, res: JsonServerResponse) => void | Promise<void>) => void;
+    post: (path: string, handler: (req: JsonServerRequest, res: JsonServerResponse) => void | Promise<void>) => void;
 }
 
 export interface WikiPageDto {
