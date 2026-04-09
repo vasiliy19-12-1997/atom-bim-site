@@ -100,4 +100,13 @@ export class InstructionsController {
             handleError(`Unable to fetch wiki file: ${slug} -> ${filePath}`, error, res);
         }
     };
+
+    public getExternalLinks = async (_req: JsonServerRequest, res: JsonServerResponse) => {
+        try {
+            const links = await this.service.getExternalLinksFromNoco();
+            res.json(links);
+        } catch (error) {
+            handleError('Unable to fetch instruction links from NocoDB', error, res);
+        }
+    };
 }

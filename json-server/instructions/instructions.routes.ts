@@ -102,6 +102,17 @@ export const registerInstructionRoutes = (app: JsonServerApp) => {
         }
     });
 
+    app.get('/api/instructions/links', async (req, res) => {
+        try {
+            await getController().getExternalLinks(req, res);
+        } catch (error) {
+            const { status, message } = resolveError(error);
+            // eslint-disable-next-line no-console
+            console.error(`[instructions] ${message}`);
+            res.status(status).json({ message });
+        }
+    });
+
     app.get('/instructions/tree', async (req, res) => {
         try {
             await getController().getTree(req, res);
@@ -123,6 +134,15 @@ export const registerInstructionRoutes = (app: JsonServerApp) => {
     app.get('/instructions/file', async (req, res) => {
         try {
             await getController().getFileByPath(req, res);
+        } catch (error) {
+            const { status, message } = resolveError(error);
+            res.status(status).json({ message });
+        }
+    });
+
+    app.get('/instructions/links', async (req, res) => {
+        try {
+            await getController().getExternalLinks(req, res);
         } catch (error) {
             const { status, message } = resolveError(error);
             res.status(status).json({ message });

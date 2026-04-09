@@ -37,3 +37,10 @@ export interface InstructionArticle {
     toc: InstructionTocItem[];
     items: InstructionArticleItem[];
 }
+
+export interface InstructionExternalLink {
+    id: string;
+    title: string;
+    url: string;
+    slug: string;
+}
