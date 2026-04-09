@@ -250,19 +250,29 @@ const mapSectionValue = (value?: string): VideoDto['section'] | null => {
         return null;
     }
 
-    if (normalized === 'ар' || normalized.includes('architect') || normalized.includes('архит')) {
+    if (
+        normalized === 'ар'
+        || normalized === 'ap'
+        || normalized.includes('architect')
+        || normalized.includes('архит')
+    ) {
         return 'AR';
     }
 
-    if (normalized === 'кр' || normalized === 'кж' || normalized.includes('конструк')) {
+    if (
+        normalized === 'кр'
+        || normalized === 'kp'
+        || normalized === 'кж'
+        || normalized.includes('конструк')
+    ) {
         return 'KR';
     }
 
-    if (normalized === 'ов') {
+    if (normalized === 'ов' || normalized === 'ob') {
         return 'OV';
     }
 
-    if (normalized === 'вк') {
+    if (normalized === 'вк' || normalized === 'bk') {
         return 'VK';
     }
 
@@ -280,7 +290,11 @@ const mapSectionValue = (value?: string): VideoDto['section'] | null => {
 const mapTitleToSection = (title?: string): VideoDto['section'] => {
     const normalized = normalizeText(title || '');
 
-    if (normalized.includes('армирован')) {
+    if (
+        normalized.includes('армирован')
+        || normalized.includes('арматур')
+        || normalized.includes('торцеобразовател')
+    ) {
         return 'KR';
     }
 
@@ -289,6 +303,7 @@ const mapTitleToSection = (title?: string): VideoDto['section'] => {
         || normalized.includes('пола')
         || normalized.includes('кровл')
         || normalized.includes('фасад')
+        || normalized.includes('фасон')
         || normalized.includes('архит')
         || normalized.includes('помещен')
     ) {
