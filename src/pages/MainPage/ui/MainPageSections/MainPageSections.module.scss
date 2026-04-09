@@ -27,7 +27,7 @@
 .card:hover {
     transform: translateY(-6px);
     box-shadow: 0 20px 30px rgb(0 0 0 / 10%);
-    border-color: var(--accent-redesign);
+    border-color: var(--accent);
 }
 
 .textWrapper {
@@ -41,7 +41,7 @@
     width: 100%;
     align-items: flex-end;
     justify-content: flex-end;
-    background: linear-gradient(180deg, var(--light-bg-redesign), transparent 100%);
+    background: linear-gradient(180deg, var(--inverted-secondary-color), transparent 100%);
 }
 
 .icon {
@@ -50,7 +50,7 @@
     left: 16px;
     z-index: 2;
     opacity: 0.75;
-    color: var(--icon-redesign);
+    color: var(--icon);
 }
 
 .img {

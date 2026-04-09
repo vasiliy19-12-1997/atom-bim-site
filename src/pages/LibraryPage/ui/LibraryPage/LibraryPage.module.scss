@@ -1,3 +1,29 @@
 .LibraryPage {
+    display: flex;
+    flex-direction: column;
+}
 
+.Templates {
+    display: grid;
+    flex-wrap: wrap;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+}
+
+.templateCard {
+    text-align: center;
+}
+
+@media (max-width: 1024px) {
+    .Templates {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (width <= 768px) {
+    .Templates {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
 }

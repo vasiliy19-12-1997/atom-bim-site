@@ -1,0 +1,120 @@
+.grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+    margin-bottom: 20px;
+}
+
+.brandColumn {
+    min-width: 0;
+}
+
+.brandHead {
+    align-items: center;
+}
+
+.logoBox {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    background: var(--card-bg);
+    box-shadow: 0 10px 24px rgb(0 0 0 / 6%);
+    flex-shrink: 0;
+}
+
+.logoIcon {
+    width: 40px;
+    height: 40px;
+}
+
+.description {
+    color: var(--secondary-color);
+    line-height: 1.6;
+}
+
+.muted {
+    color: var(--secondary-color);
+}
+
+.badges {
+    margin-top: 4px;
+}
+
+.column {
+    min-width: 0;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    background: var(--card-bg);
+    color: var(--primary-color);
+    font-size: 12px;
+    line-height: 1;
+}
+
+.linkList {
+    width: 100%;
+}
+
+.footerLink {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+    width: fit-content;
+}
+
+.footerLink:hover {
+    color: var(--accent);
+    transform: translateX(2px);
+}
+
+.linkIcon {
+    color: var(--icon);
+}
+
+@media (width <= 1024px) {
+    .linkIcon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .logoBox {
+        width: 40px;
+        height: 40px;
+    }
+
+    .logoIcon {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (width <= 768px) {
+    .logoBox {
+        width: 30px;
+        height: 30px;
+    }
+
+    .logoIcon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+}

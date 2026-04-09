@@ -6,8 +6,8 @@
     position: relative;
     overflow: hidden;
     border: 1px solid var(--color-border);
-    background: radial-gradient(circle at top left, var(--light-bg-redesign), transparent 34%),
-        radial-gradient(circle at bottom right, var(--dark-bg-redesign), transparent 30%), var(--card-bg);
+    background: radial-gradient(circle at top left, var(--inverted-secondary-color), transparent 34%),
+        radial-gradient(circle at bottom right, var(--bg-color), transparent 30%), var(--card-bg);
     box-shadow: 0 20px 50px rgb(0 0 0 / 8%);
 }
 
@@ -24,7 +24,7 @@
 .pageLabel {
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--hint-redesign);
+    color: var(--secondary-color);
 }
 
 .metrics {
@@ -34,7 +34,7 @@
 .metric {
     min-width: 155px;
     border: 1px solid var(--color-border);
-    background: var(--light-bg-redesign);
+    background: var(--inverted-secondary-color);
     box-shadow: 0 10px 24px rgb(0 0 0 / 6%);
 }
 
@@ -46,7 +46,7 @@
     min-height: 420px;
     border: 1px solid var(--color-border);
     box-shadow: 0 16px 36px rgb(0 0 0 / 10%);
-    background: var(--dark-bg-redesign);
+    background: var(--bg-color);
 }
 
 .mainImage,

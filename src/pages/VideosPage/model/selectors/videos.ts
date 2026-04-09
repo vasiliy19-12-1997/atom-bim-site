@@ -13,6 +13,5 @@ export const getVideosPageInited = (state: StateSchema) => state.videosPage?._in
 export const getFilterSelectorSort = (state: StateSchema) => state.videosPage?.sort ?? VideoSortField.RELEVATION;
 export const getFilterSelectorOrder = (state: StateSchema) => state.videosPage?.order ?? 'asc';
 export const getFilterSelectorSearch = (state: StateSchema) => state.videosPage?.search ?? '';
-export const getVideosPageType = (state: StateSchema) => state.videosPage?.type ?? VideoType.ALL;
-
+export const getVideosFilters = (state: StateSchema) => state.videosPage?.filter || VideoType.ALL;
 export const [useVideoItemById] = buildSelector((state: StateSchema, id: string) => state.videosPage?.entities[id]);

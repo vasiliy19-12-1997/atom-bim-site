@@ -1,26 +1,38 @@
 import { memo, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-    InstructionTocItem,
-    useGetInstructionArticleQuery,
-    useGetInstructionTreeQuery,
-} from '@/entities/Instruction';
+import { InstructionTocItem, useGetInstructionArticleQuery, useGetInstructionTreeQuery } from '@/entities/Instruction';
 import { getRouteInstruction } from '@/shared/const/router';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { PAGE_ID, Page } from '@/shared/ui/deprecated/Page';
-import { Sceleton } from '@/shared/ui/Sceleton/Sceleton';
 import { InstructionArticleView } from './InstructionArticleView/InstructionArticleView';
 import { InstructionBreadcrumbs } from './InstructionBreadcrumbs/InstructionBreadcrumbs';
 import { InstructionsSidebar } from './InstructionsSidebar/InstructionsSidebar';
 import { InstructionToc } from './InstructionToc/InstructionToc';
 import cls from './InstructionPage.module.scss';
+import { Sceleton } from '@/shared/ui/redesigned/Sceleton';
+import { Text } from '@/shared/ui/redesigned/Text';
 
 interface InstructionPageProps {
     className?: string;
 }
 
+interface ApiErrorPayload {
+    status?: number;
+    data?: {
+        message?: string;
+    };
+}
+
 const getPathParts = (pathname: string) => pathname.split('/').filter(Boolean);
+
+const decodePathPart = (value: string) => {
+    try {
+        return decodeURIComponent(value);
+    } catch {
+        return value;
+    }
+};
 
 const getSlugFromPath = (pathname: string) => {
     const pathParts = getPathParts(pathname);
@@ -29,21 +41,40 @@ const getSlugFromPath = (pathname: string) => {
     }
 
     if (pathParts.length === 2) {
-        return pathParts[1];
+        return decodePathPart(pathParts[1]);
     }
 
     if (pathParts.length >= 3) {
-        return pathParts[2];
+        return decodePathPart(pathParts[pathParts.length - 1]);
     }
 
     return undefined;
 };
 
-const findFirstArticle = (tree: Array<{ children?: Array<{ slug: string }> }>) =>
-    tree.map((section) => section.children?.[0]?.slug).find(Boolean);
+const findFirstSection = (tree: Array<{ slug: string }>) => tree[0]?.slug;
 
 const findCategoryBySlug = (slug: string, tree: Array<{ slug: string; children?: Array<{ slug: string }> }>) =>
-    tree.find((node) => node.children?.some((item) => item.slug === slug))?.slug;
+    tree.find((node) => node.slug === slug || node.children?.some((item) => item.slug === slug))?.slug;
+
+const collectKnownSlugs = (tree: Array<{ slug: string; children?: Array<{ slug: string }> }>) => {
+    const slugs = new Set<string>();
+
+    tree.forEach((node) => {
+        slugs.add(node.slug);
+        node.children?.forEach((item) => slugs.add(item.slug));
+    });
+
+    return slugs;
+};
+
+const getErrorText = (error: unknown, fallback: string) => {
+    if (!error || typeof error !== 'object') {
+        return fallback;
+    }
+
+    const payload = error as ApiErrorPayload;
+    return payload.data?.message || (payload.status ? `${fallback} (${payload.status})` : fallback);
+};
 
 const InstructionPage = memo((props: InstructionPageProps) => {
     const { className } = props;
@@ -57,23 +88,30 @@ const InstructionPage = memo((props: InstructionPageProps) => {
 
     const routeSlug = useMemo(() => getSlugFromPath(location.pathname), [location.pathname]);
 
-    const { data: tree = [], isLoading: isTreeLoading } = useGetInstructionTreeQuery();
-    const firstArticleSlug = useMemo(() => findFirstArticle(tree), [tree]);
-    const requestedSlug = routeSlug ?? firstArticleSlug;
+    const { data: tree = [], isLoading: isTreeLoading, error: treeError } = useGetInstructionTreeQuery();
+    const firstSectionSlug = useMemo(() => findFirstSection(tree), [tree]);
+    const knownSlugs = useMemo(() => collectKnownSlugs(tree), [tree]);
+    const hasKnownRouteSlug = routeSlug ? knownSlugs.has(routeSlug) : false;
+    const requestedSlug = hasKnownRouteSlug ? routeSlug : firstSectionSlug;
 
     const {
         data: article,
         isLoading: isArticleLoading,
+        error: articleError,
     } = useGetInstructionArticleQuery(requestedSlug || '', {
         skip: !requestedSlug,
     });
 
     useEffect(() => {
-        if (!routeSlug && firstArticleSlug) {
-            const categorySlug = findCategoryBySlug(firstArticleSlug, tree);
-            navigate(getRouteInstruction(firstArticleSlug, categorySlug), { replace: true });
+        if (!firstSectionSlug) {
+            return;
         }
-    }, [routeSlug, firstArticleSlug, navigate, tree]);
+
+        if (!routeSlug || !hasKnownRouteSlug) {
+            const categorySlug = findCategoryBySlug(firstSectionSlug, tree);
+            navigate(getRouteInstruction(firstSectionSlug, categorySlug), { replace: true });
+        }
+    }, [routeSlug, hasKnownRouteSlug, firstSectionSlug, navigate, tree]);
 
     useEffect(() => {
         if (!toc.length) {
@@ -112,6 +150,9 @@ const InstructionPage = memo((props: InstructionPageProps) => {
     }, [toc]);
 
     const isLoading = isTreeLoading || isArticleLoading;
+    const errorMessage = getErrorText(treeError || articleError, t('Не удалось загрузить инструкции'));
+    const hasError = Boolean(treeError || articleError);
+    const isEmpty = !isLoading && !hasError && !tree.length;
 
     return (
         <Page className={classNames(cls.InstructionPage, {}, [className])}>
@@ -128,7 +169,7 @@ const InstructionPage = memo((props: InstructionPageProps) => {
                 <InstructionsSidebar
                     className={cls.sidebar}
                     tree={tree}
-                    activeSlug={article?.slug || routeSlug}
+                    activeSlug={article?.slug || requestedSlug}
                     mobileOpened={mobileSidebarOpened}
                     onCloseMobile={() => setMobileSidebarOpened(false)}
                 />
@@ -149,7 +190,20 @@ const InstructionPage = memo((props: InstructionPageProps) => {
                             />
                         </div>
                     )}
-                    {!isLoading && article && (
+                    {hasError && (
+                        <Text
+                            variant="error"
+                            title={t('Ошибка загрузки инструкций')}
+                            text={errorMessage}
+                        />
+                    )}
+                    {isEmpty && (
+                        <Text
+                            title={t('Инструкции не найдены')}
+                            text={t('В Yandex Wiki пока нет доступных страниц для отображения.')}
+                        />
+                    )}
+                    {!isLoading && !hasError && article && (
                         <>
                             <InstructionBreadcrumbs breadcrumbs={article.breadcrumbs} />
                             <InstructionArticleView

@@ -1,0 +1,118 @@
+.EIRPage {
+    width: 100%;
+    padding: 22px 20px 24px;
+    background: var(--bg-color);
+}
+
+.layout {
+    width: 100%;
+    max-width: 1360px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+    gap: 16px;
+    align-items: stretch;
+}
+
+.sidebar {
+    height: 100%;
+}
+
+.articleColumn {
+    min-width: 0;
+}
+
+.contentColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.mobileSidebarToggleRow {
+    display: none;
+}
+
+.mobileSidebarToggle {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    border: 1px solid var(--list-box-bg);
+    background: var(--card-bg);
+    color: var(--primary-color);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font: var(--font-s);
+    text-align: left;
+
+    &:focus-visible {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+    }
+}
+
+.mobileSidebarToggleLabel {
+    color: var(--secondary-color);
+    font: var(--font-s);
+}
+
+.mobileSidebarToggleValue {
+    color: var(--primary-color);
+    font: var(--font-m);
+    line-height: 1.35;
+}
+
+.mobileSidebarPanel {
+    margin-top: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--list-box-bg);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.mobileSidebarEmpty {
+    margin: 0;
+    color: var(--secondary-color);
+    font: var(--font-s);
+}
+
+.loadingState {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.emptyState {
+    background: var(--card-bg);
+    border: 1px solid var(--list-box-bg);
+    border-radius: 12px;
+    padding: 20px;
+    color: var(--secondary-color);
+    font: var(--font-m);
+}
+
+@media (max-width: 960px) {
+    .layout {
+        grid-template-columns: minmax(230px, 280px) minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .EIRPage {
+        padding: 12px 10px 16px;
+    }
+
+    .layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .mobileSidebarToggleRow {
+        display: block;
+        margin-bottom: 8px;
+    }
+}

@@ -2,6 +2,7 @@ export interface InstructionNavNode {
     id: string;
     title: string;
     slug: string;
+    type: 'section' | 'article';
     children?: InstructionNavNode[];
 }
 
@@ -16,15 +17,23 @@ export interface InstructionTocItem {
     level: 2 | 3;
 }
 
+export interface InstructionArticleItem {
+    id: string;
+    title: string;
+    slug: string;
+}
+
 export interface InstructionArticle {
     id: string;
     title: string;
     slug: string;
+    kind: 'article' | 'section';
     category: string;
     parentCategory?: string;
     breadcrumbs: InstructionBreadcrumb[];
     content: string;
-    contentType: 'html';
+    contentType: 'html' | 'markdown';
     updatedAt?: string;
     toc: InstructionTocItem[];
+    items: InstructionArticleItem[];
 }

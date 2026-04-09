@@ -18,13 +18,13 @@ export enum VideoSortField {
     RELEVATION = 'title',
     SORT_LEARN = 'id',
 }
-
 export enum VideoType {
     VIDEO_INSTRUCTION = 'VIDEO_INSTRUCTION',
     WEBINARS = 'WEBINARS',
     PLUGINS = 'PLUGINS',
     ALL = 'ALL',
 }
+export type VideoFilterType = VideoType | VideoSoftware | VideoMainSections;
 
 export interface Video {
     id: string;

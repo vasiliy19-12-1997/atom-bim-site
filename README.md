@@ -231,3 +231,31 @@ of: функция, которая отработает после ВЫключ�
 - [profileRating](/src/features/profileRating)
 - [ThemeSwitcher](/src/features/ThemeSwitcher)
 - [UI](/src/features/UI)
+
+---
+
+## Yandex Wiki API (инструкции)
+
+Для загрузки инструкций используется backend-прокси `json-server`, который ходит в Yandex Wiki API и не раскрывает токен на фронтенд.
+
+1. Скопируйте `.env.example` в `.env`.
+2. Заполните:
+   - `YANDEX_WIKI_TOKEN`
+   - `YANDEX_WIKI_ORG_ID`
+   - `YANDEX_WIKI_ROOT_SLUG`
+3. Запустите проект: `npm run start:dev`
+4. Откройте страницу `/instruction`.
+
+Пример запросов к backend:
+
+```bash
+curl -k -H "Authorization: Bearer test" https://localhost:8443/api/instructions/tree
+curl -k -H "Authorization: Bearer test" https://localhost:8443/api/instructions/article/<slug>
+```
+
+> `Authorization: Bearer test` здесь нужен только для прохождения middleware json-server. Токен Yandex Wiki подставляется на backend из `.env`.
+
+
+> Для Yandex Wiki используется `https://api.wiki.yandex.net/v1` и запросы к `/pages` (для статьи — `/pages?slug=<slug>`).
+>
+> Для построения дерева можно указать `YANDEX_WIKI_TREE_SLUGS` (через запятую). Если не задано, backend пытается запросить общий список `/pages`.

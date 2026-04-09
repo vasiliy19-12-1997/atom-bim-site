@@ -1,10 +1,14 @@
 const fs = require('fs');
+require('./loadEnv');
 require('ts-node/register/transpile-only');
 const jsonServer = require('json-server');
 const path = require('path');
 const https = require('https');
 const http = require('http');
 const { registerInstructionRoutes } = require('./instructions/instructions.routes');
+const { registerEirRoutes } = require('./eir/eir.routes');
+const { registerVideoRoutes } = require('./videos/videos.routes');
+const { refreshRutubeVideosCache } = require('./videos/videos.repository');
 
 const options = {
     key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
@@ -36,6 +40,7 @@ server.post('/login', (req, res) => {
         const userFromBd = users.find((user) => user.username === username && user.password === password);
 
         if (userFromBd) {
+            refreshRutubeVideosCache().catch(() => null);
             return res.json(userFromBd);
         }
 
@@ -49,14 +54,23 @@ server.post('/login', (req, res) => {
 // проверяем, авторизован ли пользователь
 // eslint-disable-next-line
 server.use((req, res, next) => {
+    const publicInstructionRoute = req.path.startsWith('/api/instructions') || req.path.startsWith('/instructions');
+    const publicVideoRoute = req.path === '/api/videos/rutube' || req.path === '/videos/rutube';
+
+    if (publicInstructionRoute || publicVideoRoute) {
+        return next();
+    }
+
     if (!req.headers.authorization) {
         return res.status(403).json({ message: 'AUTH ERROR' });
     }
 
-    next();
+    return next();
 });
 
 registerInstructionRoutes(server);
+registerEirRoutes(server);
+registerVideoRoutes(server);
 server.use(router);
 
 // запуск сервера

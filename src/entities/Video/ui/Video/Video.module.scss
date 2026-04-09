@@ -1,6 +1,8 @@
 .Video {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 12px;
     padding: 16px;
     border: 1px solid var(--inverted-primary-color);
@@ -30,7 +32,7 @@
 .player {
     position: relative;
     width: 100%;
-    padding-top: 56.25%;
+    padding-top: 50%;
     border-radius: 8px;
     overflow: hidden;
     background: var(--inverted-bg-color);
@@ -53,9 +55,7 @@
     cursor: pointer;
     color: var(--primary-color);
     font: var(--font-m);
-    background:
-        radial-gradient(circle at 30% 30%, rgb(255 255 255 / 10%), transparent 45%),
-        var(--inverted-bg-color);
+    background: radial-gradient(circle at 30% 30%, rgb(255 255 255 / 10%), transparent 45%), var(--inverted-bg-color);
 }
 
 .link {

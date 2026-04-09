@@ -1,0 +1,44 @@
+.FooterContentLinks {
+    /* Ваши стили */
+}
+
+.divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+}
+
+.legal {
+    max-width: 920px;
+    color: var(--secondary-color);
+    line-height: 1.6;
+}
+
+.bottom {
+    margin-top: 24px;
+    gap: 16px;
+    align-items: center;
+}
+
+.bottomText {
+    color: var(--secondary-color);
+}
+
+.bottomNav {
+    align-items: center;
+}
+
+.bottomLink {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.bottomLink:hover {
+    color: var(--accent);
+}
+
+@media (width <= 768px) {
+    .bottom {
+        align-items: flex-start;
+    }
+}

@@ -1,4 +1,4 @@
-import { InstructionArticle, InstructionNavNode } from './types';
+import { InstructionArticle, InstructionNavNode, WikiFileDto } from './types';
 import { InstructionsRepository } from './instructions.repository';
 
 export class InstructionsService {
@@ -8,11 +8,15 @@ export class InstructionsService {
         this.repository = repository;
     }
 
-    public getTree(): InstructionNavNode[] {
+    public async getTree(): Promise<InstructionNavNode[]> {
         return this.repository.getTree();
     }
 
-    public getArticleBySlug(slug: string): InstructionArticle | null {
+    public async getArticleBySlug(slug: string): Promise<InstructionArticle | null> {
         return this.repository.getArticleBySlug(slug);
+    }
+
+    public async getFileByPath(slug: string, filePath: string): Promise<WikiFileDto> {
+        return this.repository.getFileByPath(slug, filePath);
     }
 }

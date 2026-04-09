@@ -3,16 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch';
-import { Button, ButtonTheme } from '@/shared/ui/Button/Button';
-import { Text } from '@/shared/ui/Text/Text';
-import {
-    getProfileData, getProfileReadonly, profileActions, updateProfileData,
-} from '@/features/EditableProfileCard';
+import { getProfileData, getProfileReadonly, profileActions, updateProfileData } from '@/features/EditableProfileCard';
 import { getAuthUserData } from '@/entities/User';
 import cls from './ProfilePageHeader.module.scss';
+import { Text } from '@/shared/ui/redesigned/Text';
+import { Button, ButtonTheme } from '@/shared/ui/deprecated/Button';
 
 interface ProfilePageHeaderProps {
-  className?: string;
+    className?: string;
 }
 
 export const ProfilePageHeader = (props: ProfilePageHeaderProps) => {
@@ -22,9 +20,7 @@ export const ProfilePageHeader = (props: ProfilePageHeaderProps) => {
     const profileData = useSelector(getProfileData);
     const canEdit = authData?.id === profileData?.id;
     const dispatch = useAppDispatch();
-    const {
-        className,
-    } = props;
+    const { className } = props;
     const onEdit = useCallback(() => {
         dispatch(profileActions.setReadonly(false));
     }, [dispatch]);
@@ -35,7 +31,6 @@ export const ProfilePageHeader = (props: ProfilePageHeaderProps) => {
         dispatch(updateProfileData());
     }, [dispatch]);
     return (
-
         <div className={classNames(cls.ProfilePageHeader, {}, [className])}>
             <Text title={t('Профиль пользователя')} />
             {canEdit && (
@@ -68,7 +63,6 @@ export const ProfilePageHeader = (props: ProfilePageHeaderProps) => {
                     )}
                 </div>
             )}
-
         </div>
     );
 };

@@ -1,16 +1,16 @@
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { VideoSortField, VideoType } from '@/entities/Video';
+import { VideoFilterType, VideoSortField } from '@/entities/Video';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch';
 import { useDebounce } from '@/shared/lib/hooks/useDebounce/useDebounce';
 import { SortOrder } from '@/shared/types/sort';
-import { fetchVideos } from '../../model/services/fetchVideos/fetchVideos';
 import {
     getFilterSelectorOrder,
     getFilterSelectorSearch,
     getFilterSelectorSort,
-    getVideosPageType,
+    getVideosFilters,
 } from '../../model/selectors/videos';
+import { fetchVideos } from '../../model/services/fetchVideos/fetchVideos';
 import { videoPageActions } from '../../model/slices/VideosPageSlice';
 
 export function useVideoFilters() {
@@ -18,7 +18,7 @@ export function useVideoFilters() {
     const sort = useSelector(getFilterSelectorSort);
     const order = useSelector(getFilterSelectorOrder);
     const search = useSelector(getFilterSelectorSearch);
-    const type = useSelector(getVideosPageType);
+    const type = useSelector(getVideosFilters);
 
     const fetchData = useCallback(() => {
         dispatch(fetchVideos({ replace: true }));
@@ -54,7 +54,7 @@ export function useVideoFilters() {
     );
 
     const onChangeVideoType = useCallback(
-        (newType: VideoType) => {
+        (newType: VideoFilterType) => {
             dispatch(videoPageActions.setType(newType));
             dispatch(videoPageActions.setPage(1));
             fetchData();

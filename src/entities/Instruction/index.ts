@@ -4,6 +4,7 @@ export {
 } from './api/instructionApi';
 export type {
     InstructionArticle,
+    InstructionArticleItem,
     InstructionBreadcrumb,
     InstructionNavNode,
     InstructionTocItem,

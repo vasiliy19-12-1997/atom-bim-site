@@ -3,7 +3,7 @@
     padding: 0 20px 88px;
     background: radial-gradient(circle at 12% 0%, var(--page-decor-primary), transparent 28%),
         radial-gradient(circle at 88% 24%, var(--page-decor-secondary), transparent 34%),
-        linear-gradient(180deg, transparent, var(--page-overlay)), var(--bg-redesign);
+        linear-gradient(180deg, transparent, var(--page-overlay)), var(--inverted-bg-color);
 }
 
 .content {
@@ -19,6 +19,6 @@
     margin-top: 8px;
     border: none;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent-redesign), transparent);
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
     opacity: 0.35;
 }
