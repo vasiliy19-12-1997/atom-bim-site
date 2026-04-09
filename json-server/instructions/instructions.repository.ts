@@ -116,7 +116,16 @@ const pickByKeys = (row: Record<string, unknown>, keys: string[]): string => {
 };
 
 const pickWikiUrl = (row: Record<string, unknown>): string => {
+    const fromWikiLink = pickByKeys(row, ['wikiLink', 'WikiLink', 'wikilink']);
+
+    if (fromWikiLink && hasWikiUrl(fromWikiLink)) {
+        return fromWikiLink;
+    }
+
     const preferred = pickByKeys(row, [
+        'wikiLink',
+        'WikiLink',
+        'wikilink',
         'url',
         'URL',
         'Ссылка',
@@ -200,6 +209,7 @@ const buildNocoRecordsUrl = (offset: number, limit: number): string => {
     const params = new URLSearchParams({
         offset: String(offset),
         limit: String(limit),
+        fields: 'Id,id,ID,_id,Инструкция,instruction,title,Название,name,wikiLink,WikiLink,wikilink',
     });
 
     if (NOCODB_VIEW_ID) {
